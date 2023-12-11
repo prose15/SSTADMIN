@@ -27,28 +27,8 @@ function GlobalFilter({
 
   return (
     <React.Fragment>
-      <Col md={4}>
-        <div className="search-box me-xxl-2 my-3 my-xxl-0 d-inline-block">
-          <div className="position-relative">
-            <label htmlFor="search-bar-0" className="search-label">
-              <span id="search-bar-0-label" className="sr-only">
-                Search this table
-              </span>
-              <input
-                onChange={e => {
-                  setValue(e.target.value)
-                  onChange(e.target.value)
-                }}
-                id="search-bar-0"
-                type="text"
-                className="form-control"
-                placeholder={`${count} records...`}
-                value={value || ""}
-              />
-            </label>
-            <i className="bx bx-search-alt search-icon"></i>
-          </div>
-        </div>
+      <Col xxl={3} lg={6}>
+        <input type="search" className="form-control" id="search-bar-0" value={value || ""} placeholder={`${count} records...`} onChange={e => { setValue(e.target.value); onChange(e.target.value) }} />
       </Col>
       {isJobListGlobalFilter && <JobListGlobalFilter setGlobalFilter={setGlobalFilter} />}
     </React.Fragment>
@@ -151,7 +131,7 @@ const TableContainer = ({
           />
         )}
         {isAddOptions && (
-          <Col sm="7">
+          <Col sm="7" xxl="8">
             <div className="text-sm-end">
               <Button
                 type="button"
@@ -166,7 +146,7 @@ const TableContainer = ({
           </Col>
         )}
         {isAddUserList && (
-          <Col sm="7">
+          <Col sm="7" xxl="8">
             <div className="text-sm-end">
               <Button
                 type="button"
@@ -181,7 +161,7 @@ const TableContainer = ({
           </Col>
         )}
         {isAddCustList && (
-          <Col sm="7">
+          <Col sm="7" xxl="8">
             <div className="text-sm-end">
               <Button
                 type="button"

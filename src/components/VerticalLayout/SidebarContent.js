@@ -165,15 +165,15 @@ const SidebarContent = props => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="#">{props.t("Dashboard")}</Link>
+                  <Link to="/dashboard">{props.t("Dashboard")}</Link>
                 </li>
                 <li>
-                  <Link to="#">
+                  <Link to="/dashboard">
                     {props.t("My Records")}
                   </Link>
                 </li>
                 <li>
-                  <Link to="#">{props.t("My Approvals")}</Link>
+                  <Link to="/dashboard">{props.t("My Approvals")}</Link>
                 </li>
               </ul>
             </li>
@@ -185,13 +185,14 @@ const SidebarContent = props => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="#">{props.t("Dashboard")}</Link>
+                  <Link to="/timesheet/dashboard">
+                    {props.t("Dashboard")}</Link>
                 </li>
                 <li>
-                  <Link to="#">{props.t("My Timesheet")}</Link>
+                  <Link to="/timesheet/mytimesheet">{props.t("My Timesheet")}</Link>
                 </li>
                 <li>
-                  <Link to="#">{props.t("My Approvals")}</Link>
+                  <Link to="/timesheet/myapprovals">{props.t("My Approvals")}</Link>
                 </li>
               </ul>
             </li>
