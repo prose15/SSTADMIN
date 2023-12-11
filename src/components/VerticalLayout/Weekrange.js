@@ -1,4 +1,6 @@
+import { size } from 'lodash';
 import React, { useState, useEffect, useMemo } from 'react'
+import { Row,Col } from 'reactstrap';
 const Weekrange = () => {
     var today = new Date();
     var startDate = new Date()
@@ -68,9 +70,21 @@ const Weekrange = () => {
     // })
   
   return (
-    <div className="  text-center text-secondary pt-2"><i className='bx bx-chevron-left' style={{cursor:'pointer'}}  onClick={() => backward(startdate, enddate)} />
-    {startdate.getDate() + " " + (getMonthName(startdate.getMonth())) + ' ' + startdate.getFullYear() + " - " + enddate.getDate() + " " + getMonthName(enddate.getMonth()) + " " + enddate.getFullYear()}
-    <i className='bx bx-chevron-right ' style={{cursor:'pointer'}}  onClick={() => forward(startdate, enddate)} ></i></div>
+    <div className=" form-control d-inline-sm text-center  text-secondary pt-2">
+      {/* <Row className='d-inline'> */}
+        {/* <Col sm={1}> */}
+        <i className='bx bx-chevron-left ' style={{cursor:'pointer',position:'static'}}  onClick={() => backward(startdate, enddate)} ></i>
+        {/* </Col> */}
+        {/* <Col className='text-center'> */}
+        {startdate.getDate() + " " + (getMonthName(startdate.getMonth())) + ' ' + startdate.getFullYear() + " - " + enddate.getDate() + " " + getMonthName(enddate.getMonth()) + " " + enddate.getFullYear()}
+        {/* </Col> */}
+        {/* <Col sm={1}> */}
+        <i className='bx bx-chevron-right '  style={{cursor:'pointer',position:'static'}}  onClick={() => forward(startdate, enddate)} ></i>
+        {/* </Col> */}
+      {/* </Row> */}
+      
+   
+    </div>
   )
 }
 
