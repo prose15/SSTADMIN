@@ -1,0 +1,7 @@
+@media (max-width:840px){
+    .cards-box{
+        display:flex;
+        flex-direction: column;
+    }
+
+}

@@ -1,14 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-
 // Profile
 import UserProfile from "../pages/Authentication/user-profile";
-
-// Authentication related pages
-import Login from "../pages/Authentication/Login";
-import Logout from "../pages/Authentication/Logout";
-import Register from "../pages/Authentication/Register";
-import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import DashboardSaas from "../pages/timesheet/Dashboard-saas/index"
 // Dashboard
 import Dashboard from "../pages/Dashboard/index";
@@ -17,7 +10,24 @@ import Mytimesheet from "pages/timesheet/Dashboard-saas/pages/Mytimesheet";
 import Myapprovals from "pages/timesheet/Dashboard-saas/pages/Myapprovals";
 import CreateTImeSheet from "pages/timesheet/Dashboard-saas/pages/CreateTImeSheet";
 
+// Authentication related pages
+import Login from "../pages/Authentication/Login";
+import Logout from "../pages/Authentication/Logout";
+import Register from "../pages/Authentication/Register";
+import ForgetPwd from "../pages/Authentication/ForgetPassword";
+// Dashboard
+import LeaveRecords from "pages/LeaveTracker/LeaveRecords";
+import LeaveApprovals from "pages/LeaveTracker/LeaveApprovals";
+import AddLeave from "pages/LeaveTracker/AddLeave";
+import LeaveTracker from "pages/LeaveTracker/index";
+
 const authProtectedRoutes = [
+  { path: "/dashboard", component: <Dashboard /> },
+  { path: "/leavetracker", component: <LeaveTracker /> },
+  { path: "/leave/records", component: <LeaveRecords /> },
+  { path: "/leave/approvals", component: <LeaveApprovals /> },
+  { path: "/addleaves", component: <AddLeave/> },
+  // { path: "/dashboard-saas", component: <DashboardSaas /> },
   { path: "/dashboard", component: <Dashboard /> },
   //leave tracker
   { path: "/leavetracker/dashboard", component: <Dashboard /> },
