@@ -152,7 +152,7 @@ const Header = props => {
                       />
                       <div className="input-group-append">
                         <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
+                          <i className="mdi mdi-magnify"/>
                         </button>
                       </div>
                     </div>

@@ -23,7 +23,7 @@
 //     <React.Fragment>
 //       <Col xl="4">
 //         <Card>
-//           <CardBody>
+//           <>
 //             <h4 className="card-title mb-4">Sales Analytics</h4>
 
 //             <div>

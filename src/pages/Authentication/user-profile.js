@@ -16,6 +16,7 @@ import {
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import FormLayouts from "pages/Forms/FormLayouts";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -25,7 +26,7 @@ import withRouter from "components/Common/withRouter";
 //Import Breadcrumb
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
-import avatar from "../../assets/images/users/avatar-1.jpg";
+import avatar from "../../assets/images/users/deepak.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
 
@@ -97,7 +98,7 @@ const UserProfile = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Skote" breadcrumbItem="Profile" />
+          {/* <Breadcrumb title="Skote" breadcrumbItem="Profile" /> */}
 
           <Row>
             <Col lg="12">
@@ -107,6 +108,7 @@ const UserProfile = () => {
               <Card>
                 <CardBody>
                   <div className="d-flex">
+
                     <div className="ms-3">
                       <img
                         src={avatar}
@@ -114,21 +116,38 @@ const UserProfile = () => {
                         className="avatar-md rounded-circle img-thumbnail"
                       />
                     </div>
-                    <div className="flex-grow-1 align-self-center">
+
+                    <div className="ms-3 flex-grow-1 align-self-center">
                       <div className="text-muted">
-                        <h5>{name}</h5>
-                        <p className="mb-1">{email}</p>
-                        <p className="mb-0">Id no: #{idx}</p>
+                        <h5 className="text-dark"><b>{name}</b></h5>
+                        <p className="mb-1">rajadeepak1989@gmail.com</p>
+                        <p className="mb-0">Product</p>
                       </div>
                     </div>
+
+                    {/* <div className="align-self-center me-4">
+                    <Button type="submit" color="danger">
+                    Sign out
+                    </Button>
+                    </div> */}
+
                   </div>
                 </CardBody>
               </Card>
+
+              
             </Col>
           </Row>
+          
+         
+          <Row>
 
+          <Col sm="7">
+          <FormLayouts/>
+          </Col>
+
+          <Col sm="5">
           <h4 className="card-title mb-4">Change User Name</h4>
-
           <Card>
             <CardBody>
               <Form
@@ -167,6 +186,9 @@ const UserProfile = () => {
               </Form>
             </CardBody>
           </Card>
+          </Col>
+          
+          </Row>
         </Container>
       </div>
     </React.Fragment>
