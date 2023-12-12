@@ -1,20 +1,20 @@
 import React from "react";
 
 // import apexChart
-import LineApexChart from "../AllCharts/apex/chartapex"
-import DashedLine from "../AllCharts/apex/dashedLine"
-import SplineArea from "../AllCharts/apex/SplineArea"
-import Apaexlinecolumn from "../AllCharts/apex/apaexlinecolumn"
-import ColumnWithDataLabels from "../AllCharts/apex/ColumnWithDataLabels"
-import BarChart from "../AllCharts/apex/barchart"
-import LineColumnArea from "../AllCharts/apex/LineColumnArea"
-import RadialChart from "../AllCharts/apex/RadialChart"
-import PieChart from "../AllCharts/apex/PieChart"
-import DonutChart from "../AllCharts/apex/dountchart";
-import DumbelColumnChart from "../AllCharts/apex/DumbelColumn";
-import RangeAreaChart from "../AllCharts/apex/RangeArea";
-import DumbelHorizontalChart from "../AllCharts/apex/DumbellHorizontal";
-import FunnelChart from "../AllCharts/apex/FunnelChart";
+// import LineApexChart from "../AllCharts/apex/chartapex"
+// import DashedLine from "../AllCharts/apex/dashedLine"
+// import SplineArea from "../AllCharts/apex/SplineArea"
+import Apaexlinecolumn from "pages/AllCharts/apex/apaexlinecolumn";
+// import ColumnWithDataLabels from "../AllCharts/apex/ColumnWithDataLabels"
+// import BarChart from "../AllCharts/apex/barchart"
+// import LineColumnArea from "../AllCharts/apex/LineColumnArea"
+// import RadialChart from "../AllCharts/apex/RadialChart"
+// import PieChart from "../AllCharts/apex/PieChart"
+// import DonutChart from "../AllCharts/apex/dountchart";
+// import DumbelColumnChart from "../AllCharts/apex/DumbelColumn";
+// import RangeAreaChart from "../AllCharts/apex/RangeArea";
+// import DumbelHorizontalChart from "../AllCharts/apex/DumbellHorizontal";
+// import FunnelChart from "../AllCharts/apex/FunnelChart";
 
 import { Row, Col, Card, CardBody, CardTitle } from "reactstrap"
 
@@ -28,11 +28,11 @@ const Apexchart = () => {
 
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="page-content pt-0">
         <div className="container-fluid">
-          <Breadcrumbs title="Charts" breadcrumbItem="Apex Charts" />
+          {/* <Breadcrumbs title="Charts" breadcrumbItem="Apex Charts" /> */}
 
-          <Row>
+          {/* <Row>
             <Col xl={6}>
               <Card>
                 <CardBody>
@@ -50,29 +50,29 @@ const Apexchart = () => {
                 </CardBody>
               </Card>
             </Col>
-          </Row>
+          </Row> */}
 
           <Row>
-            <Col xl={6}>
+            {/* <Col xl={6}>
               <Card>
                 <CardBody>
                   <CardTitle className="mb-4"> Spline Area </CardTitle>
                   <SplineArea dataColors='["--bs-primary", "--bs-success"]'/>
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
 
-            <Col xl={6}>
+            <Col sm={12}>
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4"> Column Chart </CardTitle>
+                  <CardTitle className="mb-4"> Ticket performance </CardTitle>
                   <Apaexlinecolumn dataColors='["--bs-danger","--bs-primary", "--bs-success"]'/>
                 </CardBody>
               </Card>
             </Col>
           </Row>
 
-          <Row>
+          {/* <Row>
               <Col xl={6}>
                   <Card>
                       <CardBody>
@@ -175,7 +175,7 @@ const Apexchart = () => {
                 </CardBody>
               </Card>
             </Col>
-          </Row>
+          </Row> */}
         </div>
       </div>
     </React.Fragment>

@@ -5,12 +5,12 @@ import { Row, Col, Card, CardBody, CardTitle, Container } from "reactstrap"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 // import chartJs
-import LineChart from "../AllCharts/chartjs/linechart"
+// import LineChart from "../AllCharts/chartjs/linechart"
 import DountChart from "../AllCharts/chartjs/dountchart"
-import PieChart from "../AllCharts/chartjs/piechart"
-import BarChart from "../AllCharts/chartjs/barchart"
-import RadarChart from "../AllCharts/chartjs/radarchart"
-import PolarChart from "../AllCharts/chartjs/polarchart"
+// import PieChart from "../AllCharts/chartjs/piechart"
+// import BarChart from "../AllCharts/chartjs/barchart"
+// import RadarChart from "../AllCharts/chartjs/radarchart"
+// import PolarChart from "../AllCharts/chartjs/polarchart"
 
 const ChartjsChart = () => {
   //meta title
@@ -18,10 +18,10 @@ const ChartjsChart = () => {
 
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="page-content pt-0">
         <Container fluid={true}>
-          <Breadcrumbs title="Charts" breadcrumbItem="Chartjs Charts" />
-          <Row>
+          {/* <Breadcrumbs title="Charts" breadcrumbItem="Chartjs Charts" /> */}
+          {/* <Row>
             <Col lg={6}>
               <Card>
                 <CardBody>
@@ -80,14 +80,14 @@ const ChartjsChart = () => {
                 </CardBody>
               </Card>
             </Col>
-          </Row>
+          </Row> */}
           <Row>
-            <Col lg={6}>
+            {/* <Col lg={6}>
               <Card>
                 <CardBody>
                   <CardTitle className="mb-4">Pie Chart</CardTitle>
-                  <Row className="justify-content-center">
-                    <Col sm={4}>
+                  <Row className="justify-content-center"> */}
+                    {/* <Col sm={4}>
                       <div className="text-center">
                         <h5 className="mb-0">2536</h5>
                         <p className="text-muted text-truncate">Activated</p>
@@ -110,39 +110,39 @@ const ChartjsChart = () => {
                   <PieChart dataColors='["--bs-success", "#ebeff2"]'/>
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
 
-            <Col lg={6}>
+            <Col sm={12}>
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4">Donut Chart</CardTitle>
-                  <Row className="justify-content-center">
+                  <CardTitle className="mb-5">Your week perfromance</CardTitle>
+                  <Row className="justify-content-center mb-4">
                     <Col sm={4}>
                       <div className="text-center">
-                        <h5 className="mb-0">9595</h5>
-                        <p className="text-muted text-truncate">Activated</p>
+                        <h5 className="mb-0">40</h5>
+                        <p className="text-muted text-truncate">Total</p>
                       </div>
                     </Col>
                     <Col sm={4}>
                       <div className="text-center">
-                        <h5 className="mb-0">36524</h5>
+                        <h5 className="mb-0">30</h5>
+                        <p className="text-muted text-truncate">Worked</p>
+                      </div>
+                    </Col>
+                    <Col sm={4}>
+                      <div className="text-center">
+                        <h5 className="mb-0">17</h5>
                         <p className="text-muted text-truncate">Pending</p>
-                      </div>
-                    </Col>
-                    <Col sm={4}>
-                      <div className="text-center">
-                        <h5 className="mb-0">62541</h5>
-                        <p className="text-muted text-truncate">Deactivated</p>
                       </div>
                     </Col>
                   </Row>
 
-                  <DountChart dataColors='["--bs-primary", "bg-red"]'/>
+                  <DountChart  dataColors='["--bs-primary", "#ebeff2"]'/>
                 </CardBody>
               </Card>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col lg={6}>
               <Card>
                 <CardBody>
@@ -201,7 +201,7 @@ const ChartjsChart = () => {
                 </CardBody>
               </Card>
             </Col>
-          </Row>{" "}
+          </Row>{" "} */}
         </Container>
       </div>
     </React.Fragment>
