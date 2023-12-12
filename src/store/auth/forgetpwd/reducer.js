@@ -1,3 +1,4 @@
+import { sendPasswordResetEmail } from "firebase/auth"
 import {
   FORGET_PASSWORD,
   FORGET_PASSWORD_SUCCESS,
@@ -10,6 +11,11 @@ const initialState = {
 }
 
 const forgetPassword = (state = initialState, action) => {
+  // sendPasswordResetEmail(auth).then(()=>{
+  //   console.log('email sent');
+  // }).catch((err)=>{
+  //   console.log(err);
+  // })
   switch (action.type) {
     case FORGET_PASSWORD:
       state = {

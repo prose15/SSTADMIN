@@ -6,13 +6,14 @@ const Apaexlinecolumn = ({dataColors}) => {
   const apaexlineColumnColors = getChartColorsArray(dataColors);
   const series = [
     {
-      name: "Booked",
-      data: [46, 57, 59, 54, 62, 58, 64, 60, 66],
+      name: "Worked",
+      data: [150,110,87,230,120,100],
     },
     {
-      name: "Available",
-      data: [37, 42, 38, 26, 47, 50, 54, 55, 43],
+      name: "Total",
+      data: [300,400,500,200,150,270],
     },
+    
   ];
   const options = {
     chart: {
@@ -39,20 +40,17 @@ const Apaexlinecolumn = ({dataColors}) => {
     colors: apaexlineColumnColors,
     xaxis: {
       categories: [
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
+        "SST001",
+        "SST002",
+        "SST003",
+        "SST004",
+        "SST005",
+        "SST006"
       ],
     },
     yaxis: {
       title: {
-        text: "Leaves Taken",
+        text: "Hours",
       },
     },
     grid: {
@@ -64,7 +62,7 @@ const Apaexlinecolumn = ({dataColors}) => {
     tooltip: {
       y: {
         formatter: function (val) {
-          return "$ " + val + " thousands";
+          return + val + " Hours";
         },
       },
     },

@@ -16,7 +16,7 @@ import {
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import FormLayouts from "pages/Forms/FormLayouts";
+import FormLayouts from "pages/Forms/ProfileLayout";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -24,7 +24,7 @@ import { createSelector } from "reselect";
 import withRouter from "components/Common/withRouter";
 
 //Import Breadcrumb
-import Breadcrumb from "../../components/Common/Breadcrumb";
+// import Breadcrumb from "../../components/Common/Breadcrumb";
 
 import avatar from "../../assets/images/users/deepak.jpg";
 // actions
@@ -125,11 +125,7 @@ const UserProfile = () => {
                       </div>
                     </div>
 
-                    {/* <div className="align-self-center me-4">
-                    <Button type="submit" color="danger">
-                    Sign out
-                    </Button>
-                    </div> */}
+                   
 
                   </div>
                 </CardBody>

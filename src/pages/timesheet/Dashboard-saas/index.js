@@ -1,12 +1,8 @@
 import React from "react"
-import { Container, Row, Col } from "reactstrap"
-import CardWelcome from "./card-welcome"
+import { Container, Row, Col,Card,CardBody } from "reactstrap"
+import CardWelcome from "./card-welcome";
 import MiniWidget from "./mini-widget"
-//Import Breadcrumb
 import Breadcrumbs from "../../../components/Common/Breadcrumb"
-
-//Import Components
-
 import BorderlessTable from "table/BorderlessTable"
 import Section from "./Section"
 import Reportingmanagers from './Reportingmanagers'
@@ -15,52 +11,55 @@ const DashboardSaas = props => {
   const worked=35
   const remain=total-worked
   const reports = [
+    { title: "Total hours", iconClass: "bx bx-alarm", description: total },
+    { title: "Worked hours", iconClass: "bx bx-dumbbell", description: worked },
     {
-      icon: "bx bx-alarm",
-      title: "Total Hours",
-      value: total+" Hours",
-      badgeValue: "+ 0.2%",
-      color: "success",
-      desc: "From previous period",
+      title: "Remaining hours",
+      iconClass: "bx bx-stopwatch",
+      description: remain,
     },
-    {
-      icon: "bx bx-dumbbell",
-      title: "Worked Hours",
-      value: worked+" Hours",
-      badgeValue: "+ 0.2%",
-      color: "warning",
-      desc: "From previous period",
-    },
-    {
-      icon: "bx bx-stopwatch",
-      title: "Remaining Hours",
-      value: remain+" Hours",
-      badgeValue: "0%",
-      color: "danger",
-      desc: "From previous period",
-    },
-  ]
+  ];
 
   //meta title
   document.title = "SST-Apps"
+
 
   return (
     <React.Fragment>
       <div className="page-content">
         {/* <Container> */}
-          <Section btn={'Log Time'} link={'/timesheet/logtime'}/>
-          {/* Render Breadcrumb */}
-          {/* <Breadcrumbs title="Dashboards" breadcrumbItem="Deepak" /> */}
-
-          {/* Card User */}
-          {/* <CardUser /> */}
+          <Section  btn={'Log Time'} link={'/timesheet/logtime'}/>
           <Row>
-            {/* welcome card */}
             <CardWelcome />
 
             <Col xl="8">
               <Row>
-                <MiniWidget reports={reports} />
+                {/* Reports Render */}
+                {reports.map((report, key) => (
+                  <Col md="4" key={"_col_" + key}>
+                    <Card className="mini-stats-wid">
+                      <CardBody>
+                        <div className="d-flex">
+                          <div className="flex-grow-1">
+                            <p className="text-muted fw-medium">
+                              {report.title}
+                            </p>
+                            <h4 className="mb-0">{report.description}</h4>
+                          </div>
+                          <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
+                            <span className="avatar-title rounded-circle bg-primary">
+                              <i
+                                className={
+                                  "bx " + report.iconClass + " font-size-24"
+                                }
+                              ></i>
+                            </span>
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                ))}
               </Row>
             </Col>
           </Row>

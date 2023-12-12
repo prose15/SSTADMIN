@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardBody} from 'reactstrap';
 import './indexcss.css';
-
+import { useSelector,useDispatch } from 'react-redux';
+import { getContactStart } from 'store/actions';
+import { state } from 'store/toolkit';
 const Leavecards = () => {
+    let dispatch=useDispatch();
+    useEffect(()=>{
+dispatch(getContactStart());
+    },[])
+    const {contacts:data}=useSelector(state=>state.data)
+    console.log(data,state);
   return (
     <div className="d-flex cards-box">
-    <Card className="leave-cards m-3">
+    <Card className="leave-cards me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
           
@@ -15,13 +23,13 @@ const Leavecards = () => {
 
             <div className="d-flex">
                 <p className="mb-0 flex-grow-1 text-success me-5">
-                    Available : {0}</p>
+                    Available :{0}</p>
                     
                 <p className="mb-0 text-danger">Booked : {0}</p>
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards m-3">
+    <Card className="leave-cards me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
             <i className='fas fa-exclamation-circle fa-2x'></i>
@@ -35,7 +43,7 @@ const Leavecards = () => {
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards m-3">
+    <Card className="leave-cards me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
                 <i className="fas fa-wallet fa-2x">
@@ -50,7 +58,7 @@ const Leavecards = () => {
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards m-3">
+    <Card className="leave-cards me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
              <i className="fas fa-baby-carriage fa-2x">
@@ -64,7 +72,7 @@ const Leavecards = () => {
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards m-3">
+    <Card className="leave-cards me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
            <i className="fas fa-hospital fa-2x"></i>

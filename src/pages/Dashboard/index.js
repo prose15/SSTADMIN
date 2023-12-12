@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React ,{useState,useEffect} from "react";
 
 import { Link } from "react-router-dom";
 import StackedColumnChart from "./StackedColumnChart";
@@ -27,12 +27,54 @@ import MonthlyEarning from "./MonthlyEarning";
 import RecentFile from "pages/FileManager/RecentFile";
 import ChartjsChart from "pages/Charts/ChartjsChart";
 
+//Firebase
+import { db } from 'firebase-config';
+import { collection, getDocs, where, query,doc,getDoc } from 'firebase/firestore'
 
 //i18n
 import { withTranslation } from "react-i18next";
 import { Rectangle } from "react-leaflet";
+import Cookies from 'js-cookie'
 
 const Dashboard = props => {
+
+  const [name,setName]=useState('')
+  const [email,setEmail]=useState('')
+  const [role,setRole]=useState('')
+//  const [casual,setCasual]=useState(0);
+//  const [lop,setLop]=useState(0);
+//  const [earned,setEarned]=useState(0);
+//  const [paternity,setPaternity]=useState(0);
+//  const [sick,setSick]=useState(0);
+//  const [casualAvail,setCasualAvail]=useState(0);
+//  const [lopAvailable,setLopAvail]=useState(0);
+//  const [earnedAvailable,setEarnedAvail]=useState(0);
+//  const [paternityAvailable,setPaternityAvail]=useState(0);
+//  const [sickAvailable,setSickAvail]=useState(0);
+//  const [user, setUser] = useState(null);
+// //  const collectionRef = collection(db, 'leave submssion')
+
+//  const [details,
+//    setDetails]=useState([]);
+   useEffect(()=>{
+
+       const handleGet=async()=>{
+           const docRef = doc(db, "users", JSON.parse(sessionStorage.getItem('uid')));
+           
+   const docSnap = await getDoc(docRef)
+  //  const dataSet = await getDocs(collectionRef);
+  //          setDetails(dataSet.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+   if(docSnap.exists()){
+   
+   setName(()=>docSnap.data().name)
+   setRole(()=>docSnap.data().designation)
+   Cookies.set('name',name)
+   }
+   }
+
+    handleGet()   
+       },[name]
+     )
   
   const reports = [
     { title: "Total hours", iconClass: "bx bxs-time", description: "40" },
@@ -44,25 +86,17 @@ const Dashboard = props => {
     },
   ];
   //meta title
-  document.title = "Dashboard | Skote - React Admin & Dashboard Template";
+  // document.title = "Dashboard | Skote - React Admin & Dashboard Template";
 
 
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid>
-          {/* Render Breadcrumb */}
-          {/* <Breadcrumbs
-            title={props.t("Dashboards")}
-            breadcrumbItem={props.t("Dashboard")}
-          /> */}
-
-<Row>
+        <Container fluid><Row>
             <Col xl="4">
-              <WelcomeComp />
+              <WelcomeComp name={name} role={role} />
               <MonthlyEarning />
             </Col>
-            
             <Col xl="8">
               <Row>
                 {/* Reports Render */}

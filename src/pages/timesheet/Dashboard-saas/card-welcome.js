@@ -15,10 +15,10 @@ function CardWelcome(props) {
                 <h5 className="text-primary">Welcome Back !</h5>
                 <p>Time Sheet Dashboard</p>
 
-                <ul className="ps-3 mb-0 ">
+                {/* <ul className="ps-3 mb-0 ">
                   <li className="py-1">Log work status here!</li>
                 
-                </ul>
+                </ul> */}
               </div>
             </Col>
           </Row>

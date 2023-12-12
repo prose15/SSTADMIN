@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
-
+import Cookies from 'js-cookie';
 //import images
 import avatar from "../../../assets/images/users/avatar-2.jpg";
 
@@ -13,7 +13,7 @@ const Section = (props) => {
                     <div className="d-flex align-items-center">
                         {/* <img src={avatar} alt="" className="avatar-sm rounded" /> */}
                         <div className="ms-3 flex-grow-1 ">
-                            <h5 className="mb-2 card-title">Hello, Deepak</h5>
+                            <h5 className="mb-2 card-title">Hello,{Cookies.get('name')}</h5>
                             <p className="text-muted mb-0">Good to see you back!</p>
                         </div>
                         <div>

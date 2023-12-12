@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 import deepak from "../../assets/images/users/deepak.jpg"
 import profileImg from "../../assets/images/profile-img.png"
 
-const WelcomeComp = () => {
+const WelcomeComp = (props) => {
   return (
     <React.Fragment>
       <Card className="overflow-hidden">
@@ -14,8 +14,8 @@ const WelcomeComp = () => {
           <Row>
             <Col xs="7">
               <div className="text-primary p-3">
-                <h5 className="text-primary">Welcome Back SSTian!</h5>
-                <p>SST Dashboard</p>
+                <h5 className="text-primary">Welcome Back!</h5>
+                <p>Dashboard</p>
               </div>
             </Col>
             <Col xs="5" className="align-self-end">
@@ -33,8 +33,8 @@ const WelcomeComp = () => {
                   className="img-thumbnail rounded-circle"
                 />
               </div>
-              <h5 className="font-size-14 text-truncate">Deepak Ranganathan</h5>
-              <p className="text-muted mb-0 text-truncate">Full stack</p>
+              <h5 className="font-size-14 text-truncate">{props.name}</h5>
+              <p className="text-muted mb-0 text-truncate">{props.role}</p>
             </Col>
 
             <Col sm="8">
