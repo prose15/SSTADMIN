@@ -6,16 +6,34 @@ import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, Uncont
 import jobs from "../../assets/images/jobs.png";
 import avatar2 from "../../assets/images/users/avatar-2.jpg";
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
-import avatar3 from "../../assets/images/users/avatar-3.jpg";
+import avatar3 from "../../assets/images/users/avatar-7.jpg";
 import avatar4 from "../../assets/images/users/avatar-4.jpg";
 
 //swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "../../../node_modules/swiper/swiper.scss";
+import Cookies from 'js-cookie';
 
 const CandidateSection = () => {
     const LeaveContent = "You will notify here about your upcoming leaves !"
+    const team=Cookies.get('team')
+    let details = []
+    if (team === 'Delivery') {
+        details = [...details,{ name: "Yuvashini", designation: 'Team Manager',img:avatar4 }, { name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+
+    }
+    else if (team === 'Sales') {
+        details = [...details,{ name: "Balaji", designation: 'Team manager' }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+
+    }
+    else if (team === 'HR') {
+        details = [...details, { name: 'Gobi', designation: 'Chief Operational Officer' }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+
+    }
+    else if (team === 'Product') {
+        details = [...details, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+    }
     return (
         <React.Fragment>
             <Col lg={12}>
@@ -34,7 +52,7 @@ const CandidateSection = () => {
                 </Card>
                 <Card>
                     <CardBody>
-                        <h4 className="card-title mb-3">Popular Candidate</h4>
+                        <h4 className="card-title mb-3">Reporting Manager</h4>
                         <Swiper
                             modules={[Navigation, Pagination, Autoplay]}
                             spaceBetween={50}

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-
+import contactReducer from "./dbreducer";
 // Front
 import Layout from "./layout/reducer";
 
@@ -16,6 +16,10 @@ const rootReducer = combineReducers({
   Account,
   ForgetPassword,
   Profile,
+  data:contactReducer,
 });
+
+
+
 
 export default rootReducer;

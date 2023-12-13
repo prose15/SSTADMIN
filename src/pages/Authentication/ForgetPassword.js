@@ -17,12 +17,13 @@ import { userForgetPassword } from "../../store/actions";
 
 // import images
 import profile from "../../assets/images/profile-img.png";
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/images/logosm.png";
+import { auth } from "firebase-config";
 
 const ForgetPasswordPage = props => {
 
   //meta title
-  document.title = "Forget Password | Skote - React Admin & Dashboard Template";
+  // document.title = "Forget Password | Skote - React Admin & Dashboard Template";
 
   const dispatch = useDispatch();
 
@@ -72,13 +73,13 @@ const ForgetPasswordPage = props => {
                   <Row>
                     <Col xs={7}>
                       <div className="text-primary p-4">
-                        <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Skote.</p>
+                        <h5 className="text-primary">Don't worry!</h5>
+                        <p>Enter your e-mail to continue</p>
                       </div>
                     </Col>
-                    <Col className="col-5 align-self-end">
+                    {/* <Col className="col-5 align-self-end">
                       <img src={profile} alt="" className="img-fluid" />
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
                 <CardBody className="pt-0">
@@ -89,7 +90,7 @@ const ForgetPasswordPage = props => {
                           <img
                             src={logo}
                             alt=""
-                            className="rounded-circle"
+                            className=""
                             height="34"
                           />
                         </span>
@@ -148,7 +149,7 @@ const ForgetPasswordPage = props => {
                   </div>
                 </CardBody>
               </Card>
-              <div className="mt-5 text-center">
+              {/* <div className="mt-5 text-center">
                 <p>
                   Go back to{" "}
                   <Link to="login" className="font-weight-medium text-primary">
@@ -159,7 +160,7 @@ const ForgetPasswordPage = props => {
                   © {new Date().getFullYear()} Skote. Crafted with{" "}
                   <i className="mdi mdi-heart text-danger" /> by Themesbrand
                 </p>
-              </div>
+              </div> */}
             </Col>
           </Row>
         </Container>

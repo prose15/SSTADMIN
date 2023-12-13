@@ -5,10 +5,10 @@ import getChartColorsArray from "../../../components/Common/ChartsDynamicColor";
 const DountChart = ({dataColors}) => {
   var doughnutChartColors =  getChartColorsArray(dataColors); 
   const data = {
-    labels: ["Desktops", "Tablets"],
+    labels: ["Worked", "Pending"],
     datasets: [
       {
-        data: [300, 210],
+        data: [30, 10],
         backgroundColor: doughnutChartColors,
         hoverBackgroundColor: doughnutChartColors,
         hoverBorderColor: "#fff",

@@ -6,6 +6,9 @@
   th {
       font-weight: $font-weight-bold;
   }
+  td{
+    font-size: 0.9rem;
+  }
 }
 
 .table-dark>:not(:last-child)>:last-child>*{

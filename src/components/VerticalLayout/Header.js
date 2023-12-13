@@ -22,7 +22,7 @@ import dropbox from "../../assets/images/brands/dropbox.png";
 import mail_chimp from "../../assets/images/brands/mail_chimp.png";
 import slack from "../../assets/images/brands/slack.png";
 
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/images/logosm.png";
 import logoLightSvg from "../../assets/images/logo-light.svg";
 
 //i18n
@@ -34,6 +34,7 @@ import {
   toggleLeftmenu,
   changeSidebarType,
 } from "../../store/actions";
+import Weekrange from './Weekrange';
 
 const Header = props => {
   const [search, setsearch] = useState(false);
@@ -109,21 +110,16 @@ const Header = props => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            <form className="app-search  d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder={props.t("Search") + "..."}
-                />
-                <span className="bx bx-search-alt" />
+            <form className="app-search   d-none d-lg-block">
+              <div className="position-relative ">
+               <Weekrange />
               </div>
             </form>
 
           </div>
           <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button
+            <div className="app-search-sm  d-inline-block d-lg-none ms-2">
+              {/* <button
                 onClick={() => {
                   setsearch(!search);
                 }}
@@ -132,8 +128,8 @@ const Header = props => {
                 id="page-header-search-dropdown"
               >
                 <i className="mdi mdi-magnify" />
-              </button>
-              <div
+              </button> */}
+              {/* <div
                 className={
                   search
                     ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
@@ -152,13 +148,14 @@ const Header = props => {
                       />
                       <div className="input-group-append">
                         <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
+                          {/* <i className="mdi mdi-magnify" /> */}
+                        {/* </button>
                       </div>
                     </div>
                   </div>
                 </form>
-              </div>
+              </div> */} 
+              <Weekrange />
             </div>
             <NotificationDropdown />
             <ProfileMenu />

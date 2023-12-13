@@ -6,37 +6,47 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-
+import Cookies from "js-cookie";
 //i18n
 import { withTranslation } from "react-i18next";
 // Redux
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import withRouter from "components/Common/withRouter";
 
 // users
-import user1 from "../../../assets/images/users/avatar-1.jpg";
+import user1 from "../../../assets/images/users/deepak.jpg";
+
+// Firebase
+import {auth} from "firebase-config"
+import {signOut} from 'firebase/auth'
 
 const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
 
-  const [username, setusername] = useState("Admin");
+  const [username, setusername] = useState(Cookies.get('name'));
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
         const obj = JSON.parse(localStorage.getItem("authUser"));
         setusername(obj.displayName);
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
+      }  {
         const obj = JSON.parse(localStorage.getItem("authUser"));
         setusername(obj.username);
       }
     }
   }, [props.success]);
+
+  const nav=useNavigate()
+  const handleSignOut=()=>{
+    signOut(auth).then(()=>{
+      sessionStorage.removeItem('uid');
+      nav('/login')
+  }).catch((err)=> console.log(err.message))
+  }
+  
 
   return (
     <React.Fragment>
@@ -55,7 +65,7 @@ const ProfileMenu = props => {
             src={user1}
             alt="Header Avatar"
           />
-          <span className="d-none d-xl-inline-block ms-2 me-1">{"Deepak"}</span>
+          <span className="d-none d-xl-inline-block ms-2 me-1">{username}</span>
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
@@ -65,10 +75,10 @@ const ProfileMenu = props => {
             {props.t("Profile")}{" "}
           </DropdownItem>
           <div className="dropdown-divider" />
-          <Link to="/logout" className="dropdown-item">
+          <div to="/logout" className="dropdown-item" onClick={()=>handleSignOut()}>
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
-            <span>{props.t("Logout")}</span>
-          </Link>
+            <span >{props.t("Logout")}</span>
+          </div>
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

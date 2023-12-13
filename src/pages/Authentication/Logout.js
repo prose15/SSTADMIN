@@ -7,19 +7,18 @@ import { logoutUser } from "../../store/actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+// Firebase
+import {auth} from "firebase-config"
+import {signOut} from 'firebase/auth'
+
 const Logout = () => {
-  const history = useNavigate();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(logoutUser(history));
-  }, [dispatch, history]);
-
+  const nav = useNavigate();
+  signOut(auth).then(()=>{
+    localStorage.removeItem('uid');
+    nav('/login')
+}).catch((err)=> console.log(err.message))
+  
   return <></>;
 };
 
-Logout.propTypes = {
-  history: PropTypes.object,
-};
-
-export default withRouter(Logout);
+export default Logout;

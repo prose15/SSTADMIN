@@ -18,7 +18,7 @@ import { loginUser, socialLogin } from "../../store/actions";
 
 // import images
 import profile from "assets/images/profile-img.png";
-import logo from "assets/images/logo.svg";
+import logo from "assets/images/logosm.png";
 
 const Login = props => {
 
@@ -90,7 +90,7 @@ const Login = props => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-                  <div>
+                <div>
                     <Link to="/" className="logo-light-element">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
@@ -174,7 +174,7 @@ const Login = props => {
                           Log In
                         </button>
                       </div>
-
+{/* 
                       <div className="mt-4 text-center">
                         <h5 className="font-size-14 mb-3">Sign in with</h5>
 
@@ -190,7 +190,7 @@ const Login = props => {
                             >
                               <i className="mdi mdi-facebook" />
                             </Link>
-                          </li>
+                          </li> */}
                           {/*<li className="list-inline-item">*/}
                           {/*  <TwitterLogin*/}
                           {/*    loginUrl={*/}
@@ -212,7 +212,7 @@ const Login = props => {
                           {/*    </a>*/}
                           {/*  </TwitterLogin>*/}
                           {/*</li>*/}
-                          <li className="list-inline-item">
+                          {/* <li className="list-inline-item">
                           <Link
                               to="#"
                               className="social-list-item bg-danger text-white border-danger"
@@ -225,7 +225,7 @@ const Login = props => {
                             </Link>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
 
                       <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
@@ -245,10 +245,10 @@ const Login = props => {
                     Signup now{" "}
                   </Link>{" "}
                 </p>
-                <p>
+                {/* <p>
                   © {new Date().getFullYear()} Skote. Crafted with{" "}
                   <i className="mdi mdi-heart text-danger" /> by Themesbrand
-                </p>
+                </p> */}
               </div>
             </Col>
           </Row>

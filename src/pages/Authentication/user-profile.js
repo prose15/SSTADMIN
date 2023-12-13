@@ -16,6 +16,7 @@ import {
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import FormLayouts from "pages/Forms/ProfileLayout";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -23,11 +24,12 @@ import { createSelector } from "reselect";
 import withRouter from "components/Common/withRouter";
 
 //Import Breadcrumb
-import Breadcrumb from "../../components/Common/Breadcrumb";
+// import Breadcrumb from "../../components/Common/Breadcrumb";
 
-import avatar from "../../assets/images/users/avatar-1.jpg";
+import avatar from "../../assets/images/users/deepak.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
+import Cookies from "js-cookie";
 
 const UserProfile = () => {
 
@@ -36,8 +38,8 @@ const UserProfile = () => {
 
   const dispatch = useDispatch();
 
-  const [email, setemail] = useState("");
-  const [name, setname] = useState("");
+  const [email, setemail] = useState();
+  const [name, setname] = useState();
   const [idx, setidx] = useState(1);
 
   const selectProfileState = (state) => state.Profile;
@@ -97,7 +99,7 @@ const UserProfile = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Skote" breadcrumbItem="Profile" />
+          {/* <Breadcrumb title="Skote" breadcrumbItem="Profile" /> */}
 
           <Row>
             <Col lg="12">
@@ -107,6 +109,7 @@ const UserProfile = () => {
               <Card>
                 <CardBody>
                   <div className="d-flex">
+
                     <div className="ms-3">
                       <img
                         src={avatar}
@@ -114,21 +117,34 @@ const UserProfile = () => {
                         className="avatar-md rounded-circle img-thumbnail"
                       />
                     </div>
-                    <div className="flex-grow-1 align-self-center">
+
+                    <div className="ms-3 flex-grow-1 align-self-center">
                       <div className="text-muted">
-                        <h5>{name}</h5>
-                        <p className="mb-1">{email}</p>
-                        <p className="mb-0">Id no: #{idx}</p>
+                        <h5 className="text-dark"><b>{name}</b></h5>
+                        <p className="mb-1">{Cookies.get('email')}</p>
+                        <p className="mb-0">{Cookies.get('team')}</p>
                       </div>
                     </div>
+
+                   
+
                   </div>
                 </CardBody>
               </Card>
+
+              
             </Col>
           </Row>
+          
+         
+          <Row>
 
+          <Col sm="7">
+          <FormLayouts/>
+          </Col>
+
+          <Col sm="5">
           <h4 className="card-title mb-4">Change User Name</h4>
-
           <Card>
             <CardBody>
               <Form
@@ -157,7 +173,8 @@ const UserProfile = () => {
                   {validation.touched.username && validation.errors.username ? (
                     <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
                   ) : null}
-                  <Input name="idx" value={idx} type="hidden" />
+                  <Input na
+                  me="idx" value={idx} type="hidden" />
                 </div>
                 <div className="text-center mt-4">
                   <Button type="submit" color="danger">
@@ -167,6 +184,9 @@ const UserProfile = () => {
               </Form>
             </CardBody>
           </Card>
+          </Col>
+          
+          </Row>
         </Container>
       </div>
     </React.Fragment>
