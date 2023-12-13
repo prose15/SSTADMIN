@@ -13,12 +13,11 @@ import {
   Input,
   InputGroup,
 } from "reactstrap";
-
-
-import Breadcrumbs from "../../components/Common/Breadcrumb";
+import Cookies from "js-cookie";
 
 const ProfileLayout = props => {
-
+let user = Cookies.get('user')
+console.log(user.name);
   return (
     <React.Fragment>
       <div className="page-content pt-0 ps-0">
@@ -34,13 +33,13 @@ const ProfileLayout = props => {
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Name</Label>
-                          <p className="text-muted">Deepak Ranganathan</p>
+                          <p className="text-muted">{Cookies.get('name')}</p>
                         </div>
                       </Col>
                       <Col md={6}>
                       <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Employee ID</Label>
-                          <p className="text-muted">SST100</p>
+                          <p className="text-muted">{}</p>
                         </div>
                       </Col>
                     </Row>

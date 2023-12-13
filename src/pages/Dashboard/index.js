@@ -65,10 +65,14 @@ const Dashboard = props => {
   //  const dataSet = await getDocs(collectionRef);
   //          setDetails(dataSet.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
    if(docSnap.exists()){
-   
+   let user
    setName(()=>docSnap.data().name)
    setRole(()=>docSnap.data().designation)
+   Cookies.set('team',docSnap.data().team)
    Cookies.set('name',name)
+   Cookies.set('email',docSnap.data().email)
+   user = {name:name,email:email,team:Cookies.get('team'),id:docSnap.data().employeeID,phone:docSnap.data().phone,gender:docSnap.data().gender,role:role,}
+   Cookies.set('user',user);
    }
    }
 
