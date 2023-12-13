@@ -2,6 +2,10 @@ import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import withRouter from "components/Common/withRouter";
 import TableContainer from "components/Common/TableContainer";
+// import { useEffect, useMemo, useState } from "react";
+import {collection,getDocs,query,where,orderBy} from 'firebase/firestore'
+import Cookies from "js-cookie";
+import { db } from "firebase-config";
 import {
     Button,
     Card,
@@ -17,12 +21,24 @@ import {
     PaymentMethod,
   } from "./MytimesheetCol";
 import MytimesheetModal from './MytimesheetModal';
-import latestTransaction from "./MytimesheetData";
+// import details from "./MytimesheetData";
 import Section from "../Section";
-import PageTitle from "components/Common/PageTitle";
+// import PageTitle from "components/Common/PageTitle";
 const Mytimesheet = () => {
 
-
+  const [details,setDetails]=useState([])
+  const name=Cookies.get('name')
+  useEffect(()=>{
+      const handleGet=async()=>{
+          const filteredUsersQuery =query(collection(db,'timesheet'),where('name','==',name));
+          const data=await getDocs(filteredUsersQuery).catch((err)=>{
+            console.log(err);
+          })
+          setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+         
+      }
+      handleGet()
+  },[])
     const [modal1, setModal1] = useState(false);
 
     const toggleViewModal = () => setModal1(!modal1);
@@ -39,7 +55,7 @@ const Mytimesheet = () => {
         },
         {
           Header: "Time Sheet",
-          accessor: "timeSheet",
+          accessor: "sheetName",
           filterable: false,
           disableFilters: true,
           Cell: cellProps => {
@@ -48,7 +64,7 @@ const Mytimesheet = () => {
         },
         {
           Header: "Total Hours",
-          accessor: "totalHours",
+          accessor: "workedHrs",
           filterable: false,
           disableFilters: true,
           Cell: cellProps => {
@@ -58,7 +74,7 @@ const Mytimesheet = () => {
       
         {
           Header: "Date",
-          accessor: "timesheetDate",
+          accessor: "date",
           disableFilters: true,
           filterable: false,
           Cell: cellProps => {
@@ -108,7 +124,7 @@ const Mytimesheet = () => {
             {/* <div className="mb-4 h4 card-title">My Records</div> */}
             <TableContainer
               columns={columns}
-              data={latestTransaction}
+              data={details}
               isGlobalFilter={false}
               isAddOptions={false}
               isPagination={true}

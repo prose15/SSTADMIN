@@ -40,7 +40,7 @@ const Status = (cell) => {
     return (
         <Badge
           className={"font-size-11 badge-soft-" + 
-          (cell.value === "Success" ? "success" : "danger" && cell.value === "Pending" ? "warning" : "danger")}          
+          (cell.value === "success" ? "success" : "danger" && cell.value === "pending" ? "warning" : "danger")}          
         >
           {cell.value}
         </Badge>

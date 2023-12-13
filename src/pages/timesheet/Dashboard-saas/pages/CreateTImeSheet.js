@@ -10,10 +10,7 @@ const CreateTImeSheet = () => {
         <div className="page-content">
                 <PageTitle title={"My Timesheets"} />
                 <Weeklytimesheet  />
-        </div>
-            
-           
-           
+        </div>   
         </React.Fragment>
     )
 }

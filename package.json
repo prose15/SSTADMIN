@@ -90,6 +90,7 @@
     "redux": "^4.2.1",
     "redux-form": "^8.3.10",
     "redux-saga": "^1.2.3",
+    "redux-saga-firebase": "^0.15.0",
     "reselect": "4.1.8",
     "simplebar-react": "^3.2.4",
     "swiper": "^10.0.4",

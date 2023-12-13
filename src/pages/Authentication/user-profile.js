@@ -29,6 +29,7 @@ import withRouter from "components/Common/withRouter";
 import avatar from "../../assets/images/users/deepak.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
+import Cookies from "js-cookie";
 
 const UserProfile = () => {
 
@@ -37,8 +38,8 @@ const UserProfile = () => {
 
   const dispatch = useDispatch();
 
-  const [email, setemail] = useState("");
-  const [name, setname] = useState("");
+  const [email, setemail] = useState();
+  const [name, setname] = useState();
   const [idx, setidx] = useState(1);
 
   const selectProfileState = (state) => state.Profile;
@@ -120,8 +121,8 @@ const UserProfile = () => {
                     <div className="ms-3 flex-grow-1 align-self-center">
                       <div className="text-muted">
                         <h5 className="text-dark"><b>{name}</b></h5>
-                        <p className="mb-1">rajadeepak1989@gmail.com</p>
-                        <p className="mb-0">Product</p>
+                        <p className="mb-1">{Cookies.get('email')}</p>
+                        <p className="mb-0">{Cookies.get('team')}</p>
                       </div>
                     </div>
 
@@ -172,7 +173,8 @@ const UserProfile = () => {
                   {validation.touched.username && validation.errors.username ? (
                     <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
                   ) : null}
-                  <Input name="idx" value={idx} type="hidden" />
+                  <Input na
+                  me="idx" value={idx} type="hidden" />
                 </div>
                 <div className="text-center mt-4">
                   <Button type="submit" color="danger">

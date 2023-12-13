@@ -8,12 +8,13 @@ import avatar2 from "assets/images/users/avatar-6.jpg";
 import avatar1 from "assets/images/users/avatar-1.jpg";
 import avatar3 from "assets/images/users/avatar-7.jpg";
 import avatar4 from "assets/images/users/avatar-4.jpg";
+import Cookies from 'js-cookie';
 
 //swiper
 
 
 const CandidateSection = () => {
-    const team='Delivery'
+    const team=Cookies.get('team')
     let details = []
     if (team === 'Delivery') {
         details = [...details,{ name: "Yuvashini", designation: 'Team Manager',img:avatar4 }, { name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]

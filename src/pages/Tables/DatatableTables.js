@@ -1,12 +1,25 @@
 // src/components/filter.
 import React, { useMemo } from "react";
+import { useState,useEffect } from 'react';
+import {collection,getDocs,query,where,orderBy} from 'firebase/firestore'
 import PropTypes from 'prop-types';
+import { db } from "firebase-config";
+
 
 //import components
 import Breadcrumbs from '../../components/Common/Breadcrumb';
 import TableContainer from '../../components/Common/TableContainer';
+import Cookies from "js-cookie";
+// import { orderBy } from "lodash";
 
 function DatatableTables() {
+    let newDetails=[]
+
+//   details.map((detail)=>{
+//     if(detail.name===name && detail.email===email){
+//         newDetails=[...newDetails,detail]
+//     }
+//   })
     const columns = useMemo(
         () => [
             {
@@ -36,8 +49,21 @@ function DatatableTables() {
         ],
         []
     );
-
+//    let dataSet={}
+//  details.map((detail)=>{
+    
+//      dataSet=   {
+//             typesofleave:detail.leaveType,
+//             startdate:detail.from,
+//             enddate:detail.to,
+//             reason:detail.reason,
+//             status:detail.status,
+//         }
+    
+// })
+console.log(details);
     const data = [
+    
         {
             typeofleave: "Casual",
             startdate: "21/12/23",
@@ -177,7 +203,7 @@ function DatatableTables() {
     ];
 
     //meta title
-    document.title = "Data Tables | Skote - React Admin & Dashboard Template";
+    // document.title = "Data Tables | Skote - React Admin & Dashboard Template";
 
     return (
         <div className="page-content pt-0">

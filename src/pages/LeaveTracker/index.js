@@ -1,14 +1,32 @@
 import React from 'react';
 import { Container, Row,Col, Card, CardBody, CardTitle  } from 'reactstrap';
 import CandidateSection from './CandidateSection';
-import Apaexlinecolumn from "../AllCharts/apex/apaexlinecolumn"
+import Apaexlinecolumn from "../AllCharts/Apex/apaexlinecolumn"
 import Section from 'pages/timesheet/Dashboard-saas/Section';
 import Leavecards from './Leavecards';
 import FormLayouts from 'pages/Forms/ProfileLayout';
-
+import { useState,useEffect } from 'react';
+import {collection,getDocs,query,where,orderBy} from 'firebase/firestore'
+import Cookies from 'js-cookie';
+import { db } from "firebase-config";
 
 const LeaveTracker = () => {
-
+    
+const [details,setDetails]=useState([])
+const name=Cookies.get('name')
+useEffect(()=>{
+    const getData=async()=>{
+        // const collection=collection(db,'timesheet')
+        const filteredUsersQuery =query(collection(db,'leave submssion'),where('name','==',name));
+        const data=await getDocs(filteredUsersQuery).catch((err)=>{
+          console.log(err);
+        })
+        setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        
+    }
+    getData()
+  },[])
+console.log(details.length);
     return (
         <React.Fragment>
             <div className="page-content">
