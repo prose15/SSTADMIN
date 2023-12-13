@@ -4,7 +4,7 @@ import React from "react";
 // import LineApexChart from "../AllCharts/apex/chartapex"
 // import DashedLine from "../AllCharts/apex/dashedLine"
 // import SplineArea from "../AllCharts/apex/SplineArea"
-import Apaexlinecolumn from "pages/AllCharts/apex/apaexlinecolumn";
+import Apaexlinecolumn from "../AllCharts/Apex/apaexlinecolumn"
 // import ColumnWithDataLabels from "../AllCharts/apex/ColumnWithDataLabels"
 // import BarChart from "../AllCharts/apex/barchart"
 // import LineColumnArea from "../AllCharts/apex/LineColumnArea"

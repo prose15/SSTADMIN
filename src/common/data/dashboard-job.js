@@ -15,39 +15,46 @@ import avatar5 from '../../assets/images/users/avatar-5.jpg';
 const jobVacancy = [
     {
         id: 1,
-        // img: airbnb,
-        title: "Casual Leave",
+        img: airbnb,
+        title: "Project Manager",
         country: " California",
         vacancy: 8
     },
     {
         id: 2,
-        // img: mailchimp,
-        title: "Loss of pay",
+        img: mailchimp,
+        title: "Marketing Director",
         country: "Danemark",
         vacancy: 12
     },
     {
         id: 3,
-        // img: reddit,
-        title: "Earned Leave",
+        img: reddit,
+        title: "Product Designer",
         country: "France",
         vacancy: 25
     },
     {
         id: 4,
-        // img: amzon,
-        title: "Paternity Leave",
+        img: amzon,
+        title: "Magento Developer",
         country: "Hong-Kong",
         vacancy: 8
     },
     {
         id: 5,
-        // img: adobPhotoshop,
-        title: "Sick Leave",
+        img: adobPhotoshop,
+        title: "Product Sales Specialist",
         country: " Louisiana",
         vacancy: 1
-    }
+    },
+    {
+        id: 6,
+        img: line,
+        title: "Business Associate",
+        country: " Phoenix",
+        vacancy: 15
+    },
 ];
 
 const statistic_data = {
@@ -78,47 +85,53 @@ const statistic_data = {
 
 const recentAddedJobsData = [
     {
-        // logo: wechat,
+        logo: wechat,
         jobTitle: "Marketing Director",
         company: "Themesbrand, USA",
         postedTime: "53 sec ago"
     },
     {
-        // logo: sass,
+        logo: sass,
         jobTitle: "Frontend Developer",
         company: "Themesbrand, Hong-Kong",
         postedTime: "47 min ago"
     },
     {
-        // logo: adobe,
+        logo: adobe,
         jobTitle: "React Developer",
         company: "Creative Agency, Danemark",
         postedTime: "1 hrs ago"
     },
     {
-        // logo: airbnb,
+        logo: airbnb,
         jobTitle: "NodeJs Developer",
         company: "Skote Themes, Louisiana",
         postedTime: "2 hrs ago"
     },
     {
-        // logo: flutter,
+        logo: flutter,
         jobTitle: "Digital Marketing",
         company: "Web Technology pvt.Ltd, Danemark",
         postedTime: "8 hrs ago"
     },
     {
-        // logo: mailchimp,
+        logo: mailchimp,
         jobTitle: "Marketing Director",
         company: "Skote Technology, Dominica",
         postedTime: "1 days ago"
     },
     {
-        // logo: spotify,
+        logo: spotify,
         jobTitle: "Business Associate",
         company: "Themesbrand, Russia",
         postedTime: "2 days ago"
     },
+    {
+        logo: reddit,
+        jobTitle: "Backend Developer",
+        company: "Adobe Agency, Malaysia",
+        postedTime: "3 days ago"
+    }
 ]
 
 const activityFeedData = [
@@ -128,7 +141,7 @@ const activityFeedData = [
         action: "applied for the job",
         jobTitle: "Sr.frontend Developer",
         timestamp: "3 min ago",
-        icon:"fas fa-umbrella-beach"
+        img: avatar5,
     },
     {
         type: "subscription",
@@ -149,7 +162,7 @@ const activityFeedData = [
         action: "applied for the job",
         jobTitle: "Project Manager",
         timestamp: "3 hrs ago",
-        // img: avatar5,
+        img: avatar5,
     },
     {
         type: "accountCreation",

@@ -168,11 +168,12 @@ const SidebarContent = props => {
                   <Link to="/leavetracker">{props.t("Dashboard")}</Link>
                 </li>
                 <li>
-                  <Link to="/leave/approvals">{props.t("My Approvals")}</Link>
-                </li>
-                <li>
                   <Link to="/leave/records">{props.t("My Records")}</Link>
                 </li>
+                <li>
+                  <Link to="/leave/approvals">{props.t("My Approvals")}</Link>
+                </li>
+                
               </ul>
             </li>
 
