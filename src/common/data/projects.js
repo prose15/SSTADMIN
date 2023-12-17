@@ -19,7 +19,7 @@ const projects = [
     id: 1,
     img: 'fas fa-calendar-alt',
     name: "19 Nov 23 - 23 Nov 23",
-    // description: "To achieve it would be necessary",
+    description: "To achieve it would be necessary",
     status: "Rejected",
     color: "danger",
     dueDate: "22 Oct, 19",

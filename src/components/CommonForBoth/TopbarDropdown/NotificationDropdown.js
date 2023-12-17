@@ -38,12 +38,12 @@ const NotificationDropdown = props => {
               <Col>
                 <h6 className="m-0"> {props.t("Notifications")} </h6>
               </Col>
-              <div className="col-auto">
+              {/* <div className="col-auto">
                 <a href="#" className="small">
                   {" "}
                   View All
                 </a>
-              </div>
+              </div> */}
             </Row>
           </div>
 
@@ -51,18 +51,18 @@ const NotificationDropdown = props => {
             <Link to="" className="text-reset notification-item">
               <div className="d-flex">
                 <div className="avatar-xs me-3">
-                  <span className="avatar-title bg-primary rounded-circle font-size-16">
-                    <i className="bx bx-cart" />
+                  <span className="avatar-title bg-primary rounded-circle font-size-13">
+                    <i className="fas fa-calendar" />
                   </span>
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
-                    {props.t("Your order is placed")}
+                    {props.t("Timesheet(10/12/23-14/12/23)")}
                   </h6>
                   <div className="font-size-12 text-muted">
                     <p className="mb-1">
                       {props.t(
-                        "If several languages coalesce the grammar"
+                        "Your timesheet has been approved"
                       )}
                     </p>
                     <p className="mb-0">
@@ -75,17 +75,22 @@ const NotificationDropdown = props => {
             </Link>
             <Link to="" className="text-reset notification-item">
               <div className="d-flex">
-                <img
+                {/* <img
                   src={avatar3}
                   className="me-3 rounded-circle avatar-xs"
                   alt="user-pic"
-                />
+                /> */}
+                <div className="avatar-xs me-3">
+                  <span className="avatar-title bg-danger rounded-circle font-size-16">
+                    <i className="fas fa-times" />
+                  </span>
+                </div>
                 <div className="flex-grow-1">
-                  <h6 className="mt-0 mb-1">James Lemire</h6>
+                  <h6 className="mt-0 mb-1">Leave(20/12/23-21/12/23)</h6>
                   <div className="font-size-12 text-muted">
                     <p className="mb-1">
-                      {props.t("It will seem like simplified English") +
-                        "."}
+                      {props.t("Your leave has been rejected")
+                        }
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-clock-outline" />
@@ -99,17 +104,17 @@ const NotificationDropdown = props => {
               <div className="d-flex">
                 <div className="avatar-xs me-3">
                   <span className="avatar-title bg-success rounded-circle font-size-16">
-                    <i className="bx bx-badge-check" />
+                    <i className="fas fa-check" />
                   </span>
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
-                    {props.t("Your item is shipped")}
+                    {props.t("Leave(21/12/23-22/12/23)")}
                   </h6>
                   <div className="font-size-12 text-muted">
                     <p className="mb-1">
                       {props.t(
-                        "If several languages coalesce the grammar"
+                        "Your leave has been approved"
                       )}
                     </p>
                     <p className="mb-0">
@@ -121,7 +126,7 @@ const NotificationDropdown = props => {
               </div>
             </Link>
 
-            <Link to="" className="text-reset notification-item">
+            {/* <Link to="" className="text-reset notification-item">
               <div className="d-flex">
                 <img
                   src={avatar4}
@@ -143,7 +148,7 @@ const NotificationDropdown = props => {
                   </div>
                 </div>
               </div>
-            </Link>
+            </Link> */}
           </SimpleBar>
           <div className="p-2 border-top d-grid">
             <Link className="btn btn-sm btn-link font-size-14 text-center" to="#">
