@@ -34,7 +34,7 @@ console.log(details.length);
                      <Section btn={'Add Leave'} link={'/addleave'}/>
                     <Leavecards/>
                     <Row>
-                        <Col xl={6}>
+                        <Col xl={8}>
                             <Card>
                                 <CardBody>
                                 <CardTitle className="mb-4">Leave taken as per months</CardTitle>
@@ -42,7 +42,7 @@ console.log(details.length);
                                 </CardBody>
                             </Card>
                        </Col>
-                       <Col xl={6}>
+                       <Col xl={4}>
                              <CandidateSection />
                         </Col>
                     </Row>

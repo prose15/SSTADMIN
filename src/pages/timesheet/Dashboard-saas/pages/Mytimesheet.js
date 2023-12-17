@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import withRouter from "components/Common/withRouter";
 import TableContainer from "components/Common/TableContainer";
 // import { useEffect, useMemo, useState } from "react";
-import {collection,getDocs,query,where,orderBy} from 'firebase/firestore'
+import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firestore'
 import Cookies from "js-cookie";
 import { db } from "firebase-config";
 import {
@@ -18,27 +18,26 @@ import {
     Date,
     Total,
     Status,
-    PaymentMethod,
+    Action,
   } from "./MytimesheetCol";
 import MytimesheetModal from './MytimesheetModal';
-// import details from "./MytimesheetData";
 import Section from "../Section";
-// import PageTitle from "components/Common/PageTitle";
 const Mytimesheet = () => {
 
   const [details,setDetails]=useState([])
   const name=Cookies.get('name')
+  const email=Cookies.get('email')
   useEffect(()=>{
       const handleGet=async()=>{
-          const filteredUsersQuery =query(collection(db,'timesheet'),where('name','==',name));
-          const data=await getDocs(filteredUsersQuery).catch((err)=>{
-            console.log(err);
-          })
+        const filteredUsersQuery =query(collection(db,'timesheet'),where('email','==',email),orderBy('timestamp','asc'));
+        onSnapshot(filteredUsersQuery,(data)=>{
           setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        })
          
       }
       handleGet()
   },[])
+  console.log(details);
     const [modal1, setModal1] = useState(false);
 
     const toggleViewModal = () => setModal1(!modal1);
@@ -94,17 +93,10 @@ const Mytimesheet = () => {
         {
           Header: "Action",
           disableFilters: true,
-          accessor: "view",
+          accessor: "id",
           Cell: cellProps => {
             return (
-              <Button
-                type="button"
-                
-                className=" btn-rounded bg-primary-subtle text-primary border-primary-subtle"
-                // onClick={()}
-              >
-                <i className="dripicons-trash"></i>
-              </Button>
+             <Action {...cellProps}/>
             );
           },
         },
@@ -115,13 +107,10 @@ const Mytimesheet = () => {
     return (
       <React.Fragment>
         <div className="page-content">
-        {/* <Container> */}
-        {/* <PageTitle title={'My Timesheets'} /> */}
           <Section btn={'Create Timesheet'} link={'/timesheet/mytimesheet/createtimesheet'}/>
         <MytimesheetModal isOpen={modal1} toggle={toggleViewModal} />
         <Card>
           <CardBody>
-            {/* <div className="mb-4 h4 card-title">My Records</div> */}
             <TableContainer
               columns={columns}
               data={details}

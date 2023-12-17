@@ -177,7 +177,7 @@ const SidebarContent = props => {
             </li>
 
             <li>
-              <Link to="/#" className="has-arrow ">
+              <Link to="/#" className="has-arrow  ">
                 <i className="bx bx-calendar"></i>
                 <span>{props.t("Time Sheet")}</span>
               </Link>

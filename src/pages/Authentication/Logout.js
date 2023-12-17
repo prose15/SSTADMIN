@@ -14,7 +14,7 @@ import {signOut} from 'firebase/auth'
 const Logout = () => {
   const nav = useNavigate();
   signOut(auth).then(()=>{
-    localStorage.removeItem('uid');
+    sessionStorage.removeItem('uid');
     nav('/login')
 }).catch((err)=> console.log(err.message))
   

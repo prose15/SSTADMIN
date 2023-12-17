@@ -14,10 +14,11 @@ import {
   InputGroup,
 } from "reactstrap";
 import Cookies from "js-cookie";
-
+import NoProfile from "pages/Authentication/NoProfile";
 const ProfileLayout = props => {
-let user = Cookies.get('user')
-console.log(user.name);
+// let user = Cookies.get('user')
+// console.log(user.name);
+
   return (
     <React.Fragment>
       <div className="page-content pt-0 ps-0">
@@ -39,7 +40,7 @@ console.log(user.name);
                       <Col md={6}>
                       <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Employee ID</Label>
-                          <p className="text-muted">{}</p>
+                          <p className="text-muted">{Cookies.get('id')}</p>
                         </div>
                       </Col>
                     </Row>
@@ -49,7 +50,7 @@ console.log(user.name);
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">E-mail address</Label>
-                          <p className="text-muted">rajadeepak1989@gmail.com</p>
+                          <p className="text-muted">{Cookies.get('email')}</p>
                         </div>
                       </Col>
                       <Col md={6}>
@@ -72,13 +73,13 @@ console.log(user.name);
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Phone</Label>
-                          <p className="text-muted">8248754223</p>
+                          <p className="text-muted">{Cookies.get('phone')}</p>
                         </div>
                       </Col>
                       <Col md={6}>
                       <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Gender</Label>
-                          <p className="text-muted">Male</p>
+                          <p className="text-muted">{Cookies.get('gender')}</p>
                         </div>
                       </Col>
                     </Row>
@@ -86,13 +87,13 @@ console.log(user.name);
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Team</Label>
-                          <p className="text-muted">Product</p>
+                          <p className="text-muted">{Cookies.get('team')}</p>
                         </div>
                       </Col>
                       <Col md={6}>
                       <div className="mb-3">
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Role</Label>
-                          <p className="text-muted">Full Stack</p>
+                          <p className="text-muted">{Cookies.get('role')}</p>
                         </div>
                       </Col>
                     </Row>

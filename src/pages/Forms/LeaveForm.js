@@ -13,13 +13,14 @@ import {
   FormGroup,
   Input,
   InputGroup,
+  Alert,
 } from "reactstrap";
 //Import Flatepicker
 import "flatpickr/dist/themes/material_blue.css";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import * as yup from 'yup'
 import { db } from "firebase-config";
-import { collection,addDoc, } from "firebase/firestore";
+import { collection,addDoc, Timestamp, } from "firebase/firestore";
 import Cookies from 'js-cookie'
 
 const LeaveForm = props => {
@@ -33,7 +34,7 @@ const LeaveForm = props => {
   const [reason,setReason]= useState('')
   const [fromDate,setFromDate] = useState(new Date().getDate()+"-"+new Date().getMonth()+"-"+new Date().getFullYear())
   const [toDate,setToDate] = useState(new Date().getDate()+"-"+new Date().getMonth()+"-"+new Date().getFullYear())
-  // const [addDetails,setNewDetails]=useState([])
+  const [alert,setAlert]=useState('d-none')
   let details=[]
   if(team==='Delivery'){
       details=[...details,'Keerthana',"Yuvashini",'Gobi','Krishna kumar']
@@ -90,8 +91,6 @@ const LeaveForm = props => {
   };
 const handlesubmit = async(e) =>{
   e.preventDefault();
-  // try {
-    // await schema.validate(formValues);
           const startDate = new Date(fromDate)
           const endDate = new Date(toDate)
           if(startDate>endDate){
@@ -109,57 +108,48 @@ const handlesubmit = async(e) =>{
 
           const dates = getDatesBetweenDates(startDate,endDate)
 const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) )
-const newDetails={name:name,email:email,team:team,reason: reason, leaveType: eventCategory, reportManager: reportingManager, from: fromDate, to: toDate, requestDate: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear(),status:'pending',L1status:'',L2status:'',L3status:'',casualAvailable:12,earnedAvailable:12,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:dates.length-holidays.length}
+const newDetails={name:name,email:email,team:team,reason: reason, leaveType: eventCategory, reportManager: reportingManager, from: fromDate, to: toDate, requestDate: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear(),status:'pending',L1status:'',L2status:'',L3status:'',casualAvailable:12,earnedAvailable:12,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now()}
 const newData = [...addDetails, details];
     setNewDetails(newData)
 
         addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
             console.log("message added successfully");
+            setAlert('d-block')
             localStorage.setItem('type',newDetails.leaveType)
-            setTimeout(()=>{nav('/leavetracker')},2000)
+            setTimeout(()=>{nav('/leavetracker')},1000)
         })
           
     .catch((err) => {
         console.log(err.message);
         })
-// console.log(dates.length+" "+holidays.length)
-// console.log(dates.length-holidays.length)
-// console.log(eventCategory)
-// console.log(reportingManager)
-// console.log(reason)
-// console.log(fromDate)
-// console.log(toDate);
-// console.log(name);
-// console.log(team);
           }
-//   }
-//   catch(error){
-// console.error(error);
-//   }
 } 
   
   
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs title="Forms" breadcrumbItem="Leave Application" />
+        <Container>
+          {/* <Breadcrumbs title="Forms" breadcrumbItem="Leave Application" /> */}
           <Row>
             <Col>
-              <Card>
-                <CardBody>
+            <Alert color='success' className={alert}>{'Form forwarded to L1 Manager'}</Alert>
+              <Card className='mt-5 w-100  mx-auto'>
+                <CardBody >
                   <CardTitle className="mb-4">Submit Your Application!</CardTitle>
 
                   <Form >
                     <Row>
                   <Col md={6}>
+                  
                         <div className="mb-3">
                         <Label htmlFor="formrow-email-Input">Leave type</Label>
                           <select className="form-select"
                           value={eventCategory}
                           onChange={(e)=>setEventCategory(e.target.value)}
                           >
-                            <option defaultValue='Casual leave'>Casual leave</option>
+                            <option defaultValue='#'>Select Leave Type</option>
+                            <option value='Casual leave'>Casual leave</option>
                             <option value="Sick leave">Sick leave</option>
                             <option value="Paternity leave">Paternity leave</option>
                             <option value="Earned leave">Earned leave</option>
