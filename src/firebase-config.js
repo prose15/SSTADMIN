@@ -1,7 +1,7 @@
 import {initializeApp} from "firebase/app";
 import {getAuth}from "firebase/auth"
 import {getFirestore} from 'firebase/firestore'
-
+import {getDownloadURL,getStorage,ref,uploadBytes} from 'firebase/storage'
 const firebaseConfig = {
 
   apiKey: "AIzaSyC3QJGdNdbzPRoi5usIcbGqGjA9jWl4AtY",
@@ -21,8 +21,15 @@ const firebaseConfig = {
 };
 
 
+
   const app = initializeApp(firebaseConfig);
   const db=getFirestore(app)
   const auth = getAuth(app); 
-  export {auth,db}
+  const storage=getStorage()
+// export const user = JSON.parse(sessionStorage.getItem('uid'))
+   
+    // updateProfile(user,{photoURL:profileURL})
+
+ 
+  export {auth,db ,storage}
 

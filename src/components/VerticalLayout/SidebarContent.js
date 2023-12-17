@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 //i18n
 import { withTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const SidebarContent = props => {
   const ref = useRef();
@@ -177,24 +178,34 @@ const SidebarContent = props => {
               </ul>
             </li>
 
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <i className="bx bx-calendar"></i>
-                <span>{props.t("Time Sheet")}</span>
-              </Link>
-              <ul className="sub-menu">
+            
+              {(Cookies.get('team')!='Sales')?(
                 <li>
-                  <Link to="/timesheet/dashboard">
-                    {props.t("Dashboard")}</Link>
-                </li>
-                <li>
-                  <Link to="/timesheet/mytimesheet">{props.t("My Timesheet")}</Link>
-                </li>
-                <li>
-                  <Link to="/timesheet/myapprovals">{props.t("My Approvals")}</Link>
-                </li>
-              </ul>
-            </li>
+                <Link to="/#" className="has-arrow  " >
+                  <i className="bx bx-calendar"></i>
+                  <span>{props.t("Time Sheet")}</span>
+                </Link>
+  <ul className="sub-menu">
+  <li>
+    <Link to="/timesheet/dashboard">
+      {props.t("Dashboard")}</Link>
+  </li>
+  <li>
+    <Link to="/timesheet/mytimesheet">{props.t("My Timesheet")}</Link>
+  </li>
+  <li>
+    <Link to="/timesheet/myapprovals">{props.t("My Approvals")}</Link>
+  </li>
+</ul>
+</li>
+              ):(<li>
+                <Link to="/dashboard" className="has-arrow  " >
+                  <i className="bx bx-calendar"></i>
+                  <span>{props.t("Time Sheet")}</span>
+                </Link>
+                </li>)}
+            
+           
 
             <li>
               <Link to="/#" className="has-arrow">

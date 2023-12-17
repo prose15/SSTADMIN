@@ -38,6 +38,15 @@ console.log(graphdetails)
 // sDateArray=[startDate,startDate2]
 // eDateArray=[endDate,endDate2]
 const leave=[0,0,0,0,0,0,0,0,0,0,0,0]
+const nextyearleave=[0,0,0,0,0,0,0,0,0,0,0,0]
+let checkyear=new Date()
+let checkyear2=new Date()
+checkyear2.setDate(checkyear.getDate()-1)
+// if(checkyear.getFullYear()!=checkyear2.getFullYear()){
+//   leave=nextyearleave
+//   nextyearleave=[0,0,0,0,0,0,0,0,0,0,0,0]
+// }
+
 for(let i=0;i<graphdetails.length;i++){
   if(graphdetails[i].status==="accept"){
   let sDate=new Date(graphdetails[i].from)
@@ -46,19 +55,27 @@ for(let i=0;i<graphdetails.length;i++){
   console.log(sDate,eDate)
   console.log(sDate.getMonth(),eDate.getMonth())
   while(sDate<=eDate){
-    if(sDate.getMonth()!=eDate.getMonth() && sDate.getFullYear()==today.getFullYear()){
+    if(sDate.getDay()==5 || sDate.getDay()==6){
+      sDate=sDate
+    }
+    else if(sDate.getMonth()!=eDate.getMonth() && sDate.getFullYear()==today.getFullYear()){
       leave[sDate.getMonth()]++
     }
     else if(sDate.getFullYear()==today.getFullYear()){
       leave[eDate.getMonth()]++
- 
     }
+    else if(sDate.getFullYear()!=today.getFullYear()){
+      nextyearleave[sDate.getMonth()]++
+    }
+
     sDate.setDate(sDate.getDate()+1)
   }
 }
 }
 
-// console.log(leave);
+
+ console.log(leave);
+ console.log(nextyearleave);
 
 // fromtoprogram
 

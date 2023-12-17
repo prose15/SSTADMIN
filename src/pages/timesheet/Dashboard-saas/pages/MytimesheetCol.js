@@ -1,18 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import * as moment from "moment";
-import { Badge } from 'reactstrap';
-
+import { Badge,Button } from 'reactstrap';
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from 'firebase-config';
 const formateDate = (date, format) => {
     const dateFormat = format ? format : "DD MMM Y";
     const date1 = moment(new Date(date)).format(dateFormat);
     return date1;
 };
+
 const toLowerCase1 = str => {
     return (
       str === "" || str === undefined ? "" : str.toLowerCase()
     );
   };
+
+const deleteData=async(id)=>{
+    
+await deleteDoc(doc(db, "timesheet", id)).then(()=>{
+    console.log('deleted successfully');
+}).catch((err)=>{
+    console.log(err);
+})
+}  
 
 const CheckBox = (cell) => {
     return cell.value ? cell.value : '';
@@ -46,21 +57,17 @@ const Status = (cell) => {
         </Badge>
     )
 };
-const PaymentMethod = (cell) => {
+const Action =(cell)=>{
     return (
-        <span>
-        <i
-        className={
-          (cell.value === "Paypal" ? "fab fa-cc-paypal me-1" : "" || 
-          cell.value === "COD" ? "fab fas fa-money-bill-alt me-1" : "" ||
-          cell.value === "Mastercard" ? "fab fa-cc-mastercard me-1" : "" ||
-          cell.value === "Visa" ? "fab fa-cc-visa me-1" : ""
-          )}
-          />{" "}
-            {cell.value}
-        </span>
+        <Button
+        type="button"
+        className=" btn-rounded bg-primary-subtle text-primary border-primary-subtle"
+        onClick={()=>deleteData(cell.value)}
+      >
+        <i className="dripicons-trash"></i>
+      </Button>
     )
-};
+}
 export {
     CheckBox,
     OrderId,
@@ -68,5 +75,5 @@ export {
     Date,
     Total,
     Status,
-    PaymentMethod
+    Action,
 };

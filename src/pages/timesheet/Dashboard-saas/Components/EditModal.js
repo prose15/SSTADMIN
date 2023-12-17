@@ -1,30 +1,72 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import FormPage from '../FormPage';
 import {
     Input,
     Row,
     Col,
     Label,
-    Card,
-    CardBody,
-    CardTitle,
     Modal,
-    Container,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
   } from "reactstrap";
-const EditModal = () => {
+  import { db } from 'firebase-config';
+  import { doc,getDoc,updateDoc } from 'firebase/firestore';
+const EditModal = ({id}) => {
+  console.log(id);
+  const [projectName,setProjectName]=useState('');
+  const [serviceName,setServiceName]=useState('');
+  const [costCenter,setCostCenter]=useState('');
+  const [workItem,setWorkItem]=useState('');
+  const [timesheetDate,setTimesheetDate]=useState('');
+  const [startTime,setStartTime]=useState('');
+  const [endTime,setEndTime]=useState('');
+  const [billableStatus,setBillableStatus]=useState('');
+  const [description,setDescription]=useState('');
+  const [date,setDate] = useState('')
+  const [toggle,setToggle] = useState(false)
+  useEffect(()=>{
+    const handleGet=async()=>{
+      const docRef = doc(db, "Timesheet", id);
+      const docSnap = await getDoc(docRef)
+      if(docSnap.exists()){
+        setProjectName(docSnap.data().projectName)
+        setServiceName(docSnap.data().serviceName)
+        setWorkItem(docSnap.data().workItem)
+        setCostCenter(docSnap.data().costCenter)
+        setTimesheetDate(docSnap.data().timesheetDate)
+        setStartTime(docSnap.data().startTime)
+        setEndTime(docSnap.data().endTime)
+        setBillableStatus(docSnap.data().billableStatus)
+        setDescription(docSnap.data().description)
+        setDate(docSnap.data().timesheetDate)
+        billableStatus==='Billable'? setToggle(true):setToggle(false)
+      }
+    }
+    handleGet()
+  },[])
+  console.log(billableStatus);
+ 
+  console.log(toggle);
+  // (billableStatus==='Billable')?(setToggle(true)):(setToggle(false))
+  let billable=''
+  if(toggle){
+    billable="Billable"
+  }
+  else{
+      billable="Non-Billable"
+  }
+  const handleUpdate=async()=>{
+    
+
+    const docRef=doc(db,'Timesheet',id)
+    const data={serviceName:serviceName,projectName:projectName,startTime:startTime,endTime:endTime,timesheetDate:date,workItem:workItem,costCenter:costCenter,billableStatus:billableStatus,description:description}
+    await updateDoc(docRef,data).then(()=>{
+      tog_standard()
+      setId('')
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
     const [modal_standard, setmodal_standard] = useState(false);
-    const [projectName,setProjectName]=useState('');
-    const [serviceName,setServiceName]=useState('');
-    const [costCenter,setCostCenter]=useState('');
-    const [workItem,setWorkItem]=useState('');
-    const [timesheetDate,setTimesheetDate]=useState('');
-    const [startTime,setStartTime]=useState('');
-    const [endTime,setEndTime]=useState('');
-    const [billableStatus,setBillableStatus]=useState(false);
-    const [description,setDescription]=useState('');
+ 
     function tog_standard() {
         setmodal_standard(!modal_standard);
         removeBodyCss();
@@ -65,21 +107,13 @@ const EditModal = () => {
                       <Col md={6}>
           <div className="mb-3">
                           <Label htmlFor="formrow-email-Input">Service</Label>
-                          <select className="form-control" value={serviceName} onChange={(e)=>setServiceName(e.target.value)}>
-                        <option>Select</option>
-                        <option>Large select</option>
-                        <option>Small select</option>
-                      </select>
+                          <input className="form-control" type='text' value={serviceName} onChange={(e)=>setServiceName(e.target.value)} />
                         </div>
                       </Col>
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-password-Input">Project</Label>
-                          <select className="form-control" value={projectName} onChange={(e)=>setProjectName(e.target.value)}>
-                        <option>Select</option>
-                        <option>Large select</option>
-                        <option>Small select</option>
-                      </select>
+                          <input className="form-control" type='text' value={projectName} onChange={(e)=>setProjectName(e.target.value)} />
                         </div>
                       </Col>
                     </Row>
@@ -88,21 +122,13 @@ const EditModal = () => {
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-email-Input">Cost Center</Label>
-                          <select className="form-control" value={costCenter} onChange={(e)=>setCostCenter(e.target.value)}>
-                        <option>Select</option>
-                        <option>Large select</option>
-                        <option>Small select</option>
-                      </select>
+                          <input className="form-control" type='text' value={costCenter} onChange={(e)=>setCostCenter(e.target.value)} />
                         </div>
                       </Col>
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-password-Input">Work Item</Label>
-                          <select className="form-control" value={workItem} onChange={(e)=>setWorkItem(e.target.value)}>
-                        <option>Select</option>
-                        <option>Large select</option>
-                        <option>Small select</option>
-                      </select>
+                          <input className="form-control" type='text' value={workItem} onChange={(e)=>setWorkItem(e.target.value)} />
                         </div>
                       </Col>
                     </Row>
@@ -183,6 +209,8 @@ const EditModal = () => {
                             type="checkbox"
                             className="form-check-input"
                             id="customSwitchsizemd"
+                            checked={toggle}
+                            onChange={(e)=>setToggle(e.target.checked)}
                           />
                           <label
                             className="form-check-label"
@@ -206,8 +234,9 @@ const EditModal = () => {
               Close
             </button>
             <button
-              type="button"
+              type="submit"
               className="btn btn-primary "
+              onClick={()=>handleUpdate()}
             >
               Save changes
             </button>

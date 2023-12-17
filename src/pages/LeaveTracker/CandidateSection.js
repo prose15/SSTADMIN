@@ -22,18 +22,18 @@ const CandidateSection = () => {
     const team=Cookies.get('team')
     let details = []
     if (team === 'Delivery') {
-        details = [...details,{ id:1,name: "Keerthana", designation: 'HR',img:avatar4 },{ id:3,name: "Yuvashini", designation: 'Team Manager',img:avatar3 }, {id:2, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { id:4,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
+        details = [...details,{ id:1,name: "Keerthana", designation: 'HR',img:avatar4 },{ id:3,name: "Yuvashini", designation: 'Team Manager',img:avatar1 }, {id:2, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { id:4,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
 
     }
 
     else if (team === 'Sales') {
-        details = [...details,{id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{ id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 },{ id:3,name: "Balaji", designation: 'Team manager',img:avatar5 }]
+        details = [...details,{id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{ id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 },{ id:3,name: "Balaji", designation: 'Team manager',img:avatar5 }]
     }
 
     else if (team === 'HR') {
         details = [...details, {id:1, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar4 }, { id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
     }
-    
+
     else if (team === 'Product') {
         details = [...details, {id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{id:2, name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7}]
     }

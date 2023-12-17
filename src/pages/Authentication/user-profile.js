@@ -12,36 +12,39 @@ import {
   FormFeedback,
   Form,
 } from "reactstrap";
-
+import NoProfile from "./NoProfile";
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import FormLayouts from "pages/Forms/ProfileLayout";
-
+import ProfileLayouts from "pages/Forms/ProfileLayout";
+import { useStateContext } from "Context/ContextProvider";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import withRouter from "components/Common/withRouter";
-
-//Import Breadcrumb
-// import Breadcrumb from "../../components/Common/Breadcrumb";
-
-import avatar from "../../assets/images/users/deepak.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
 import Cookies from "js-cookie";
-
+import { storage } from "firebase-config";
+import {getDownloadURL,ref,uploadBytes} from 'firebase/storage'
 const UserProfile = () => {
-
-  //meta title
-  document.title = "Profile | Skote - React Admin & Dashboard Template";
-
+  const {url} = useStateContext()
+  // const [url,setUrl]=useState('')
+const [photo,setPhoto]=useState(null)
+  async function upload(file,user){
+    const fileRef=ref(storage,'users/'+user+'.jpg');
+     await uploadBytes(fileRef,file).then(()=>{
+      setDisplay('d-none')
+      console.log('uploaded');
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
   const dispatch = useDispatch();
-
   const [email, setemail] = useState();
+  const [display,setDisplay]=useState('d-none')
   const [name, setname] = useState();
   const [idx, setidx] = useState(1);
-
   const selectProfileState = (state) => state.Profile;
     const ProfileProperties = createSelector(
       selectProfileState,
@@ -77,7 +80,8 @@ const UserProfile = () => {
     }
   }, [dispatch, success]);
 
-  const validation = useFormik({
+
+const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
@@ -94,30 +98,32 @@ const UserProfile = () => {
   });
 
 
+// console.log(url);
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          {/* Render Breadcrumb */}
-          {/* <Breadcrumb title="Skote" breadcrumbItem="Profile" /> */}
-
           <Row>
             <Col lg="12">
               {error && error ? <Alert color="danger">{error}</Alert> : null}
               {success ? <Alert color="success">{success}</Alert> : null}
-
+              
               <Card>
                 <CardBody>
                   <div className="d-flex">
 
                     <div className="ms-3">
-                      <img
-                        src={avatar}
-                        alt=""
-                        className="avatar-md rounded-circle img-thumbnail"
-                      />
+                  
+                      {url?(<img className="rounded-circle " src={url}  height={100} width={100}/>):(<NoProfile />)}
                     </div>
-
+                    <Label htmlFor="formFile" for="file" className="form-label" ><i className="bx bx-pencil" onClick={()=>setDisplay('d-block')}></i></Label>
+                          <Input className="form-control d-none" type="file" id="formFile" onChange={(e)=>{
+                            if(e.target.files[0]){
+                              setPhoto(e.target.files[0])
+                             
+                            }
+                          }} />
+                         
                     <div className="ms-3 flex-grow-1 align-self-center">
                       <div className="text-muted">
                         <h5 className="text-dark"><b>{name}</b></h5>
@@ -125,8 +131,13 @@ const UserProfile = () => {
                         <p className="mb-0">{Cookies.get('team')}</p>
                       </div>
                     </div>
-
-                   
+                    <div className={"d-flex align-items-center"}>
+                      <div className={display}>
+                      <Button className="btn bg-primary"  onClick={()=>upload(photo,JSON.parse(sessionStorage.getItem('uid')))}>Upload</Button>
+                      </div>
+                    
+                    </div>
+                    
 
                   </div>
                 </CardBody>
@@ -140,7 +151,7 @@ const UserProfile = () => {
           <Row>
 
           <Col sm="7">
-          <FormLayouts/>
+          <ProfileLayouts/>
           </Col>
 
           <Col sm="5">
@@ -177,7 +188,7 @@ const UserProfile = () => {
                   me="idx" value={idx} type="hidden" />
                 </div>
                 <div className="text-center mt-4">
-                  <Button type="submit" color="danger">
+                  <Button type="submit" color="primary">
                     Update User Name
                   </Button>
                 </div>
