@@ -17,7 +17,7 @@ import {
 import { doc, addDoc, collection, getDoc, Timestamp, getDocs, updateDoc} from "firebase/firestore";
 import {useNavigate } from 'react-router'
 import Cookies from 'js-cookie';
-import { debounce } from 'lodash';
+import { debounce, values } from 'lodash';
 const FormPage = () => {
   const email=Cookies.get('email');
   const team=Cookies.get('team');
@@ -37,6 +37,7 @@ const FormPage = () => {
     const[cost,setCost]=useState([])
     const[work,setWork]=useState([])
     const [alert,setAlert]=useState('d-none')
+    let dangerAlert='d-none'
  useEffect(()=>{
     const getOption=async()=>{
         const servicedata = await getDocs(collection(db,'serviceName'))
@@ -199,7 +200,10 @@ console.log(wHrs)
 
     }else{
       
-      console.log('time limit exceed for '+costCenter)
+      document.getElementById('timeLimit').style.display='block'
+      setTimeout(()=>{
+        document.getElementById('timeLimit').style.display='none'
+      },1000)
     }
   }
 }
@@ -214,6 +218,7 @@ console.log(wHrs)
   return (
     <Container className=' pt-5 mt-5' >
       <Alert color='success' className={alert}>Your work saved successfully!</Alert>
+      <Alert color='danger' id='timeLimit' style={{display:'none'}}>Time limit exceed!</Alert>
     <Card className='mt-5 w-100  mx-auto'>
                 <CardBody>
                   <CardTitle className="mb-4">Log Your Work!</CardTitle>

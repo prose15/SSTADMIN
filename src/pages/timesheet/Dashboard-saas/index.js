@@ -1,18 +1,18 @@
-import React from "react"
+import React,{useEffect, useState} from "react"
 import { Container, Row, Col,Card,CardBody } from "reactstrap"
 import CardWelcome from "./card-welcome";
-import MiniWidget from "./mini-widget"
-import Breadcrumbs from "../../../components/Common/Breadcrumb"
+import Cookies from "js-cookie";
 import BorderlessTable from "table/BorderlessTable"
 import Section from "./Section"
 import Reportingmanagers from './Reportingmanagers'
+import { useStateContext } from 'Context/ContextProvider';
 const DashboardSaas = props => {
+  const {workedHours}=useStateContext();
   const total=40
-  const worked=35
-  const remain=total-worked
+  const remain=total-workedHours
   const reports = [
     { title: "Total hours", iconClass: "bx bx-alarm", description: total },
-    { title: "Worked hours", iconClass: "bx bx-dumbbell", description: worked },
+    { title: "Worked hours", iconClass: "bx bx-dumbbell", description: workedHours },
     {
       title: "Remaining hours",
       iconClass: "bx bx-stopwatch",
@@ -44,7 +44,7 @@ const DashboardSaas = props => {
                             <p className="text-muted fw-medium">
                               {report.title}
                             </p>
-                            <h4 className="mb-0">{report.description}</h4>
+                            <h4 className="mb-0">{(report.description>0)?(report.description):(0)}</h4>
                           </div>
                           <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                             <span className="avatar-title rounded-circle bg-primary">

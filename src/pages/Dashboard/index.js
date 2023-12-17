@@ -59,25 +59,24 @@ const Dashboard = props => {
    useEffect(()=>{
 
        const handleGet=async()=>{
-           const docRef = doc(db, "users", JSON.parse(sessionStorage.getItem('uid')));
-           
+      const docRef = doc(db, "users", JSON.parse(sessionStorage.getItem('uid')));
    const docSnap = await getDoc(docRef)
-  //  const dataSet = await getDocs(collectionRef);
-  //          setDetails(dataSet.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
    if(docSnap.exists()){
-   let user
-   setName(()=>docSnap.data().name)
+   setName(()=>docSnap.data().name,)
    setRole(()=>docSnap.data().designation)
-   Cookies.set('team',docSnap.data().team)
-   Cookies.set('name',name)
-   Cookies.set('email',docSnap.data().email)
-   user = {name:name,email:email,team:Cookies.get('team'),id:docSnap.data().employeeID,phone:docSnap.data().phone,gender:docSnap.data().gender,role:role,}
-   Cookies.set('user',user);
+   Cookies.set('team',docSnap.data().team,{secure:'true',path:'/'})
+   Cookies.set('name',docSnap.data().name,{secure:'true',path:'/'})
+   Cookies.set('email',docSnap.data().email,{secure:'true',path:'/'})
+   Cookies.set('gender',docSnap.data().gender,{secure:'true',path:'/'})
+   Cookies.set('id',docSnap.data().employeeID,{secure:'true',path:'/'})
+   Cookies.set('phone',docSnap.data().phone,{secure:'true',path:'/'})
+   Cookies.set('role',docSnap.data().designation,{secure:'true',path:'/'})
+
    }
    }
 
     handleGet()   
-       },[name]
+       },[]
      )
   
   const reports = [

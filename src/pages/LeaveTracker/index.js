@@ -37,7 +37,15 @@ useEffect(()=>{
                      <Leavecards/>
                      <Leaveapaexlinecolumn dataColors='["--bs-primary","--bs-danger", "--bs-success"]'/>
                     <Row>
-                       <Col xl={12}>
+                        <Col xl={8}>
+                            <Card>
+                                <CardBody>
+                                <CardTitle className="mb-4">Leave taken as per months</CardTitle>
+                                <Apaexlinecolumn dataColors='["--bs-danger","--bs-primary", "--bs-success"]'/>
+                                </CardBody>
+                            </Card>
+                       </Col>
+                       <Col xl={4}>
                              <CandidateSection />
                         </Col>
                     </Row>

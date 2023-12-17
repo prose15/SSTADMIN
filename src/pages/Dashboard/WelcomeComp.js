@@ -2,11 +2,11 @@ import React from "react"
 
 import { Row, Col, Card, CardBody } from "reactstrap"
 import { Link } from "react-router-dom"
-
-import deepak from "../../assets/images/users/deepak.jpg"
 import profileImg from "../../assets/images/profile-img.png"
-
+import { useStateContext } from "Context/ContextProvider"
+import NoProfile from "pages/Authentication/NoProfile"
 const WelcomeComp = (props) => {
+  const {url} =useStateContext()
   return (
     <React.Fragment>
       <Card className="overflow-hidden">
@@ -27,11 +27,14 @@ const WelcomeComp = (props) => {
           <Row>
             <Col sm="4">
               <div className="avatar-md profile-user-wid mb-4">
-                <img
-                  src={deepak}
+                {
+                  (url)?(<img
+                  src={url}
                   alt=""
                   className="img-thumbnail rounded-circle"
-                />
+                />) : (<NoProfile />)
+                }
+                
               </div>
               <h5 className="font-size-14 text-truncate">{props.name}</h5>
               <p className="text-muted mb-0 text-truncate">{props.role}</p>

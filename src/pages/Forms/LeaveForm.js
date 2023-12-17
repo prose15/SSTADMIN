@@ -13,6 +13,7 @@ import {
   FormGroup,
   Input,
   InputGroup,
+  Alert,
 } from "reactstrap";
 //Import Flatepicker
 import "flatpickr/dist/themes/material_blue.css";
@@ -21,13 +22,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { db } from "firebase-config";
 import { collection,addDoc, Timestamp, } from "firebase/firestore";
-import Cookies from 'js-cookie';
-
-
-
-
-
-
+import Cookies from 'js-cookie'
 
 const LeaveForm = props => {
   const team = Cookies.get('team');
@@ -36,8 +31,6 @@ const LeaveForm = props => {
     let reportingManager=''
     const nav = useNavigate()
     const [addDetails, setNewDetails] = useState( [])
-  // const [eventCategory,setEventCategory] = useState('')
-  // const [reason,setReason]= useState('')
   const [fromDate,setFromDate] = useState('')
   const [toDate,setToDate] = useState('')
   const initialValues = {
@@ -47,6 +40,7 @@ const LeaveForm = props => {
     toDate:toDate,
     reason:"",
   }
+  const [alert,setAlert]=useState('d-none')
   const schema = Yup.object({
     // Define your fields
     reason: Yup.string().min(3).required("Please Enter Your reason"),
@@ -84,6 +78,7 @@ const LeaveForm = props => {
       
               addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
                   console.log("message added successfully");
+                  setAlert('d-block')
                   localStorage.setItem('type',newDetails.leaveType)
                   setTimeout(()=>{nav('/leavetracker')},2000)
               })
@@ -114,47 +109,23 @@ const LeaveForm = props => {
       reportingManager=details[0]
   }
 
-    // const [formValues, setFormValues] = useState({
-    //   leaveType: "",
-    //   fromDate: "",
-    //   toDate: "",
-    // });
-  
-  // const [errors, setErrors] = useState({});
-  // useEffect(() => {
-  //   const validateForm = async () => {
-  //     try {
-  //       await schema.validate(formValues);
-  //       setErrors({}); // No errors
-  //     } catch (err) {
-  //       setErrors(err.inner.reduce((acc, error) => {
-  //         acc[error.path] = error.message;
-  //         return acc;
-  //       }, {}));
-  //     }
-  //   };
-  //   validateForm();
-  // }, [formValues]);
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormValues({ ...formValues, [name]: value });
-  // };
 
   
   
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid={true}>
-          <Breadcrumbs title="Forms" breadcrumbItem="Leave Application" />
+        <Container>
+          {/* <Breadcrumbs title="Forms" breadcrumbItem="Leave Application" /> */}
           <Row>
             <Col>
-              <Card>
-                <CardBody>
+            <Alert color='success' className={alert}>{'Form forwarded to L1 Manager'}</Alert>
+              <Card className='mt-5 w-100  mx-auto'>
+                <CardBody >
                   <CardTitle className="mb-4">Submit Your Application!</CardTitle>
                   <Form onSubmit={handleSubmit}>
                     <Row>
-                      <Col md={6}>
+                  <Col md={6}>
                         <div className="mb-3">
                         <Label htmlFor="formrow-email-Input">Leave type</Label>
                           <select className="form-select"
@@ -163,7 +134,8 @@ const LeaveForm = props => {
                           onBlur={handleBlur}
                           value={values.leaveType}
                           >
-                            <option defaultValue='Casual leave'>Casual leave</option>
+                            <option defaultValue='#'>Select Leave Type</option>
+                            <option value='Casual leave'>Casual leave</option>
                             <option value="Sick leave">Sick leave</option>
                             <option value="Paternity leave">Paternity leave</option>
                             <option value="Earned leave">Earned leave</option>
