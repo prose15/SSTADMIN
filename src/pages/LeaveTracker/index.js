@@ -9,6 +9,9 @@ import { useState,useEffect } from 'react';
 import {collection,getDocs,query,where,orderBy} from 'firebase/firestore'
 import Cookies from 'js-cookie';
 import { db } from "firebase-config";
+import Leaveapaexlinecolumn from './Leaveapaexlinecolumn';
+import getChartColorsArray from 'components/Common/ChartsDynamicColor';
+
 
 const LeaveTracker = () => {
     
@@ -26,23 +29,15 @@ useEffect(()=>{
     }
     getData()
   },[])
-console.log(details.length);
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
                      <Section btn={'Add Leave'} link={'/addleave'}/>
-                    <Leavecards/>
+                     <Leavecards/>
+                     <Leaveapaexlinecolumn dataColors='["--bs-primary","--bs-danger", "--bs-success"]'/>
                     <Row>
-                        <Col xl={6}>
-                            <Card>
-                                <CardBody>
-                                <CardTitle className="mb-4">Leave taken as per months</CardTitle>
-                                <Apaexlinecolumn dataColors='["--bs-danger","--bs-primary", "--bs-success"]'/>
-                                </CardBody>
-                            </Card>
-                       </Col>
-                       <Col xl={6}>
+                       <Col xl={12}>
                              <CandidateSection />
                         </Col>
                     </Row>

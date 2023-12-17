@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown,Row } from 'reactstrap';
 
 //import images
 import jobs from "../../assets/images/jobs.png";
@@ -20,15 +20,15 @@ const CandidateSection = () => {
     const team=Cookies.get('team')
     let details = []
     if (team === 'Delivery') {
-        details = [...details,{ name: "Yuvashini", designation: 'Team Manager',img:avatar4 }, { name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+        details = [...details, {id:1, name: 'Keerthana', designation: 'HR',img:avatar1 },{id:2, name: "Yuvashini", designation: 'Team Manager',img:avatar4 }, {id:3, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, {id:4, name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
 
     }
     else if (team === 'Sales') {
-        details = [...details,{ name: "Balaji", designation: 'Team manager' }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+        details = [...details,  {id:1, name: 'Keerthana', designation: 'HR',img:avatar1 },{id:2, name: "Balaji", designation: 'Team manager',img:avatar3}, {id:3, name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
 
     }
     else if (team === 'HR') {
-        details = [...details, { name: 'Gobi', designation: 'Chief Operational Officer' }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+        details = [...details, {id:1, name: 'Keerthana', designation: 'HR',img:avatar1 }, {id:2, name: 'Gobi', designation: 'Chief Operational Officer' } , {id:3, name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
 
     }
     else if (team === 'Product') {
@@ -36,7 +36,8 @@ const CandidateSection = () => {
     }
     return (
         <React.Fragment>
-            <Col lg={12}>
+            <Row>
+            <Col lg={6}>
                 <Card>
                     <CardBody>
                         <div className="d-flex">
@@ -50,10 +51,13 @@ const CandidateSection = () => {
                         </div>
                     </CardBody>
                 </Card>
+            </Col>
+            <Col lg={6}>    
                 <Card>
                     <CardBody>
-                        <h4 className="card-title mb-3">Reporting Manager</h4>
-                        <Swiper
+                        <h4 className="card-title mb-3">Reporting Manager</h4> 
+                             <div className="carousel-inner"> 
+                            <Swiper
                             modules={[Navigation, Pagination, Autoplay]}
                             spaceBetween={50}
                             slidesPerView={1}
@@ -61,91 +65,44 @@ const CandidateSection = () => {
                             autoplay={{
                                 delay: 2500,
                                 disableOnInteraction: false,
-                            }}
-                        >
-                            <div className="carousel-inner">
+                            }}>
+                                {details.map((data)=>(
+                            <SwiperSlide key={data.id}> 
+                            {console.log(details.length)}  
+                            {details.length >=2 ?
+                             <div className="carousel-item active" data-bs-interval="3000">
+                                        <div className="bg-light p-3 d-flex mb-3 rounded">
+                                            <img src={data.img} alt="" className="avatar-sm rounded me-3" />
+                                            <div className="flex-grow-1">
+                                                <h5 className="font-size-15 mb-2"><b>{data.name}</b></h5>
+                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> {data.designation}</p>
+                                            </div>
+                                     
+                                        </div>
+                             </div>
+                             
+                                    :
+                             <div className="carousel-item active" data-bs-interval="3000">
+                                    <div className="bg-light p-3 d-flex mb-3 rounded">
+                                        <img src={data.img} alt="" className="avatar-sm rounded me-3" />
+                                        <div className="flex-grow-1">
+                                            <h5 className="font-size-15 mb-2"><b>{data.name}</b></h5>
+                                            <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> {data.designation}</p>
+                                        </div>
+                                       
+                                    </div>
+                             </div>}
+                            </SwiperSlide>
+                            ))}
+                            </Swiper> 
+                             </div>
+                             
+                            
 
-                                <SwiperSlide>
-                                    <div className="carousel-item active" data-bs-interval="3000">
-                                        <div className="bg-light p-3 d-flex mb-3 rounded">
-                                            <img src={avatar4} alt="" className="avatar-sm rounded me-3" />
-                                            <div className="flex-grow-1">
-                                                <h5 className="font-size-15 mb-2"><b>Keerthana</b></h5>
-                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> HR</p>
-                                            </div>
-                                            <div>
-                                                <UncontrolledDropdown>
-                                                    <DropdownToggle className="btn btn-soft-primary" type="button" id="dropdownMenuButton11">
-                                                        <i className='bx bx-dots-vertical-rounded'></i>
-                                                    </DropdownToggle>
-                                                    <DropdownMenu aria-labelledby="dropdownMenuButton11">
-                                                        <li><DropdownItem href="candidate-overview">View Details</DropdownItem></li>
-                                                    </DropdownMenu>
-                                                </UncontrolledDropdown>
-                                            </div>
-                                        </div>
-                                        <div className="bg-light p-3 d-flex">
-                                            <img src={avatar2} alt="" className="avatar-sm rounded me-3" />
-                                            <div className="flex-grow-1">
-                                                <h5 className="font-size-15 mb-2"><b>Gopi</b></h5>
-                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> COO</p>
-                                            </div>
-                                            <div>
-                                                <UncontrolledDropdown>
-                                                    <DropdownToggle className="btn btn-soft-primary" type="button" id="dropdownMenuButton11">
-                                                        <i className='bx bx-dots-vertical-rounded'></i>
-                                                    </DropdownToggle>
-                                                    <DropdownMenu aria-labelledby="dropdownMenuButton11">
-                                                        <li><DropdownItem href="candidate-overview">View Details</DropdownItem></li>
-                                                    </DropdownMenu>
-                                                </UncontrolledDropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className="carousel-item active" data-bs-interval="3000">
-                                        <div className="bg-light p-3 d-flex mb-3 rounded">
-                                            <img src={avatar1} alt="" className="avatar-sm rounded me-3" />
-                                            <div className="flex-grow-1">
-                                                <h5 className="font-size-15 mb-2"><b>Yuvashini</b></h5>
-                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> Team Manager</p>
-                                            </div>
-                                            <div>
-                                                <UncontrolledDropdown>
-                                                    <DropdownToggle className="btn btn-soft-primary" type="button" id="dropdownMenuButton11">
-                                                        <i className='bx bx-dots-vertical-rounded'></i>
-                                                    </DropdownToggle>
-                                                    <DropdownMenu aria-labelledby="dropdownMenuButton11">
-                                                        <li><DropdownItem href="candidate-overview">View Details</DropdownItem></li>
-                                                    </DropdownMenu>
-                                                </UncontrolledDropdown>
-                                            </div>
-                                        </div>
-                                        <div className="bg-light p-3 d-flex">
-                                            <img src={avatar3} alt="" className="avatar-sm rounded me-3" />
-                                            <div className="flex-grow-1">
-                                                <h5 className="font-size-15 mb-2"><b>Krishna Kumar</b></h5>
-                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> Ceo</p>
-                                            </div>
-                                            <div>
-                                                <UncontrolledDropdown>
-                                                    <DropdownToggle className="btn btn-soft-primary" type="button" id="dropdownMenuButton11">
-                                                        <i className='bx bx-dots-vertical-rounded'></i>
-                                                    </DropdownToggle>
-                                                    <DropdownMenu aria-labelledby="dropdownMenuButton11">
-                                                        <li><DropdownItem href="candidate-overview">View Details</DropdownItem></li>
-                                                    </DropdownMenu>
-                                                </UncontrolledDropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </SwiperSlide>
-                            </div>
-                        </Swiper>
                     </CardBody>
                 </Card>
             </Col>
+            </Row>
         </React.Fragment>
     );
 }

@@ -7,7 +7,8 @@ import { Row, Col, CardBody, Card, Container, Form, Input, Label, FormFeedback }
 
 // Formik validation
 import * as Yup from "yup";
-import { useFormik } from "formik";
+import { Field, Formik, useFormik } from "formik";
+// import { signupValidation } from "./signupValidation";
 
 // import images
 import profile from "../../assets/images/profile-img.png";
@@ -17,51 +18,47 @@ import lightlogo from "../../assets/images/logo-light.svg";
 // Firebase
 import {auth} from "firebase-config"
 import {signInWithEmailAndPassword,sendPasswordResetEmail} from 'firebase/auth'
+import { values } from "lodash";
+
+const initialValues = {
+  email:"",
+  password:""
+}
 
 const Login = () => {
+  const signupValidation = Yup.object({
+    email: Yup.string().min(3).email("Please Enter Valid Email").required("Please Enter Your username"),
+    password: Yup.string().min(3).required("Please Enter Your Password"),
+  })
   const [newName,setNewName]=useState('');
   const [uid,setUid]=useState('');
   const[newPassword,setNewPassword]=useState('');
   const [resetEmail,setResetEmail]=useState('');
   const nav = useNavigate();
-  const handleSubmit=()=>{
-    signInWithEmailAndPassword(auth,newName, newPassword)
-    .then(function (userCredential) {
-      // Login successful, access the user object
-      var user = userCredential.user;
-      sessionStorage.setItem("uid",JSON.stringify(user.uid));
-      nav('/dashboard');
-    })
-    .catch((error) => {
-      // Handle errors
-      const errorCode = error.code;
-      console.log(errorCode);
-      
-    }) 
-  }
+
   const [show, setShow] = useState(false);
 
-  //meta title
-  // document.title = "Login | Skote - React Admin & Dashboard Template";
-
   // Form validation 
-  const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Please Enter Your username"),
-      password: Yup.string().required("Please Enter Your Password"),
-    }),
-    onSubmit: (values) => {
-      // handleSubmit()
-    }
-    
+ const {values,handleBlur,handleChange,handleSubmit,errors}= useFormik({
+    initialValues: initialValues,
+    validationSchema: signupValidation,
+    onSubmit:(values) =>{
+      signInWithEmailAndPassword(auth,values.email, values.password)
+      .then(function (userCredential) {
+        // Login successful, access the user object
+        var user = userCredential.user;
+        sessionStorage.setItem("uid",JSON.stringify(user.uid));
+        nav('/dashboard');
+      })
+      .catch((error) => {
+        // Handle errors
+        const errorCode = error.code;
+        console.log(errorCode);
+        
+      }) 
+    }   
   });
+
   return (
     <React.Fragment>      
       <div className="account-pages my-5 pt-sm-5">
@@ -77,9 +74,6 @@ const Login = () => {
                         <p>Sign in to continue</p>
                       </div>
                     </Col>
-                    {/* <Col className="col-5 align-self-end">
-                      <img src={profile} alt="" className="img-fluid" />
-                    </Col> */}
                   </Row>
                 </div>
                 <CardBody className="pt-0">
@@ -110,52 +104,58 @@ const Login = () => {
                     </Link>
                   </div>
                   <div className="p-2">
-                    <Form className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        // validation.handleSubmit();
-                        return false;
-                      }}
+                    <Formik
+              
                     >
+                    <Form className="form-horizontal"
+                    onSubmit={handleSubmit}>
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
-                        <Input
+                        <Field
                           name="email"
-                          className="form-control"
+                          className = {errors.email ? "  border-danger form-control" : "form-control"}
                           placeholder="Enter E-mail"
                           type="email"
-                          onChange={(e)=>setNewName(e.target.value)}
-                          onBlur={validation.handleBlur}
-                          value={newName|| ""}
-                          invalid={
-                            validation.touched.username && validation.errors.username ? true : false
-                          }
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                          // invalid={
+                          //   values.touched.email && values.errors.email ? true : false
+                          // }
                         />
-                        {validation.touched.username && validation.errors.username ? (
+                   
+                        {errors.email && <small className="text-danger m-0">{errors.email}</small>}
+                        {/* {values.touched.password && values.errors.password ? (
                           <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
-                        ) : null}
+                        ) : null} */}
                       </div>
 
                       <div className="mb-3">
                         <Label className="form-label">Password</Label>
-                        <div className="input-group auth-pass-inputgroup">
-                          <Input
+                        <div className="input-group auth-pass-inputgroup ">
+                          <Field
+                          // className="form-control"
+                          className= {errors.password ? "  border-danger form-control" : "form-control"}
                             name="password"
-                            value={newPassword || ""}
                             type={show ? "text" : "password"}
                             placeholder="Enter Password"
-                            onChange={(e)=>setNewPassword(e.target.value)}
-                            onBlur={validation.handleBlur}
-                            invalid={
-                              validation.touched.password && validation.errors.password ? true : false
-                            }
+                            onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password}
+                            // invalid={
+                            //   validation.touched.password && validation.errors.password ? true : false
+                            // }
                           />
+                           
                           <button onClick={() => setShow(!show)} className="btn btn-light" type="button" id="password-addon">
                             <i className="mdi mdi-eye-outline"></i></button>
+                            
                         </div>
-                        {validation.touched.password && validation.errors.password ? (
+                        {errors.password && <small className="text-danger m-0">{errors.password}</small>}
+                       
+                        {/* {validation.touched.password && validation.errors.password ? (
                           <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
-                        ) : null}
+                        ) : null} */}
                       </div>
 
                       <div className="form-check">
@@ -176,42 +176,11 @@ const Login = () => {
                         <button
                           className="btn btn-primary btn-block "
                           type="submit"
-                          onClick={()=>handleSubmit()}
+                          // onClick={()=>handleSubmit()}
                         >
                           Log In
                         </button>
                       </div>
-
-                      {/* <div className="mt-4 text-center">
-                        <h5 className="font-size-14 mb-3">Sign in with</h5>
-
-                        <ul className="list-inline">
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-primary text-white border-primary"
-                            >
-                              <i className="mdi mdi-facebook" />
-                            </Link>
-                          </li>{" "}
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-info text-white border-info"
-                            >
-                              <i className="mdi mdi-twitter" />
-                            </Link>
-                          </li>{" "}
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-danger text-white border-danger"
-                            >
-                              <i className="mdi mdi-google" />
-                            </Link>
-                          </li>
-                        </ul>
-                      </div> */}
 
                       <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
@@ -220,25 +189,11 @@ const Login = () => {
                         </Link>
                       </div>
                     </Form>
+                    </Formik>
                   </div>
                 </CardBody>
               </Card>
-              {/* <div className="mt-5 text-center">
-                <p>
-                  Don&apos;t have an account ?{" "}
-                  <Link
-                    to="pages-register"
-                    className="fw-medium text-primary"
-                  >
-                    {" "}
-                    Signup now{" "}
-                  </Link>{" "}
-                </p>
-                <p>
-                  © {new Date().getFullYear()} Skote. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by Themesbrand
-                </p>
-              </div> */}
+ 
             </Col>
           </Row>
         </Container>

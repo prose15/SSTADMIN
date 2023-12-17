@@ -43,7 +43,7 @@ const authProtectedRoutes = [
   { path: "/ticket/bookticket", component: <RiseTicket />  },
 
 
-  //profile
+  //profile 
 
   { path: "/profile", component: <UserProfile /> },
 

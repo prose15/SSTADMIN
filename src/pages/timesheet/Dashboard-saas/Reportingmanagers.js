@@ -18,7 +18,6 @@ const CandidateSection = () => {
     let details = []
     if (team === 'Delivery') {
         details = [...details,{ name: "Yuvashini", designation: 'Team Manager',img:avatar4 }, { name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
-
     }
     else if (team === 'Sales') {
         details = [...details,{ name: "Balaji", designation: 'Team manager' }, { name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
@@ -49,37 +48,6 @@ const CandidateSection = () => {
                         </div>
                            )) 
                         }
-                       
-                        {/*                                            
-                                        </div>
-                                        <div className="bg-light p-3 d-flex mb-3 rounded">
-                                            <img src={avatar2} alt="" className="avatar-sm rounded me-3" />
-                                            <div className="flex-grow-1">
-                                                <h5 className="font-size-15 mb-2"><a href="candidate-overview" className="text-body">Charles Brown</a> </h5>
-                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> Cambodia</p>
-                                            </div>
-                                            
-                                        </div>
-                                  
-                                   
-                                        <div className="bg-light p-3 d-flex mb-3 rounded">
-                                            <img src={avatar1} alt="" className="avatar-sm rounded me-3" />
-                                            <div className="flex-grow-1">
-                                                <h5 className="font-size-15 mb-2"><a href="candidate-overview" className="text-body">Adam Miller</a></h5>
-                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> Australia</p>
-                                            </div>
-                                          
-                                        </div>
-                                        <div className="bg-light p-3 d-flex mb-3 rounded">
-                                            <img src={avatar3} alt="" className="avatar-sm rounded me-3" />
-                                            <div className="flex-grow-1">
-                                                <h5 className="font-size-15 mb-2"><a href="candidate-overview" className="text-body">Keith Gonzales</a></h5>
-                                                <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i> Belgium</p>
-                                          
-                                            </div>
-                                    </div> */}
-
-
                     </CardBody>
                 </Card>
             </Col>

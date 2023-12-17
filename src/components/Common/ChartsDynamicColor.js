@@ -4,7 +4,6 @@ const getChartColorsArray = (colors) => {
         var newValue = value.replace(" ", "");
         if (newValue.indexOf(",") === -1) {
             var color = getComputedStyle(document.documentElement).getPropertyValue(newValue);
-
             if (color.indexOf("#") !== -1)
                 color = color.replace(" ", "");
             if (color) return color;

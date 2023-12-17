@@ -11,11 +11,13 @@ import {
     Form,
     Input,
     InputGroup,
+    Alert,
   } from "reactstrap"
   import { db } from 'firebase-config'
 import { doc, addDoc, collection, getDoc, Timestamp, getDocs, updateDoc} from "firebase/firestore";
-import { Navigate, useNavigate } from 'react-router'
+import {useNavigate } from 'react-router'
 import Cookies from 'js-cookie';
+import { debounce } from 'lodash';
 const FormPage = () => {
   const email=Cookies.get('email');
   const team=Cookies.get('team');
@@ -34,6 +36,7 @@ const FormPage = () => {
     const [project,setProject]=useState([])
     const[cost,setCost]=useState([])
     const[work,setWork]=useState([])
+    const [alert,setAlert]=useState('d-none')
  useEffect(()=>{
     const getOption=async()=>{
         const servicedata = await getDocs(collection(db,'serviceName'))
@@ -48,7 +51,7 @@ const FormPage = () => {
     }
     getOption()
  },[])
- console.log(cost);
+const timestamp = Timestamp.now()
  const workedHrs = (stime, etime) => {
   let start = stime.split(".")
   let end=etime.split(".")
@@ -62,7 +65,42 @@ const FormPage = () => {
   let ans=hours.toString()+"."+minutes.toString()
   return (ans)
 }
-console.log(ID)
+
+const totHours =  (startTime, endTime) => {
+  let hours = 0, totminutes = 0, minutes = 0
+  // for (let i = 0; i < startTime.length; i++) {
+    let arr = startTime.split(":");
+    let arr2 = endTime.split(":");
+    hours += parseInt(arr2[0]) - parseInt(arr[0])
+    var diff = parseInt(arr[1]) - parseInt(arr2[1])
+    if (diff > 0) {
+      totminutes -= diff;
+    }
+    else if (diff < 0) {
+      totminutes += (diff *= -1)
+    }
+    while (totminutes >= 60) {
+      totminutes -= 60
+      hours += 1
+    }
+    while (totminutes <= -60) {
+      totminutes += 60
+      hours -= 1
+    }
+  // }
+
+  if (totminutes < 0) {
+    hours--;
+    minutes = 60 + totminutes;
+  }
+  else if (totminutes > 0) {
+    minutes = totminutes;
+  }
+  let strminutes = minutes > 9 ? minutes.toString() : "0" + minutes.toString()
+  let time=hours+'.'+strminutes
+  return parseFloat(time).toFixed(2)
+}
+// console.log(ID)
  const handleSubmit =async(id)=>{
   // e.preventDefault()
   const timeRangeCheck=(startTime,endTime)=>{
@@ -112,6 +150,7 @@ if (serviceName == '' || projectName == '' || costCenter == '' || workItem == ''
 }
 
 else{
+  console.log(id);
     let bool=dateRangeCheck(timesheetDate)
     if(bool){
       console.log('set date correct');
@@ -131,8 +170,7 @@ else{
     billable="Non-Billable"
 }
 
-
-const newDetails={serviceName:serviceName,projectName:projectName,costCenter:costCenter,workItem:workItem,timesheetDate:timesheetDate,startTime:startTime,endTime:endTime,billableStatus:billable,description:description,name:name,id:ID,email:email,team:team,requestDate: new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear()}
+const newDetails={serviceName:serviceName,projectName:projectName,costCenter:costCenter,workItem:workItem,timesheetDate:timesheetDate,startTime:startTime,endTime:endTime,billableStatus:billable,description:description,name:Cookies.get('name'),id:ID,email:email,team:team,requestDate: new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear(),timestamp:timestamp}
 const ref=doc(db,'costCenter',id);
 const data=await getDoc(ref)
 let hrs=data.data().workedHrs
@@ -149,7 +187,8 @@ console.log(wHrs)
   updateDoc(ref,{workedHrs:tothrs}).then(()=>{
       console.log('added');
       addDoc(collection(db,'Timesheet'),newDetails).then(()=>{
-          console.log('added successfully')
+        setAlert('d-block')
+         setTimeout(()=>nav('/timesheet/dashboard'),1000) 
       }) 
     .catch((err) => {
       console.log(err.message);
@@ -160,15 +199,22 @@ console.log(wHrs)
 
     }else{
       
-      console.log('time limit exceed for '+cost)
+      console.log('time limit exceed for '+costCenter)
     }
   }
 }
 }
  }
+ const debouncedClickHandler=(ele)=>{setID(ele.id)};
+ const getId=(ele)=>{
+  debouncedClickHandler(ele);
+  console.log( ele.id)
+  console.log(ID)
+ }
   return (
     <Container className=' pt-5 mt-5' >
-    <Card className='mt-5 w-75  mx-auto'>
+      <Alert color='success' className={alert}>Your work saved successfully!</Alert>
+    <Card className='mt-5 w-100  mx-auto'>
                 <CardBody>
                   <CardTitle className="mb-4">Log Your Work!</CardTitle>
 
@@ -206,12 +252,16 @@ console.log(wHrs)
                       <Col md={6}>
                         <div className="mb-3">
                           <Label htmlFor="formrow-email-Input">Cost Center</Label>
-                          <select className="form-control" value={costCenter} onChange={(e)=>setCostCenter(e.target.value)}>
+                          <select className="form-control" value={costCenter} onChange={(e)=>{
+                            const value=e.target.value
+                            const id=cost.filter((ele)=>value==ele.service)
+                            setCostCenter(value)
+                            setID(id[0].id)
+                          } }>
                           <option value='#'>Select Cost Center</option>
                           {
-                        cost.map((ele)=>(
-                            <option key={ele.id} value={ele.service} onClick={(e)=>setID(ele.id)}>{ele.service}</option>
-                           
+                        cost.map((ele,index)=>(
+                            <option key={ele.id} value={ele.service} >{ele.service}</option> 
                         ))
                         
                     }
@@ -321,7 +371,7 @@ console.log(wHrs)
                           </label>
                         </div>
                     <div>
-                      <button type="submit" className="btn btn-primary w-md" onClick={(e)=>handleSubmit(ID)}>
+                      <button type="submit" className="btn btn-primary w-md" onClick={()=>handleSubmit(ID)}>
                         Save
                       </button>
                     </div>
