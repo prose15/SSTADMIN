@@ -11,27 +11,27 @@ const MonthlyEarning = () => {
       {" "}
       <Card>
         <CardBody>
-          <CardTitle className="mb-4">Monthly Earning</CardTitle>
+          <CardTitle className="mb-4">Salary per month</CardTitle>
           <Row>
             <Col sm="6">
               <p className="text-muted">This month</p>
-              <h3>₹ 15,000</h3>
-              <p className="text-muted">
+              <h3>₹ 30,000</h3>
+              {/* <p className="text-muted">
                 <span className="text-success me-2">
                   {" "}
                   50% 
-                  {/* <i className="mdi mdi-arrow-up"></i>{" "} */}
+                 
                 </span>{" "}
                 Of total revenue
-              </p>
-              <div className="mt-4">
+              </p> */}
+              {/* <div className="mt-4">
                 <Link
                   to="#"
                   className="btn btn-primary waves-effect waves-light btn-sm"
                 >
                   View More <i className="mdi mdi-arrow-right ms-1"></i>
                 </Link>
-              </div>
+              </div> */}
             </Col>
             <Col sm="6">
               <div className="mt-4 mt-sm-0">
@@ -40,7 +40,7 @@ const MonthlyEarning = () => {
             </Col>
           </Row>
           <p className="text-muted mb-0">
-            We craft digital, graphic and dimensional thinking.
+            This your Monthly Salary
           </p>
         </CardBody>
       </Card>

@@ -9,7 +9,7 @@ const NoProfile = () => {
   
   return (
     <div>
- <div className='d-flex justify-content-center align-items-center   bg-primary-subtle text-primary' style={{ width:'70px',height:'70px',borderRadius:'50px',fontSize:'x-large'}}>{firstLetter[0]}</div>
+ <div className='d-flex justify-content-center align-items-center bg-primary text-light' style={{ width:'70px',height:'70px',borderRadius:'50px',fontSize:'x-large'}}>{firstLetter[0]}</div>
     </div>
    
   )

@@ -1,21 +1,22 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import getChartColorsArray from "components/Common/ChartsDynamicColor";
+import getChartColorsArray from "../../../components/Common/ChartsDynamicColor";
 
-const Leaveapaexlinecolumn = ({dataColors}) => {
+const Leaveapaexlinecolumn = ({graphData,dataColors}) => {
+  console.log(graphData);
   const apaexlineColumnColors = getChartColorsArray(dataColors);
   const series = [
-    {
-      name: "Total",
-      data: [1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5],
-    },
+    // {
+    //   name: "Total",
+    //   data: [1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5],
+    // },
     {
       name: "Booked",
-      data: [2,1,3,2,1,3,4,2,1,3,2,3],
+      data: [graphData[0],graphData[1],graphData[2],graphData[3],graphData[4],graphData[5],graphData[6],graphData[7],graphData[8],graphData[9],graphData[10],graphData[11]],
     },
     {
       name: "Available",
-      data: [1,3,2,4,3,2,1,2,3,4,2,1],
+      data: [1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5],
     },
   ];
   const options = {
@@ -76,6 +77,7 @@ const Leaveapaexlinecolumn = ({dataColors}) => {
       },
     },
   };
+
   return (
     <ReactApexChart options={options} series={series} type="bar" height={350} />
   );

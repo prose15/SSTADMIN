@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 //i18n
 import { withTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const SidebarContent = props => {
   const ref = useRef();
@@ -155,45 +156,56 @@ const SidebarContent = props => {
               </Link>
             </li>
 
-            <li className="menu-title">{props.t("Apps")}</li>
+            <li className="menu-title">Apps</li>
 
 
             <li>
               <Link to="/#" className="has-arrow">
               <i className="bx bx-cycling"></i>
-                <span>{props.t("Leave Tracker")}</span>
+                <span>Leave Tracker</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/leavetracker">{props.t("Dashboard")}</Link>
+                  <Link to="/leavetracker">Dashboard</Link>
                 </li>
                 <li>
-                  <Link to="/leave/approvals">{props.t("My Approvals")}</Link>
+                  <Link to="/leave/records">My Records</Link>
                 </li>
                 <li>
-                  <Link to="/leave/records">{props.t("My Records")}</Link>
+                  <Link to="/leave/approvals">My Approvals</Link>
                 </li>
+                
               </ul>
             </li>
 
-            <li>
-              <Link to="/#" className="has-arrow  ">
-                <i className="bx bx-calendar"></i>
-                <span>{props.t("Time Sheet")}</span>
-              </Link>
-              <ul className="sub-menu">
+            
+              {(Cookies.get('team')!='Sales')?(
                 <li>
-                  <Link to="/timesheet/dashboard">
-                    {props.t("Dashboard")}</Link>
-                </li>
-                <li>
-                  <Link to="/timesheet/mytimesheet">{props.t("My Timesheet")}</Link>
-                </li>
-                <li>
-                  <Link to="/timesheet/myapprovals">{props.t("My Approvals")}</Link>
-                </li>
-              </ul>
-            </li>
+                <Link to="/#" className="has-arrow  " >
+                  <i className="bx bx-calendar"></i>
+                  <span>{props.t("Time Sheet")}</span>
+                </Link>
+  <ul className="sub-menu">
+  <li>
+    <Link to="/timesheet/dashboard">
+      {props.t("Dashboard")}</Link>
+  </li>
+  <li>
+    <Link to="/timesheet/mytimesheet">{props.t("My Timesheet")}</Link>
+  </li>
+  <li>
+    <Link to="/timesheet/myapprovals">{props.t("My Approvals")}</Link>
+  </li>
+</ul>
+</li>
+              ):(<li>
+                <Link to="/dashboard" className="has-arrow  " >
+                  <i className="bx bx-calendar"></i>
+                  <span>{props.t("Time Sheet")}</span>
+                </Link>
+                </li>)}
+            
+           
 
             <li>
               <Link to="/#" className="has-arrow">
@@ -227,9 +239,9 @@ const SidebarContent = props => {
   );
 };
 
-SidebarContent.propTypes = {
-  location: PropTypes.object,
-  t: PropTypes.any,
-};
+// SidebarContent.propTypes = {
+//   location: PropTypes.object,
+//   t: PropTypes.any,
+// };
 
 export default withRouter(withTranslation()(SidebarContent));

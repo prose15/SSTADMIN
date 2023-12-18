@@ -3,7 +3,8 @@ import React, { useMemo } from "react";
 import PropTypes from 'prop-types';
 //import components
 import Breadcrumbs from '../../components/Common/Breadcrumb';
-import TableContainer from '../../components/Common/TableContainer';
+import LeaveProjectsGrid from 'pages/Projects/leaveprojects-grid';
+// import TableContainer from '../../components/Common/TableContainer';
 
 function LeaveApprovals() {
     const columns = useMemo(
@@ -43,10 +44,11 @@ function LeaveApprovals() {
     ];
 
     return (
-        <div className="page-content">
-            <div className="container-fluid">
-                <Breadcrumbs title="Tables" breadcrumbItem="Leave Approvals" />
-                <TableContainer
+        <div className="page-content pt-1">
+            <div className="container-fluid pt-0">
+                {/* <Breadcrumbs title="Tables" breadcrumbItem="Leave Approvals" /> */}
+                <LeaveProjectsGrid/>
+                {/* <TableContainer
                     columns={columns}
                     data={data}
                     isGlobalFilter={true}
@@ -57,7 +59,7 @@ function LeaveApprovals() {
                     theadClass="table-light"
                     paginationDiv="col-12"
                     pagination="justify-content-center pagination pagination-rounded"
-                />
+                /> */}
             </div>
         </div>
     );

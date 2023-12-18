@@ -249,8 +249,8 @@ const TableContainer = ({
   )
 }
 
-TableContainer.propTypes = {
-  preGlobalFilteredRows: PropTypes.any,
-}
+// TableContainer.propTypes = {
+//   preGlobalFilteredRows: PropTypes.any,
+// }
 
 export default TableContainer

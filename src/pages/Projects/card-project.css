@@ -1,0 +1,7 @@
+.card-delete{
+  color: rgb(95, 95, 95);
+  font-size: medium;
+}
+.card-delete:hover{
+  color:red;
+}

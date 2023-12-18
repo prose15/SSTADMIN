@@ -88,8 +88,6 @@ const Dashboard = props => {
       description: "1",
     },
   ];
-  //meta title
-  // document.title = "Dashboard | Skote - React Admin & Dashboard Template";
 
 
   return (

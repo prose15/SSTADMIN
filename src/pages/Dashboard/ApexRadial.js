@@ -36,13 +36,13 @@ const ApexRadial = ({ dataColors }) => {
         inverseColors: !1,
         opacityFrom: 1,
         opacityTo: 1,
-        stops: [0, 50, 65, 91],
+        stops: [0, 20, 25, 0],
       },
     },
     stroke: {
       dashArray: 4,
     },
-    labels: ["₹ 30,000"],
+    labels: ["₹ 60,000"],
   };
   return (
     <ReactApexChart

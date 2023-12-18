@@ -5,8 +5,6 @@ import { Row, Col, Card, CardBody, CardTitle, Container } from "reactstrap"
 import DountChart from "../AllCharts/chartjs/dountchart"
 
 const ChartjsChart = () => {
-  //meta title
-  document.title = "Chartjs Charts | Skote - React Admin & Dashboard Template"
 
   return (
     <React.Fragment>
