@@ -20,23 +20,34 @@ import Cookies from 'js-cookie';
 const CandidateSection = () => {
     const LeaveContent = "You will notify here about your upcoming leaves!"
     const team=Cookies.get('team')
+    const level=Cookies.get('level')
     let details = []
     if (team === 'Delivery') {
-        details = [...details,{ id:1,name: "Keerthana", designation: 'HR',img:avatar4 },{ id:3,name: "Yuvashini", designation: 'Team Manager',img:avatar1 }, {id:2, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { id:4,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
-
+        if(level=='L2'){
+            details = [...details, {id:1, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { id:3,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }] 
+        }
+        else if(level=='L3'){
+            details = [...details, { id:1,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
+        }
+        
     }
 
     else if (team === 'Sales') {
-        details = [...details,{id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{ id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 },{ id:3,name: "Balaji", designation: 'Team manager',img:avatar5 }]
+        if(level=='L2'){
+            details = [...details,{ id:1,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
+        }
+        // details = [...details,{id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{ id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 },{ id:3,name: "Balaji", designation: 'Team manager',img:avatar5 }]
     }
 
     else if (team === 'HR') {
-        details = [...details, {id:1, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar4 }, { id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar3 }]
+
+        details = [...details, {id:1, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar4 }, { id:3,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
     }
 
-    else if (team === 'Product') {
-        details = [...details, {id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{id:2, name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7}]
-    }
+    // else if (team === 'Product') {
+        
+    //     details = [...details, {id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{id:2, name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7}]
+    // }
 
 const swiper1=details.filter((detail)=>(detail.id)%2===1)
 const swiper2=details.filter((detail)=>(detail.id)%2===0)
@@ -65,7 +76,7 @@ console.log(swiper1.length)
                         <h4 className="card-title mb-3">Reporting Manager</h4> 
 {
   
-                           (swiper1.length===1)?(
+                           (swiper1.length===2)?(
                             
                            details.map((data)=>(
                             <div className="bg-light p-3 d-flex mb-3 rounded" key={data}>

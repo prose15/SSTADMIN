@@ -78,13 +78,14 @@ for(let i=0;i<graphdetails.length;i++){
  console.log(nextyearleave);
 
 // fromtoprogram
+const btn_leave = "Add Leave"
 
 console.log(details.length);
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                     <Section btn={'Add Leave'} link={'/addleave'}/>
+                     <Section btn={btn_leave} link={'/addleave'}/>
                     <Leavecards/>
                     <Row>
                         <Col xl={8}>

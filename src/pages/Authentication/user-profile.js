@@ -127,8 +127,8 @@ const validation = useFormik({
                     <div className="ms-3 flex-grow-1 align-self-center">
                       <div className="text-muted">
                         <h5 className="text-dark"><b>{name}</b></h5>
-                        <p className="mb-1">{Cookies.get('email')}</p>
-                        <p className="mb-0">{Cookies.get('team')}</p>
+                        <p className="mb-1">{Cookies.get('team')}</p>
+                        <p className="mb-0">{Cookies.get('level')}</p>
                       </div>
                     </div>
                     <div className={"d-flex align-items-center"}>

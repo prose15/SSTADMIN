@@ -8,8 +8,7 @@ import {
 } from "reactstrap";
 
 import withRouter from "components/Common/withRouter";
-import { map } from "lodash";
-
+import Section from "pages/timesheet/Dashboard-saas/Section";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
@@ -27,7 +26,6 @@ import Paginations from "components/Common/Pagination";
 
 
 const ProjectsGrid = props => {
-
 
   const dispatch = useDispatch();
 
@@ -66,8 +64,7 @@ const ProjectsGrid = props => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          {/* <Breadcrumbs title="My Approvals" breadcrumbItem="Projects Grid" /> */}
-          <h4 className="font-size-16">My Approvals</h4>
+          <Section  btn={'Log Time'} link={'/timesheet/logtime'}/>
           <Row>
             {/* Import Cards */}
             {

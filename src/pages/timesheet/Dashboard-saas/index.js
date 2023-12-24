@@ -19,16 +19,16 @@ const DashboardSaas = props => {
       description: remain,
     },
   ];
-
-  //meta title
-  document.title = "SST-Apps"
-
+  const name = "add time";
 
   return (
     <React.Fragment>
       <div className="page-content">
         {/* <Container> */}
-          <Section  btn={'Log Time'} link={'/timesheet/logtime'}/>
+          <Section 
+          //  btn= {name}
+           link={'/timesheet/logtime'}
+           name ="deepaK"/>
           <Row>
             <CardWelcome />
 

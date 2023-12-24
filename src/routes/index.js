@@ -32,8 +32,8 @@ const authProtectedRoutes = [
   { path: "/leave/approvals", component: <LeaveApprovals /> },
   { path: "/addleave", component: <AddLeave/> },
   //timesheet
-  { path: "/timesheet/dashboard", component: <DashboardSaas /> },
-  { path: "/timesheet/mytimesheet", component: <Mytimesheet /> },
+  // { path: "/timesheet/dashboard", component: <DashboardSaas /> },
+  // { path: "/timesheet/mytimesheet", component: <Mytimesheet /> },
   { path: "/timesheet/myapprovals", component: <Myapprovals /> },
   { path: "/timesheet/logtime", component: <Logtime /> },
   { path: "/timesheet/mytimesheet/createtimesheet", component: <CreateTImeSheet /> },

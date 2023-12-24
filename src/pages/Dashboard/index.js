@@ -59,7 +59,7 @@ const Dashboard = props => {
    useEffect(()=>{
 
        const handleGet=async()=>{
-      const docRef = doc(db, "users", JSON.parse(sessionStorage.getItem('uid')));
+      const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
    const docSnap = await getDoc(docRef)
    if(docSnap.exists()){
    setName(()=>docSnap.data().name,)
@@ -71,6 +71,7 @@ const Dashboard = props => {
    Cookies.set('id',docSnap.data().employeeID,{secure:'true',path:'/'})
    Cookies.set('phone',docSnap.data().phone,{secure:'true',path:'/'})
    Cookies.set('role',docSnap.data().designation,{secure:'true',path:'/'})
+   Cookies.set('level',docSnap.data().level,{secure:'true',path:'/'})
 
    }
    }

@@ -186,15 +186,15 @@ const SidebarContent = props => {
                   <span>{props.t("Time Sheet")}</span>
                 </Link>
   <ul className="sub-menu">
-  <li>
+  {/* <li>
     <Link to="/timesheet/dashboard">
       {props.t("Dashboard")}</Link>
-  </li>
-  <li>
+  </li> */}
+  {/* <li>
     <Link to="/timesheet/mytimesheet">{props.t("My Timesheet")}</Link>
-  </li>
+  </li> */}
   <li>
-    <Link to="/timesheet/myapprovals">{props.t("My Approvals")}</Link>
+    <Link to="/timesheet/myapprovals">{props.t("Team's Request")}</Link>
   </li>
 </ul>
 </li>
