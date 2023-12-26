@@ -174,7 +174,9 @@ const SidebarContent = props => {
                 <li>
                   <Link to="/leave/approvals">My Approvals</Link>
                 </li>
-                
+                <li>
+                  <Link to="/leave/requests">Team Requests</Link>
+                </li>
               </ul>
             </li>
 
@@ -195,6 +197,9 @@ const SidebarContent = props => {
   </li>
   <li>
     <Link to="/timesheet/myapprovals">{props.t("My Approvals")}</Link>
+  </li>
+  <li>
+    <Link to="/timesheet/requests">Team Requests</Link>
   </li>
 </ul>
 </li>

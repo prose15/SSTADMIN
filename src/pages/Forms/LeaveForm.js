@@ -28,7 +28,6 @@ const LeaveForm = props => {
   const team = Cookies.get('team');
     const name = Cookies.get('name')
     const email=Cookies.get('email');
-    let reportingManager=''
     const nav = useNavigate()
     const [addDetails, setNewDetails] = useState( [])
   const [fromDate,setFromDate] = useState('')
@@ -92,24 +91,61 @@ const LeaveForm = props => {
   });
 
   let details=[]
+  const level=Cookies.get('level')
+  console.log("level",level);
   if(team==='Delivery'){
-      details=[...details,'Keerthana',"Yuvashini",'Gobi','Krishna kumar']
-      reportingManager=details[0]
+    details=[...details,'Yuvashini','Gobi','Krishna kumar']
+  if(level==='L1'){
+    values.reportingManager=details[0];
+    // userName=[...userName,details[0]];
   }
-  else if(team==='Sales'){
-     details= [...details,'Keerthana',"Balaji",'Krishna kumar']
-     reportingManager=details[0]
+  else if(level==='L2'){
+    values.reportingManager=details[1];
+    // userName=[...userName,details[1]]; 
   }
-  else if(team==='HR'){
-      details= [...details,'Keerthana','Gobi','Krishna kumar']
-      reportingManager=details[0]
+  else if(level==='L3'){
+    values.reportingManager=details[2];
+    // userName=[...userName,details[2]];
   }
-  else if(team==='Product'){
-      details= [...details,'Keerthana','Krishna kumar']
-      reportingManager=details[0]
+}
+else if(team==='Sales'){
+   details= [...details,'Balaji','Krishna kumar']
+   if(level=='L1'){
+    values.reportingManager=details[0];
+    // userName=[...userName,details[0]];
   }
-
-
+  else if(level==='L2'){
+    values.reportingManager=details[1];
+    // userName=[...userName,details[1]]; 
+  }
+  else if(level==='L3'){
+    values.reportingManager=details[1];
+   // userName=[...userName,details[1]];
+  }
+}
+else if(team==='HR'){
+    details= [...details,'Gobi','Krishna kumar']
+    if(level==='L1'){
+      values.reportingManager=details[0];
+      // userName=[...userName,details[0]];
+    }
+    else if(level==='L2'){
+      values.reportingManager=details[1];
+      // userName=[...userName,details[1]]; 
+    }
+   
+}
+else if(team==='Product'){
+    details= [...details,'Krishna kumar']
+    if(level==='L1'){
+      values.reportingManager=details[0];
+      // userName=[...userName,details[0]];
+    }
+    else if(level==='L2'){
+      values.reportingManager=details[0];
+      // userName=[...userName,details[0]]; 
+    }
+}
   
   
   return (

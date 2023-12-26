@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import React ,{useState,useEffect} from "react";
-
 import { Link } from "react-router-dom";
 import StackedColumnChart from "./StackedColumnChart";
 import ApexCharts from "../Charts/Apexcharts";
@@ -19,18 +18,13 @@ import {
   ModalFooter,
   Table,
 } from "reactstrap";
-
-//Import Breadcrumb
-// import Breadcrumbs from "../../components/Common/Breadcrumb";
 import WelcomeComp from "./WelcomeComp";
 import MonthlyEarning from "./MonthlyEarning";
 import RecentFile from "pages/FileManager/RecentFile";
 import ChartjsChart from "pages/Charts/ChartjsChart";
-
 //Firebase
 import { db } from 'firebase-config';
 import { collection, getDocs, where, query,doc,getDoc } from 'firebase/firestore'
-
 //i18n
 import { withTranslation } from "react-i18next";
 import { Rectangle } from "react-leaflet";
@@ -41,25 +35,9 @@ const Dashboard = props => {
   const [name,setName]=useState('')
   const [email,setEmail]=useState('')
   const [role,setRole]=useState('')
-//  const [casual,setCasual]=useState(0);
-//  const [lop,setLop]=useState(0);
-//  const [earned,setEarned]=useState(0);
-//  const [paternity,setPaternity]=useState(0);
-//  const [sick,setSick]=useState(0);
-//  const [casualAvail,setCasualAvail]=useState(0);
-//  const [lopAvailable,setLopAvail]=useState(0);
-//  const [earnedAvailable,setEarnedAvail]=useState(0);
-//  const [paternityAvailable,setPaternityAvail]=useState(0);
-//  const [sickAvailable,setSickAvail]=useState(0);
-//  const [user, setUser] = useState(null);
-// //  const collectionRef = collection(db, 'leave submssion')
-
-//  const [details,
-//    setDetails]=useState([]);
    useEffect(()=>{
-
        const handleGet=async()=>{
-      const docRef = doc(db, "users", JSON.parse(sessionStorage.getItem('uid')));
+      const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
    const docSnap = await getDoc(docRef)
    if(docSnap.exists()){
    setName(()=>docSnap.data().name,)
@@ -71,7 +49,7 @@ const Dashboard = props => {
    Cookies.set('id',docSnap.data().employeeID,{secure:'true',path:'/'})
    Cookies.set('phone',docSnap.data().phone,{secure:'true',path:'/'})
    Cookies.set('role',docSnap.data().designation,{secure:'true',path:'/'})
-
+   Cookies.set('level',docSnap.data().level,{secure:'true',path:'/'})
    }
    }
 
@@ -131,12 +109,7 @@ const Dashboard = props => {
             <ApexCharts/>
             </Row>
             </Col>
-            
           </Row>
-          {/* <Row>
-            <DatatableTables/>
-          </Row> */}
-
           <Row>
           <Col sm="6">
           <RecentFile/>

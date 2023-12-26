@@ -63,14 +63,16 @@ const [photo,setPhoto]=useState(null)
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser"));
       if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        setname(obj.displayName);
+        // setname(obj.displayName);
+        setname(Cookies.get('name'))
         setemail(obj.email);
         setidx(obj.uid);
       } else if (
         process.env.REACT_APP_DEFAULTAUTH === "fake" ||
         process.env.REACT_APP_DEFAULTAUTH === "jwt"
       ) {
-        setname(obj.username);
+        // setname(obj.username);
+        setname(Cookies.get('name'))
         setemail(obj.email);
         setidx(obj.uid);
       }

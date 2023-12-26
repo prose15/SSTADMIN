@@ -48,6 +48,7 @@ const Login = () => {
         // Login successful, access the user object
         var user = userCredential.user;
         sessionStorage.setItem("uid",JSON.stringify(user.uid));
+        console.log('logged in');
         nav('/dashboard');
       })
       .catch((error) => {

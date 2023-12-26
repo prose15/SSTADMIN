@@ -6,6 +6,7 @@ import BorderlessTable from "table/BorderlessTable"
 import Section from "./Section"
 import Reportingmanagers from './Reportingmanagers'
 import { useStateContext } from 'Context/ContextProvider';
+import RejectModal from "components/Common/RejectModal";
 const DashboardSaas = props => {
   const {workedHours}=useStateContext();
   const total=40
@@ -28,6 +29,7 @@ const DashboardSaas = props => {
     <React.Fragment>
       <div className="page-content">
         {/* <Container> */}
+        <RejectModal />
           <Section  btn={'Log Time'} link={'/timesheet/logtime'}/>
           <Row>
             <CardWelcome />

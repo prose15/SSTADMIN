@@ -23,6 +23,8 @@ import LeaveRecords from "pages/LeaveTracker/LeaveRecords";
 import LeaveApprovals from "pages/LeaveTracker/LeaveApprovals";
 import AddLeave from "pages/LeaveTracker/AddLeave";
 import LeaveTracker from "pages/LeaveTracker/index";
+import TeamRequests from "pages/LeaveTracker/TeamRequests";
+import TimesheetTeamRequests from "pages/timesheet/Dashboard-saas/TimesheetTeamRequests";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -30,12 +32,15 @@ const authProtectedRoutes = [
   { path: "/leavetracker", component: <LeaveTracker /> },
   { path: "/leave/records", component: <LeaveRecords /> },
   { path: "/leave/approvals", component: <LeaveApprovals /> },
+  { path:"/leave/requests",component: <TeamRequests />},
   { path: "/addleave", component: <AddLeave/> },
+  
   //timesheet
   { path: "/timesheet/dashboard", component: <DashboardSaas /> },
   { path: "/timesheet/mytimesheet", component: <Mytimesheet /> },
   { path: "/timesheet/myapprovals", component: <Myapprovals /> },
   { path: "/timesheet/logtime", component: <Logtime /> },
+  { path: "/timesheet/requests", component: <TimesheetTeamRequests/>},
   { path: "/timesheet/mytimesheet/createtimesheet", component: <CreateTImeSheet /> },
   //ticket 
   { path: "/ticket/dashboard", component: <TicketDashboard /> },
