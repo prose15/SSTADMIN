@@ -2,12 +2,9 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 // Profile
 import UserProfile from "../pages/Authentication/user-profile";
-import DashboardSaas from "../pages/timesheet/Dashboard-saas/index"
 // Dashboard
 import Dashboard from "../pages/Dashboard/index";
 import Logtime from "pages/timesheet/Dashboard-saas/pages/Logtime";
-import Mytimesheet from "pages/timesheet/Dashboard-saas/pages/Mytimesheet";
-import Myapprovals from "pages/timesheet/Dashboard-saas/pages/Myapprovals";
 import CreateTImeSheet from "pages/timesheet/Dashboard-saas/pages/CreateTImeSheet";
 import MyTicket from "pages/Ticket/MyTicket";
 import TicketDashboard from "pages/Ticket/Dashboard";
@@ -23,6 +20,9 @@ import LeaveRecords from "pages/LeaveTracker/LeaveRecords";
 import LeaveApprovals from "pages/LeaveTracker/LeaveApprovals";
 import AddLeave from "pages/LeaveTracker/AddLeave";
 import LeaveTracker from "pages/LeaveTracker/index";
+import TeamRequests from "pages/LeaveTracker/TeamRequests";
+import TimesheetTeamRequests from "pages/timesheet/Dashboard-saas/TimesheetTeamRequests";
+import AllRecords from "pages/LeaveTracker/AllRecords";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -30,12 +30,17 @@ const authProtectedRoutes = [
   { path: "/leavetracker", component: <LeaveTracker /> },
   { path: "/leave/records", component: <LeaveRecords /> },
   { path: "/leave/approvals", component: <LeaveApprovals /> },
+  { path:"/leave/requests",component: <TeamRequests />},
   { path: "/addleave", component: <AddLeave/> },
+  { path: "/allrecords", component: <AllRecords /> },
+
+  
   //timesheet
   // { path: "/timesheet/dashboard", component: <DashboardSaas /> },
   // { path: "/timesheet/mytimesheet", component: <Mytimesheet /> },
-  { path: "/timesheet/myapprovals", component: <Myapprovals /> },
+  // { path: "/timesheet/myapprovals", component: <Myapprovals /> },
   { path: "/timesheet/logtime", component: <Logtime /> },
+  { path: "/timesheet/requests", component: <TimesheetTeamRequests/>},
   { path: "/timesheet/mytimesheet/createtimesheet", component: <CreateTImeSheet /> },
   //ticket 
   { path: "/ticket/dashboard", component: <TicketDashboard /> },

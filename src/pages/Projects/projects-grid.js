@@ -64,7 +64,7 @@ const ProjectsGrid = props => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Section  btn={'Log Time'} link={'/timesheet/logtime'}/>
+          
           <Row>
             {/* Import Cards */}
             {

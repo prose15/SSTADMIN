@@ -7,11 +7,11 @@ const Apaexlinecolumn = ({dataColors}) => {
   const series = [
     {
       name: "Worked",
-      data: [150,110,87,230,120,100,150,110,87,230,120,100],
+      data: [150,110,87,230,120,100],
     },
     {
       name: "Total",
-      data: [300,400,500,200,150,270,150,110,87,230,120,100],
+      data: [300,400,500,200,150,270],
     },
     
   ];
@@ -40,18 +40,12 @@ const Apaexlinecolumn = ({dataColors}) => {
     colors: apaexlineColumnColors,
     xaxis: {
       categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
+        "SST001",
+        "SST002",
+        "SST003",
+        "SST004",
+        "SST005",
+        "SST006"
       ],
     },
     yaxis: {

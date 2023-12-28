@@ -174,7 +174,9 @@ const SidebarContent = props => {
                 <li>
                   <Link to="/leave/approvals">My Approvals</Link>
                 </li>
-                
+                <li>
+                  <Link to="/leave/requests">Team Requests</Link>
+                </li>
               </ul>
             </li>
 
@@ -186,24 +188,18 @@ const SidebarContent = props => {
                   <span>{props.t("Time Sheet")}</span>
                 </Link>
   <ul className="sub-menu">
-  {/* <li>
-    <Link to="/timesheet/dashboard">
-      {props.t("Dashboard")}</Link>
-  </li> */}
-  {/* <li>
-    <Link to="/timesheet/mytimesheet">{props.t("My Timesheet")}</Link>
-  </li> */}
   <li>
-    <Link to="/timesheet/myapprovals">{props.t("Team's Request")}</Link>
+    <Link to="/timesheet/requests">{props.t("Team Request")}</Link>
   </li>
 </ul>
 </li>
-              ):(<li>
+        ):(<li>
                 <Link to="/dashboard" className="has-arrow  " >
                   <i className="bx bx-calendar"></i>
                   <span>{props.t("Time Sheet")}</span>
                 </Link>
-                </li>)}
+                </li>)
+                }
             
            
 

@@ -13,13 +13,13 @@ import TableContainer from '../../components/Common/TableContainer';
 // import DatatableTables from "pages/Tables/DatatableTables";
 import { Status } from "pages/timesheet/Dashboard-saas/pages/MytimesheetCol";
 import Cookies from "js-cookie";
-function LeaveRecords() {
+function AllRecords  ()  {
     const [details,setDetails]=useState([])
 const name=Cookies.get('name')
 const email=Cookies.get('email')
 useEffect(()=>{
     const handleGet=async()=>{
-        const filteredUsersQuery =query(collection(db,'leave submssion'),where('email','==',email),orderBy('timestamp','asc'));
+        const filteredUsersQuery =query(collection(db,'leave submssion'),orderBy('timestamp','asc'));
         onSnapshot(filteredUsersQuery,(data)=>{
           setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         })
@@ -28,9 +28,6 @@ useEffect(()=>{
 },[])
 console.log(details);
 
-  //   console.log(name);
-//    Leavedata
-    console.log(details);
     const columns = useMemo(
         () => [
             {
@@ -38,12 +35,25 @@ console.log(details);
                 accessor: 'requestDate',
             },
             {
+                Header: 'Name',
+                accessor: 'name'
+            },
+            {
                 Header: 'Leave Type',
                 accessor: 'leaveType'
             },
             {
-                Header: 'Reason',
-                accessor: 'reason'
+                Header: 'Subject',
+                accessor: 'subject'
+            },
+           
+            {
+                Header: 'From',
+                accessor: 'from'
+            },
+            {
+                Header: 'To',
+                accessor: 'to'
             },
             {
                 Header: "Status",
@@ -54,28 +64,13 @@ console.log(details);
                   return <Status {...cellProps} />;
                 },
               },
-            {
-                Header: 'From',
-                accessor: 'from'
-            },
-            {
-                Header: 'To',
-                accessor: 'to'
-            },
         ],
         []
     );    
     return (
         <div className="page-content">
             <div className="container-fluid">
-                {
-                    (Cookies.get('name')==='Keerthana')?(
-                    <Breadcrumbs title='My Records' breadcrumbItem="All Records" />
-                    ):(
-                        <Breadcrumbs title='Leave Tracker' breadcrumbItem="My Records" />
-                    )
-                }
-                
+                <Breadcrumbs title='All Records' breadcrumbItem="My Records" />
                 <TableContainer
                     columns={columns}
                     data={details}
@@ -93,4 +88,4 @@ console.log(details);
         </div>
     );
 }
-export default LeaveRecords;
+export default AllRecords;

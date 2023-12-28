@@ -63,14 +63,16 @@ const [photo,setPhoto]=useState(null)
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser"));
       if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        setname(obj.displayName);
+        // setname(obj.displayName);
+        setname(Cookies.get('name'))
         setemail(obj.email);
         setidx(obj.uid);
       } else if (
         process.env.REACT_APP_DEFAULTAUTH === "fake" ||
         process.env.REACT_APP_DEFAULTAUTH === "jwt"
       ) {
-        setname(obj.username);
+        // setname(obj.username);
+        setname(Cookies.get('name'))
         setemail(obj.email);
         setidx(obj.uid);
       }
@@ -128,7 +130,7 @@ const validation = useFormik({
                       <div className="text-muted">
                         <h5 className="text-dark"><b>{name}</b></h5>
                         <p className="mb-1">{Cookies.get('team')}</p>
-                        <p className="mb-0">{Cookies.get('level')}</p>
+                        <p className="mb-0">{(Cookies.get('level')==='k')?('L4'):(Cookies.get('level'))}</p>
                       </div>
                     </div>
                     <div className={"d-flex align-items-center"}>

@@ -75,12 +75,7 @@ const CardProject = ({ projects }) => {
                                 alt=""
                               />
 
-                              {/* <UncontrolledTooltip
-                                placement="top"
-                                target={"member" + key}
-                              >
-                                {team.fullname}
-                              </UncontrolledTooltip> */}
+                            
                             </Link>
                           </div>
                         </React.Fragment>

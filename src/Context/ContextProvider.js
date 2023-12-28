@@ -6,8 +6,14 @@ const StateContext=createContext();
 export const ContextProvider=({children})=>{
   const [url,setUrl]=useState('')
   const [user,setUser]=useState()
+  const [subscribemodal, setSubscribemodal] = useState(false);
+  const [id,setId] = useState('')
   useEffect(()=>{
-    onAuthStateChanged(auth,user=>setUser(user.uid))
+    onAuthStateChanged(auth,(user)=>{
+      if(user){
+      setUser(user.uid)
+      }
+    })
     async function getURL(user){
       if(user){
         const fileRef=ref(storage,'users/'+user+'.jpg');
@@ -37,7 +43,7 @@ export const ContextProvider=({children})=>{
     enddate.setMinutes(59);
     enddate.setSeconds(59);
     enddate.setMilliseconds(59);
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,subscribemodal,setSubscribemodal,setId,id}}>
         {children}
     </StateContext.Provider>)
 }

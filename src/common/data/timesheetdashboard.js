@@ -43,7 +43,7 @@ const weekData = [
     },
 ];
 
-const latestTransaction = [
+const TeamRequestsData = [
     {
         employeeName: "Jacob Hunter",
         leaveType: "Casual leave",
@@ -152,5 +152,5 @@ const TopCitiesSelling = [
 ]
 // }
 
-export { yearData, monthData, weekData, latestTransaction, activityDataDashboard, TopCitiesSelling };
+export { yearData, monthData, weekData, TeamRequestsData, activityDataDashboard, TopCitiesSelling };
 // export default dashboard

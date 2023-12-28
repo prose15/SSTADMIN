@@ -36,10 +36,12 @@ const ProfileMenu = props => {
     if (localStorage.getItem("authUser")) {
       if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
         const obj = JSON.parse(localStorage.getItem("authUser"));
-        setusername(obj.displayName);
+        // setusername(obj.displayName);
+        setusername(Cookies.get('name'))
       }  {
         const obj = JSON.parse(localStorage.getItem("authUser"));
-        setusername(obj.username);
+        // setusername(obj.username);
+        setusername(Cookies.get('name'))
       }
     }
   }, [props.success]);

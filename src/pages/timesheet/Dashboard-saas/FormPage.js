@@ -51,8 +51,6 @@ const timestamp = Timestamp.now()
  const debouncedClickHandler=(ele)=>{setID(ele.id)};
  const getId=(ele)=>{
   debouncedClickHandler(ele);
-  console.log( ele.id)
-  console.log(ID)
  }
   return (
     <Container className=' pt-5 mt-5' >
