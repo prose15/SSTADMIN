@@ -38,29 +38,37 @@ const LatestTranaction = props => {
   console.log(level)
   useEffect(() => {
     const getData = async () => {
-      if (Cookies.get('level') === 'L1') {
         const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
         const docSnap = await getDoc(docRef);
         const userSnap = await getDocs(userRef);
         const adminSnap = await getDocs(adminRef);
         setAdmin(adminSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         setUsers(userSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        if (docSnap.exists()) {
-          const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name));
+        if(Cookies.get('level')==='L3'){
+          const filteredUsersQuery = query(collection(db, 'leave submssion'), where('team','==',Cookies.get('team')),where('status','!=','approved'));
           onSnapshot(filteredUsersQuery, (data) => {
             setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
           })
         }
-      }
-      else {
+        else{
+          if (docSnap.exists()) {
+            const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name));
+            onSnapshot(filteredUsersQuery, (data) => {
+              setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            })
+          }
+        }
+       
+      
+      // else {
 
-        const filteredUsersQuery = query(collection(db, 'leave submssion'), where(level, '==', name));
-        onSnapshot(filteredUsersQuery, (data) => {
-          setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
+      //   const filteredUsersQuery = query(collection(db, 'leave submssion'), where(level, '==', name));
+      //   onSnapshot(filteredUsersQuery, (data) => {
+      //     setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      //   })
 
 
-      }
+      // }
     };
     getData();
   }, [])
@@ -119,35 +127,15 @@ const LatestTranaction = props => {
           return <Reason {...cellProps} />;
         },
       },
-
-     
-
-
-
-    ],
-    [users, admin]
-  );
-  if(Cookies.get('level') != 'L1')  {
-   columns.push( {
-      Header: "Status",
-      accessor: "status",
-      disableFilters: true,
-      filterable: false,
-      Cell: cellProps => {
-        return <Status {...cellProps} />;
-      },
-    },
-    {
-      Header: "Actions",
-      accessor: "id",
-      disableFilters: true,
-      Cell: cellProps => {
-        return <Actions {...cellProps} users={users} admin={admin} />;
-      },
-    })
-    
-  }else{
-    columns.push(
+      {
+            Header: "Status",
+            accessor: "status",
+            disableFilters: true,
+            filterable: false,
+            Cell: cellProps => {
+              return <Status {...cellProps} />;
+            },
+          },
       {
         Header: "Actions",
         accessor: "id",
@@ -156,8 +144,30 @@ const LatestTranaction = props => {
           return <Actions {...cellProps} users={users} admin={admin} />;
         },
       }
-    )
-  }
+
+     
+
+
+
+    ],
+    [users, admin]
+  );
+  // if(Cookies.get('level') != 'L1')  {
+  //  columns.push(
+  //   {
+  //     Header: "Actions",
+  //     accessor: "id",
+  //     disableFilters: true,
+  //     Cell: cellProps => {
+  //       return <Actions {...cellProps} users={users} admin={admin} />;
+  //     },
+  //   })
+    
+  // }else{
+  //   columns.push(
+     
+  //   )
+  // }
 
 
 

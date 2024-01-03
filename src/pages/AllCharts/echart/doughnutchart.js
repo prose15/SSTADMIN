@@ -3,6 +3,21 @@ import ReactEcharts from "echarts-for-react";
 import getChartColorsArray from "../../../components/Common/ChartsDynamicColor";
 
 const Doughnut = ({dataColors}) => {
+
+const today=new Date()
+const startDate=new Date(today.getFullYear(),today.getMonth(),1,0,0,0,0)
+const endDate=new Date(today.getFullYear(),today.getMonth()+1,0,23,59,59,59)
+let count=0;
+while(startDate<=endDate){
+  const Day=startDate.getDay()
+  if(Day!==5 && Day!==6){
+  count++;
+  }
+  startDate.setDate(startDate.getDate()+1);
+}
+console.log(count)
+const tothrs=count*8;
+
   const doughnutEChartColors = getChartColorsArray(dataColors);
 
   const options = {
@@ -16,17 +31,17 @@ const Doughnut = ({dataColors}) => {
     legend: {
       orient: "vertical",
       x: "left",
-      data: ["Laptop", "Tablet", "Mobile", "Others", "Desktop"],
+      data: ["Worked","Pending"],
       textStyle: {
         color: ["#8791af"],
       },
     },
-    color: doughnutEChartColors,
+    color: ["#3B71CA","#ffc107"],
     series: [
       {
-        name: "Total sales",
+        name:` Total hours : ${tothrs}`,
         type: "pie",
-        radius: ["50%", "70%"],
+        radius: ["40%", "70%"],
         avoidLabelOverlap: false,
         label: {
           normal: {
@@ -36,7 +51,7 @@ const Doughnut = ({dataColors}) => {
           emphasis: {
             show: true,
             textStyle: {
-              fontSize: "30",
+              fontSize: "20",
               fontWeight: "bold",
             },
           },
@@ -47,19 +62,22 @@ const Doughnut = ({dataColors}) => {
           },
         },
         data: [
-          { value: 335, name: "Laptop" },
-          { value: 310, name: "Tablet" },
-          { value: 234, name: "Mobile" },
-          { value: 135, name: "Others" },
-          { value: 1548, name: "Desktop" },
+          { value: 120, name: "Worked" },
+          { value: 48, name: "Pending" },
+          // { value: 234, name: "Mobile" },
+          // { value: 135, name: "Others" },
+          // { value: 1548, name: "Desktop" },
         ],
+        option:{
+          devicePixelRatio:4
+        }
       },
     ],
   }
 
   return (
     <React.Fragment>
-      <ReactEcharts style={{ height: "350px" }} option={options} />
+      <ReactEcharts style={{ height: "250px" }} option={options} />
     </React.Fragment>
   );
 };

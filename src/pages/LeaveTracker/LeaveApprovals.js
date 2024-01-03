@@ -1,65 +1,21 @@
 // src/components/filter.
 import React, { useMemo } from "react";
-import PropTypes from 'prop-types';
-//import components
-import Breadcrumbs from '../../components/Common/Breadcrumb';
-import LeaveProjectsGrid from 'pages/Projects/leaveprojects-grid';
+import ApprovalCard from "./ApprovalCard";
 // import TableContainer from '../../components/Common/TableContainer';
-
+import {useState,useEffect} from "react";
+import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firestore'
+import { Row } from "reactstrap";
+import Cookies from "js-cookie";
+import { db } from "firebase-config";
+import { useStateContext } from "Context/ContextProvider";
 function LeaveApprovals() {
-    const columns = useMemo(
-        () => [
-            {
-                Header: 'Date of request',
-                accessor: 'dateofrequest',
-            },
-            {
-                Header: 'Leave Type',
-                accessor: 'leavetype'
-            },
-            {
-                Header: 'Reason',
-                accessor: 'reason'
-            },
-            {
-                Header: 'Reason of reject',
-                accessor: 'reasonofreject'
-            },
-            {
-                Header: 'State of approval',
-                accessor: 'stateofapproval'
-            },
-        ],
-        []
-    );
-
-    const data = [   
-        {
-        dateofrequest:"12/12/2023",
-        leavetype:"sick",
-        reason:"fever",
-        reasonofreject:"-",
-        stateofapproval:"approved"
-        },
-    ];
-
+   const {detail} = useStateContext()
     return (
         <div className="page-content pt-1">
-            <div className="container-fluid pt-0">
-                {/* <Breadcrumbs title="Tables" breadcrumbItem="Leave Approvals" /> */}
-                <LeaveProjectsGrid/>
-                {/* <TableContainer
-                    columns={columns}
-                    data={data}
-                    isGlobalFilter={true}
-                    isAddOptions={false}
-                    customPageSize={10}
-                    isPagination={true}
-                    tableClass="align-middle table-nowrap table-check table"
-                    theadClass="table-light"
-                    paginationDiv="col-12"
-                    pagination="justify-content-center pagination pagination-rounded"
-                /> */}
+            <div className="container-fluid pt-5">
+                <Row className="mt-5">
+                <ApprovalCard data={detail} />
+                </Row>
             </div>
         </div>
     );

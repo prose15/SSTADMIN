@@ -94,8 +94,7 @@ const {setSubscribemodal,setId}=useStateContext()
     return (
 
         <span>
-            {
-                (Cookies.get('level')=='L1')?(
+           
                 <>
                 <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>Accept(cell.value,users,admin)} />
                 <i style={{cursor:"pointer"}} onClick={()=>{
@@ -103,14 +102,7 @@ const {setSubscribemodal,setId}=useStateContext()
             setId(cell.value)
         }}
             className="font-size-20 text-danger fas fa-times me-1"/>
-                </>):( <Button
-        type="button"
-        className=" btn-rounded bg-primary-subtle text-primary border-primary-subtle"
-        onClick={()=>deleteData(cell.value)}
-      >
-        <i className="dripicons-trash"></i>
-      </Button>)
-            }
+                </>
         
         </span>
     )

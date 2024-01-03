@@ -1,5 +1,6 @@
 import { db } from "firebase-config"
 import { getDoc,doc, updateDoc } from "firebase/firestore"
+import Cookies from "js-cookie";
 import RejectModal from "components/Common/RejectModal";
 import React from "react";
 import { Timestamp } from "firebase/firestore";
@@ -11,32 +12,59 @@ export const Reject = async (id,reason) => {
   if(docSnap.exists()){
     const detail= docSnap.data()
      let rpm = []
-  let nextRPM=''
+     let status=[]
 
-  if (detail.team === 'Delivery') {
-    rpm = [...rpm, 'Keerthana', 'Gobi', 'Krishna kumar']
-    if (detail.reportManager == 'Yuvashini') {
-      detail.reportManager = '';
-      detail.L1status = 'reject'
-      detail.status = 'reject'
-      detail.L2status='Keerthana'
-      detail.L3status='Gobi'
-      detail.kstatus='Krishna kumar'
-      detail.reasonOfReject=reason
-      detail.timestamp=Timestamp.now()
+     if (detail.team === 'Delivery') {
+      rpm = [...rpm,'Yuvashini', 'Keerthana', 'Gobi']
+      status=[...status,'L1 denied','L2 denied','denied']
+      const forwardedRpm=rpm.filter((data,index)=>(index>0))
+      forwardedRpm.push('')
+      let flag=0;
+      let index1=0;
+      if(Cookies.get('level')==='L3'){
+        detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+        detail.status=status[status.length-1]
+        detail.reasonOfReject = reason
+      }
+      else{
+        rpm.map((data,index)=>{
+          if(detail.reportManager===data){
+            flag=1
+            index1=index
+          }
+        })
+        if(flag==1){
+          detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+            detail.status=status[index1]
+            detail.reasonOfReject = reason
+        }
+      } 
     }
-  }
   else if (detail.team === 'Sales') {
     rpm = [...rpm, 'Keerthana', 'Krishna kumar']
-    if (detail.reportManager == 'Balaji') {
-      detail.reportManager = '';
-      detail.L1status = 'reject'
-      detail.status = 'reject'
-      detail.L2status='Keerthana'
-      detail.kstatus='Krishna kumar'
-      detail.reasonOfReject=reason
-      detail.timestamp=Timestamp.now()
+    status=[...status,'L1 denied','L2 denied','denied']
+    const forwardedRpm=rpm.filter((data,index)=>(index>0))
+    forwardedRpm.push('')
+    let flag=0;
+    let index1=0;
+    if(Cookies.get('level')==='L3'){
+      detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+      detail.status=status[status.length-1]
+      detail.reasonOfReject = reason
     }
+    else{
+      rpm.map((data,index)=>{
+        if(detail.reportManager===data){
+          flag=1
+          index1=index
+        }
+      })
+      if(flag==1){
+        detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+          detail.status=status[status.length-1]
+          detail.reasonOfReject = reason
+      }
+    } 
   }
   
   // else if (detail.team === 'HR') {

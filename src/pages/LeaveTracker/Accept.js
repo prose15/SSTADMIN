@@ -1,6 +1,6 @@
 import { db } from "firebase-config"
 import { getDoc,doc, updateDoc,collection,Timestamp } from "firebase/firestore"
-
+import Cookies from "js-cookie";
 export const Accept = async(id,users,admin) =>{
   // console.log('users:',users,'id:',id,'admin:',admin);
   const userRef=collection(db,'users');
@@ -10,6 +10,7 @@ export const Accept = async(id,users,admin) =>{
   if(docSnap.exists()){
     const detail= docSnap.data()
     let rpm = []
+    let status=[]
     users.map((user) => {
       if (user.name == detail.name && detail.email === user.email) {
         if (detail.leaveType === 'Casual leave') {
@@ -51,67 +52,92 @@ export const Accept = async(id,users,admin) =>{
       }
     })
     if (detail.team === 'Delivery') {
-      rpm = [...rpm, 'Keerthana', 'Gobi', 'Krishna kumar']
-      if (detail.reportManager == 'Yuvashini') {
-        detail.reportManager = '';
-        detail.L1status = 'accept'
-        detail.status = 'accept'
-        detail.L2status='Keerthana'
-        detail.L3status='Gobi'
-        detail.kstatus='Krishna kumar'
+      rpm = [...rpm,'Yuvashini', 'Keerthana', 'Gobi']
+      status=[...status,'L1 approved','approved','approved']
+      const forwardedRpm=rpm.filter((data,index)=>(index>0))
+      forwardedRpm.push('')
+      let flag=0;
+      let index1=0;
+      if(Cookies.get('level')==='L3'){
+        detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+        detail.status=status[status.length-1]
         detail.timestamp=Timestamp.now()
       }
+      else{
+        rpm.map((data,index)=>{
+          if(detail.reportManager===data){
+            flag=1
+            index1=index
+          }
+        })
+        if(flag==1){
+          detail.reportManager=forwardedRpm[index1]
+            detail.status=status[index1]
+            detail.timestamp=Timestamp.now()
+        }
+      } 
     }
     else if (detail.team === 'Sales') {
-      rpm = [...rpm, 'Keerthana', 'Krishna kumar']
-      if (detail.reportManager == 'Balaji') {
-        detail.reportManager = '';
-        detail.L1status = 'accept'
-        detail.status = 'accept'
-        detail.L2status='Keerthana'
-        detail.kstatus='Krishna kumar'
+      rpm = [...rpm,'Balaji', 'Keerthana', 'Krishna kumar']
+      status=[...status,'L1 approved','approved','approved']
+      const forwardedRpm=rpm.filter((data,index)=>index>0).push('')
+      forwardedRpm.push('')
+      let flag=0;
+      let index1=0;
+      if(Cookies.get('level')==='L3'){
+        detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+        detail.status=status[status.length-1]
         detail.timestamp=Timestamp.now()
       }
+      else{
+      rpm.map((data,index)=>{
+        if(detail.reportManager===data){
+          flag=1
+          index1=index
+        }
+      })
+      if(flag==1){
+        detail.reportManager=forwardedRpm[index1]
+          detail.status=status[index1]
+          detail.timestamp=Timestamp.now()
+      }
     }
-    // else if (detail.team === 'HR') {
-    //   rpm = [...rpm, 'Gobi', 'Krishna kumar']
-    //   if (detail.reportManager == 'Keerthana') {
-    //     detail.reportManager = rpm[0];
-
-    //     detail.L1status = 'accept'
-    //   }
-    //   else if (detail.reportManager == 'Gobi') {
-    //     detail.reportManager = rpm[1];
-    //     detail.status = 'accept'
-    //     detail.L2status = 'accept'
-    //   }
-    //   else if (detail.reportManager == 'Krishna kumar') {
-    //     detail.reportManager = ''
-    //     detail.status = 'accept'
-    //     detail.L3status = 'accept'
-    //     detail.reasonOfReject = ''
-    //   }
-    // }
-    // else if (detail.team === 'Product') {
-    //   rpm = [...rpm, 'Krishna kumar']
-    //   if (detail.reportManager == 'Keerthana') {
-    //     detail.reportManager = rpm[0];
-    //     detail.L1status = 'accept'
-    //   }
-    //   else if (detail.reportManager == 'Krishna kumar') {
-    //     detail.reportManager = ''
-    //     detail.status = 'accept'
-    //     detail.L1status = 'accept'
-    //     detail.reasonOfReject = ''
-
-    //   }
-    // }
+    }
+    else if (detail.team === 'HR') {
+      rpm = [...rpm,'Keerthana', 'Gobi']
+      status=[...status,'L1 approved','approved']
+      const forwardedRpm=rpm.filter((data,index)=>index>0)
+      if(Cookies.get('level')==='L3'){
+        detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+        detail.status=status[status.length-1]
+        detail.timestamp=Timestamp.now()
+      }
+      else{
+      forwardedRpm.push('')
+      let flag=0;
+      let index1=0;
+      rpm.map((data,index)=>{
+        if(detail.reportManager===data){
+          flag=1
+          index1=index
+        }
+      })
+      if(flag==1){
+        detail.reportManager=forwardedRpm[index1]
+          detail.status=status[index1]
+          detail.timestamp=Timestamp.now()
+      }
+    }
+        
+      }
+ 
+    console.log(detail)
 
     const userDoc = doc(collection(db,'leave submssion'), id)
 
     updateDoc(userDoc, detail).then(() => {
       users.map((user) => {
-        if (user.name == detail.name && detail.email === user.email && detail.reportManager === '') {
+        if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
           if (detail.leaveType === 'Casual leave') {
             user.casualAvailable = 12 - user.casual
             if (user.casualAvailable <= 0) {
@@ -149,7 +175,7 @@ export const Accept = async(id,users,admin) =>{
       })
 
       admin.map((user) => {
-        if (user.name == detail.name && detail.email === user.email && detail.reportManager === '') {
+        if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
           if (detail.leaveType === 'Casual leave') {
             console.log(user.casualAvailable);
             user.casualAvailable = 12 - user.casual

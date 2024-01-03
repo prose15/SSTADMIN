@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Container, Row,Col, Card, CardBody, CardTitle  } from 'reactstrap';
 import CandidateSection from './CandidateSection';
 import Leaveapaexlinecolumn from "../AllCharts/Apex/leaveapaexlinecolumn"
@@ -6,14 +6,33 @@ import Section from 'pages/timesheet/Dashboard-saas/Section';
 import Leavecards from './Leavecards';
 import FormLayouts from 'pages/Forms/ProfileLayout';
 import { useState,useEffect } from 'react';
-import {collection,getDocs,query,where,orderBy} from 'firebase/firestore'
+import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firestore'
 import Cookies from 'js-cookie';
 import { db } from "firebase-config";
+// import { useState,useEffect } from 'react';
 
 const LeaveTracker = () => {
-    
+
+  const [upcomingLeaves,setUpcomingLeaves]=useState([])
+  const email=Cookies.get('email')
+  const todayTimeStamp=new Date()
+  todayTimeStamp.setHours(23)
+  todayTimeStamp.setMinutes(59)
+  todayTimeStamp.setSeconds(59)
+  useMemo(()=>{
+      const handleGet=async()=>{
+          const filteredUsersQuery =query(collection(db,'leave submssion'),where('email','==',email),where('status','==','approved'),where('fromTimeStamp','>',todayTimeStamp),orderBy('timestamp','desc'));
+          onSnapshot(filteredUsersQuery,(data)=>{
+            setUpcomingLeaves(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          })
+      }
+      handleGet()
+
+  },[])
+// console.log(upcomingLeaves)
 const [details,setDetails]=useState([])
 const name=Cookies.get('name')
+
 useEffect(()=>{
     const getData=async()=>{
         // const collection=collection(db,'timesheet')
@@ -27,16 +46,14 @@ useEffect(()=>{
     }
     getData()
   },[])
+
 const today=new Date();
 
 const graphdetails=details.filter((detail)=>new Date(detail.from).getFullYear()==today.getFullYear()||new Date(detail.to).getFullYear()==today.getFullYear())
-// console.log(details)
-console.log(graphdetails)
 
-// fromtoprogram
+// console.log(graphdetails)
 
-// sDateArray=[startDate,startDate2]
-// eDateArray=[endDate,endDate2]
+
 const leave=[0,0,0,0,0,0,0,0,0,0,0,0]
 const nextyearleave=[0,0,0,0,0,0,0,0,0,0,0,0]
 let checkyear=new Date()
@@ -48,7 +65,7 @@ checkyear2.setDate(checkyear.getDate()-1)
 // }
 
 for(let i=0;i<graphdetails.length;i++){
-  if(graphdetails[i].status==="accept"){
+  if(graphdetails[i].status==="approved"){
   let sDate=new Date(graphdetails[i].from)
   let eDate=new Date(graphdetails[i].to)
   const today=new Date();
@@ -73,31 +90,41 @@ for(let i=0;i<graphdetails.length;i++){
 }
 }
 
+var available=[1.5,0,0,0,0,0,0,0,0,0,0,0]
+let earnedLeave=0
 
- console.log(leave);
- console.log(nextyearleave);
+for(let i=0;i<available.length;i++){
+const remaining=available[i]-leave[i]
+if(remaining>0){
+if(i==11){
+  earnedLeave+=remaining
+}
+else{
+available[i+1]+=remaining
+}
+}
+if(i!==11){
+available[i+1]+=1.5
+}
+}
 
-// fromtoprogram
-const btn_leave = "Add Leave"
-
-console.log(details.length);
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                     <Section btn={btn_leave} link={'/addleave'}/>
+                     <Section btn={'Add Leave'} link={'/addleave'}/>
                     <Leavecards/>
                     <Row>
                         <Col xl={8}>
                             <Card>
                                 <CardBody>
                                 <CardTitle className="mb-4">Leave taken as per months</CardTitle>
-                                <Leaveapaexlinecolumn graphData={leave} dataColors='["--bs-danger","--bs-success"]'/>
+                                <Leaveapaexlinecolumn taken={leave} available={available} dataColors='["--bs-danger","--bs-success"]'/>
                                 </CardBody>
                             </Card>
                        </Col>
                        <Col xl={4}>
-                             <CandidateSection />
+                             <CandidateSection upcomingLeaves={upcomingLeaves}/>
                         </Col>
                     </Row>
                 </Container>

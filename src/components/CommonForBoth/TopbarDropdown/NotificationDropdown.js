@@ -1,19 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap";
 import SimpleBar from "simplebar-react";
-
-//Import images
-import avatar3 from "../../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../../assets/images/users/avatar-4.jpg";
-
 //i18n
 import { withTranslation } from "react-i18next";
+import { useStateContext } from "Context/ContextProvider";
+import { Timestamp } from "firebase/firestore";
 
 const NotificationDropdown = props => {
-  // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
+  const {detail, setDetail} = useStateContext();
+  const new_arr = detail.filter((data,index)=>index<=2)
+  console.log(new_arr)
+const findMin=(data)=>{
+  const seconds    = data.timestamp?.seconds
+  const nanoseconds = data.timestamp?.nanoseconds
+  console.log(seconds,nanoseconds)
+  const timestampInMilliseconds = seconds * 1000 + Math.floor(nanoseconds / 1e6);
+    const dateObject = new Date(timestampInMilliseconds);
+    console.log(dateObject);
+    const today =new Date()
+    const timeDiff = today - dateObject
+    const minsDiff = Math.floor(timeDiff/(1000 * 60))
+    return minsDiff
+}
+ 
+
+
+  const handleClick = () =>{
+    setMenu(!menu)
+    let element = document.getElementById("detail");
+    element.classList.add("visually-hidden")
+    let bell = document.getElementById("bell");
+    bell.classList.remove("bx-tada")
+  } 
 
   return (
     <React.Fragment>
@@ -28,10 +49,9 @@ const NotificationDropdown = props => {
           tag="button"
           id="page-header-notifications-dropdown"
         >
-          <i className="bx bx-bell bx-tada" />
-          <span className="badge bg-danger rounded-pill">{5}</span>
+          <i id="bell" className="bx bx-bell bx-tada" />
+          <span id="detail" className="badge bg-danger rounded-pill">{detail.length}</span>
         </DropdownToggle>
-
         <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
           <div className="p-3">
             <Row className="align-items-center">
@@ -42,86 +62,46 @@ const NotificationDropdown = props => {
           </div>
 
           <SimpleBar style={{ height: "230px" }}>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
+          {new_arr.map((data)=> 
+          <div key={data.id} className="text-reset notification-item">
+            <div  className="d-flex">
                 <div className="avatar-xs me-3">
-                  <span className="avatar-title bg-primary rounded-circle font-size-13">
-                    <i className="fas fa-calendar" />
-                  </span>
+                  
+                  {data.status === "accept" ? (<span className="avatar-title bg-success rounded-circle font-size-13"><i className="fas fa-check"/>
+                  </span>) : (<span className="avatar-title bg-danger rounded-circle font-size-13">
+                    <i className="fas fa-times bg-danger"/></span>)}
+                  
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
-                    {props.t("Timesheet(10/12/23-14/12/23)")}
+                    {data.reason}
                   </h6>
                   <div className="font-size-12 text-muted">
                     <p className="mb-1">
-                      {props.t(
-                        "Your timesheet has been approved"
-                      )}
-                    </p>
-                    <p className="mb-0">
-                      <i className="mdi mdi-clock-outline" />{" "}
-                      {props.t("3 min ago")}{" "}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <div className="avatar-xs me-3">
-                  <span className="avatar-title bg-danger rounded-circle font-size-16">
-                    <i className="fas fa-times" />
-                  </span>
-                </div>
-                <div className="flex-grow-1">
-                  <h6 className="mt-0 mb-1">Leave(20/12/23-21/12/23)</h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">
-                      {props.t("Your leave has been rejected")
-                        }
+                     {data.status === "accept" ? (<p>Your leave has been approved</p>) : (<p>Your leave has been rejected</p>)}
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-clock-outline" />
-                      {props.t("1 hours ago")}{" "}
+                        {findMin(data)} mins
+                    
                     </p>
                   </div>
                 </div>
-              </div>
-            </Link>
-            <Link to="" className="text-reset notification-item">
-              <div className="d-flex">
-                <div className="avatar-xs me-3">
-                  <span className="avatar-title bg-success rounded-circle font-size-16">
-                    <i className="fas fa-check" />
-                  </span>
-                </div>
-                <div className="flex-grow-1">
-                  <h6 className="mt-0 mb-1">
-                    {props.t("Leave(21/12/23-22/12/23)")}
-                  </h6>
-                  <div className="font-size-12 text-muted">
-                    <p className="mb-1">
-                      {props.t(
-                        "Your leave has been approved"
-                      )}
-                    </p>
-                    <p className="mb-0">
-                      <i className="mdi mdi-clock-outline" />{" "}
-                      {props.t("3 min ago")}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            </div>
+          </div>)}
+         
           </SimpleBar>
 
           <div className="p-2 border-top d-grid"
          >
             <Link to="/leave/approvals"
+            onClick={handleClick}
             className="btn btn-sm btn-link font-size-14 text-center">
               <i className="mdi mdi-arrow-right-circle me-1" 
-              ></i> <span key="t-view-more">{props.t("View All..")}</span>
+              ></i> <span
+              key="t-view-more"
+              
+              >{props.t("View All..")}</span>
             </Link>
           </div>
         </DropdownMenu>

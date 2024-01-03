@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import React ,{useState,useEffect} from "react";
+import EChart from "pages/Charts/EChart";
 import { Link } from "react-router-dom";
 import StackedColumnChart from "./StackedColumnChart";
 import ApexCharts from "../Charts/Apexcharts";
 import DatatableTables from "../Tables/DatatableTables";
+// import './Dashboard.css'
 import {
   Container,
   Row,
@@ -18,27 +20,35 @@ import {
   ModalFooter,
   Table,
 } from "reactstrap";
+
+//Import Breadcrumb
+// import Breadcrumbs from "../../components/Common/Breadcrumb";
 import WelcomeComp from "./WelcomeComp";
 import MonthlyEarning from "./MonthlyEarning";
 import RecentFile from "pages/FileManager/RecentFile";
 import ChartjsChart from "pages/Charts/ChartjsChart";
+
 //Firebase
 import { db } from 'firebase-config';
-import { collection, getDocs, where, query,doc,getDoc } from 'firebase/firestore'
+import { collection, getDocs, where, query,doc,getDoc,onSnapshot } from 'firebase/firestore'
+
 //i18n
 import { withTranslation } from "react-i18next";
 import { Rectangle } from "react-leaflet";
 import Cookies from 'js-cookie'
+import Calender from "components/Common/Calender";
+import TeamMates from "./TeamMates";
+
 
 const Dashboard = props => {
 
   const [name,setName]=useState('')
-  const [email,setEmail]=useState('')
+  const [team,setTeam]=useState([])
   const [role,setRole]=useState('')
    useEffect(()=>{
+
        const handleGet=async()=>{
       const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
-
    const docSnap = await getDoc(docRef)
    if(docSnap.exists()){
    setName(()=>docSnap.data().name,)
@@ -50,7 +60,11 @@ const Dashboard = props => {
    Cookies.set('id',docSnap.data().employeeID,{secure:'true',path:'/'})
    Cookies.set('phone',docSnap.data().phone,{secure:'true',path:'/'})
    Cookies.set('role',docSnap.data().designation,{secure:'true',path:'/'})
-   Cookies.set('level',docSnap.data().level,{secure:'true',path:'/'})
+   const filteredUsersQuery =query(collection(db,'users'),where('team','==',Cookies.get('team')));
+        const data=await getDocs(filteredUsersQuery).catch((err)=>{
+          console.log(err);
+        })
+        setTeam(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
    }
    }
 
@@ -59,15 +73,85 @@ const Dashboard = props => {
      )
   
   const reports = [
-    { title: "Total hours", iconClass: "bx bxs-time", description: "40" },
-    { title: "Remaining hours", iconClass: "bx bxs-timer", description: "10" },
+    { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: "12" },
+    { title: "Worked Hours", iconClass: "bx bxs-time", description: "128" },
     {
-      title: "Timesheets submitted",
-      iconClass: "bx bxs-calendar-check",
-      description: "1",
+      title: "Tickets  Worked",
+      iconClass: "bx bxs-report",
+      description: "3",
     },
   ];
 
+
+  const totHours =  (startTime, endTime) => {
+    let hours = 0, totminutes = 0, minutes = 0
+    for (let i = 0; i < startTime.length; i++) {
+      let arr = startTime[i].split(":");
+      let arr2 = endTime[i].split(":");
+      hours += parseInt(arr2[0]) - parseInt(arr[0])
+      var diff = parseInt(arr[1]) - parseInt(arr2[1])
+      if (diff > 0) {
+        totminutes -= diff;
+      }
+      else if (diff < 0) {
+        totminutes += (diff *= -1)
+      }
+      while (totminutes >= 60) {
+        totminutes -= 60
+        hours += 1
+      }
+      while (totminutes <= -60) {
+        totminutes += 60
+        hours -= 1
+      }
+    }
+
+    if (totminutes < 0) {
+      hours--;
+      minutes = 60 + totminutes;
+    }
+    else if (totminutes > 0) {
+      minutes = totminutes;
+    }
+    let strminutes = minutes > 9 ? minutes.toString() : "0" + minutes.toString()
+
+    return (hours)
+  }
+
+  // orderBy('timestamp','asc')
+  const email=Cookies.get('email')
+  const [details,setDetails]=useState([])
+  useEffect(()=>{
+    const handleGet=async()=>{
+      const today=new Date();
+      const year=today.getFullYear().toString();
+      const month=(today.getMonth()+1).toString();
+      console.log("year:",year,"month:",month)
+
+    const filteredUsersQuery =query(collection(db,'Timesheet'),where('month','==',month),where('email','==',email),where('year','==',year));
+
+      onSnapshot(filteredUsersQuery,(data)=>{
+        setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      })
+       
+    }
+    handleGet()
+},[])
+
+console.log("details:",details)
+const startTime=[]
+const endTime=[]
+for(let i=0;i<details.length;i++){
+  // console.log("startTime",details[i].startTime)
+  startTime.push(details[i].startTime)
+  endTime.push(details[i].endTime)
+}
+
+// console.log(startTime)
+// console.log(endTime)
+
+const workedHours=(totHours(startTime,endTime))?(totHours(startTime,endTime)):0
+console.log("workedhours",workedHours)
 
   return (
     <React.Fragment>
@@ -75,7 +159,9 @@ const Dashboard = props => {
         <Container fluid><Row>
             <Col xl="4">
               <WelcomeComp name={name} role={role} />
-              <MonthlyEarning />
+              {/* <Col xl="6"> */}
+              <TeamMates team={team} />
+              {/* </Col> */}
             </Col>
             <Col xl="8">
               <Row>
@@ -107,16 +193,18 @@ const Dashboard = props => {
                 ))}
               </Row>
               <Row>
-            <ApexCharts/>
+            <Calender/>
             </Row>
             </Col>
+            
           </Row>
+          {/* <Row>
+            <DatatableTables/>
+          </Row> */}
+
           <Row>
-          <Col sm="6">
+          <Col sm="12">
           <RecentFile/>
-          </Col>
-          <Col sm="6">
-          <ChartjsChart/>
           </Col>
           </Row>
 

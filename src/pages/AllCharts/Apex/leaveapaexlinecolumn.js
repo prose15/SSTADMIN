@@ -2,21 +2,16 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import getChartColorsArray from "../../../components/Common/ChartsDynamicColor";
 
-const Leaveapaexlinecolumn = ({graphData,dataColors}) => {
-  console.log(graphData);
+const Leaveapaexlinecolumn = ({taken,available,dataColors}) => {
   const apaexlineColumnColors = getChartColorsArray(dataColors);
   const series = [
-    // {
-    //   name: "Total",
-    //   data: [1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5],
-    // },
     {
-      name: "Booked",
-      data: [graphData[0],graphData[1],graphData[2],graphData[3],graphData[4],graphData[5],graphData[6],graphData[7],graphData[8],graphData[9],graphData[10],graphData[11]],
+      name: "Taken",
+      data: [taken[0],taken[1],taken[2],taken[3],taken[4],taken[5],taken[6],taken[7],taken[8],taken[9],taken[10],taken[11]],
     },
     {
       name: "Available",
-      data: [1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5],
+      data: [available[0],available[1],available[2],available[3],available[4],available[5],available[6],available[7],available[8],available[9],available[10],available[11]],
     },
   ];
   const options = {
