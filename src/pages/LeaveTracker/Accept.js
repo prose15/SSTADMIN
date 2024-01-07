@@ -56,6 +56,7 @@ export const Accept = async(id,users,admin) =>{
       status=[...status,'L1 approved','approved','approved']
       const forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
+      console.log('arr',forwardedRpm)
       let flag=0;
       let index1=0;
       if(Cookies.get('level')==='L3'){

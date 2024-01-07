@@ -50,11 +50,11 @@ const Total = (cell) => {
 const Status = (cell) => {
     return (
         <Badge
-          className={"font-size-11 badge-soft-" + 
-          (cell.value === "accept" ? "success" : "danger" && cell.value === "pending" ? "warning" : "danger")}          
-        >
-          {cell.value}
-        </Badge>
+        className={"font-size-11 badge-soft-" + 
+        ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('muted'):(cell.value==='revoke'?('warning'):('danger'))))}          
+      >
+        {cell.value}
+      </Badge>
     )
 };
 const Action =(cell)=>{

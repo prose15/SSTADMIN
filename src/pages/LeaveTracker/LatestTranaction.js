@@ -44,31 +44,20 @@ const LatestTranaction = props => {
         const adminSnap = await getDocs(adminRef);
         setAdmin(adminSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         setUsers(userSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        if(Cookies.get('level')==='L3'){
-          const filteredUsersQuery = query(collection(db, 'leave submssion'), where('team','==',Cookies.get('team')),where('status','!=','approved'));
-          onSnapshot(filteredUsersQuery, (data) => {
-            setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-          })
-        }
-        else{
+        // if(Cookies.get('level')==='L3'){
+        //   const filteredUsersQuery = query(collection(db, 'leave submssion'), where('team','==',Cookies.get('team')),where('status','!=','approved'));
+        //   onSnapshot(filteredUsersQuery, (data) => {
+        //     setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        //   })
+        // }
+        // else{
           if (docSnap.exists()) {
-            const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name));
+            const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name), orderBy('timestamp','asc'));
             onSnapshot(filteredUsersQuery, (data) => {
               setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
             })
           }
-        }
        
-      
-      // else {
-
-      //   const filteredUsersQuery = query(collection(db, 'leave submssion'), where(level, '==', name));
-      //   onSnapshot(filteredUsersQuery, (data) => {
-      //     setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      //   })
-
-
-      // }
     };
     getData();
   }, [])

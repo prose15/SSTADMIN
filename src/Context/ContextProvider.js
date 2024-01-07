@@ -33,16 +33,17 @@ export const ContextProvider=({children})=>{
 
   useEffect(()=>{
       const handleGet=async()=>{
-        // if(user){
-          const email=Cookies.get('email') 
+        const email=Cookies.get('email') 
+        
           const filteredUsersQuery =query(collection(db,'leave submssion'),where('email','==',email),where('status','!=','pending'));
           onSnapshot(filteredUsersQuery,(data)=>{
             setDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
           })
           console.log(detail); 
-        // } 
+        
         }
-        handleGet()
+        setTimeout(()=>handleGet(),2000)
+        
   },[])
  
   var today = new Date();
