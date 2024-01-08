@@ -53,6 +53,7 @@ const Dashboard = props => {
    if(docSnap.exists()){
    setName(()=>docSnap.data().name,)
    setRole(()=>docSnap.data().designation)
+   Cookies.set('level',docSnap.data().level,{secure:'true',path:'/'})
    Cookies.set('team',docSnap.data().team,{secure:'true',path:'/'})
    Cookies.set('name',docSnap.data().name,{secure:'true',path:'/'})
    Cookies.set('email',docSnap.data().email,{secure:'true',path:'/'})

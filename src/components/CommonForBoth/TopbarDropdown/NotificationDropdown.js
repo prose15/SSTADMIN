@@ -10,21 +10,19 @@ import { Timestamp } from "firebase/firestore";
 
 const NotificationDropdown = props => {
   const [menu, setMenu] = useState(false);
-  const {detail, setDetail} = useStateContext();
-  const new_arr = detail.filter((data,index)=>index<=2)
-  console.log(new_arr)
-const findMin=(data)=>{
-  const seconds    = data.timestamp?.seconds
-  const nanoseconds = data.timestamp?.nanoseconds
-  console.log(seconds,nanoseconds)
-  const timestampInMilliseconds = seconds * 1000 + Math.floor(nanoseconds / 1e6);
-    const dateObject = new Date(timestampInMilliseconds);
-    console.log(dateObject);
-    const today =new Date()
-    const timeDiff = today - dateObject
-    const minsDiff = Math.floor(timeDiff/(1000 * 60))
-    return minsDiff
-}
+  const {request} = useStateContext();
+  const arr=[...request]
+  const new_arr = arr.reverse().filter((data,index)=>index<=2)
+  const findMin=(data)=>{
+    const seconds    = data.timestamp?.seconds
+    const nanoseconds = data.timestamp?.nanoseconds
+    const timestampInMilliseconds = seconds * 1000 + Math.floor(nanoseconds / 1e6);
+      const dateObject = new Date(timestampInMilliseconds);
+      const today =new Date()
+      const timeDiff = today - dateObject
+      const minsDiff = Math.floor(timeDiff/(1000 * 60))
+      return minsDiff
+  }
  
 
 
@@ -35,7 +33,10 @@ const findMin=(data)=>{
     let bell = document.getElementById("bell");
     bell.classList.remove("bx-tada")
   } 
-
+  const empty = ()=>{
+    let element = document.getElementById("detail");
+    element.classList.add("visually-hidden")
+  }
   return (
     <React.Fragment>
       <Dropdown
@@ -49,8 +50,9 @@ const findMin=(data)=>{
           tag="button"
           id="page-header-notifications-dropdown"
         >
-          <i id="bell" className="bx bx-bell bx-tada" />
-          <span id="detail" className="badge bg-danger rounded-pill">{detail.length}</span>
+         {request.length === 0 ?  (
+          <i id="bell" className="bx bx-bell" />) : ( <i id="bell" className="bx bx-bell bx-tada" />)}
+          <span id="detail" className="badge bg-danger rounded-pill">{request.length === 0 ? empty : request.length}</span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
           <div className="p-3">
@@ -67,23 +69,23 @@ const findMin=(data)=>{
             <div  className="d-flex">
                 <div className="avatar-xs me-3">
                   
-                  {data.status === "accept" ? (<span className="avatar-title bg-success rounded-circle font-size-13"><i className="fas fa-check"/>
-                  </span>) : (<span className="avatar-title bg-danger rounded-circle font-size-13">
-                    <i className="fas fa-times bg-danger"/></span>)}
+                <span className="avatar-title bg-primary rounded-circle font-size-13">
+                    <i className="bx bx-calendar"/></span>
                   
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
-                    {data.reason}
+                    {data.leaveType}
                   </h6>
                   <div className="font-size-12 text-muted">
                     <p className="mb-1">
-                     {data.status === "accept" ? (<p>Your leave has been approved</p>) : (<p>Your leave has been rejected</p>)}
+                     {`${data.name} sent you a message`}
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-clock-outline" />
-                        {findMin(data)} mins
-                    
+                      {(findMin(data)===0)?('Just now'):((findMin(data)<60)?
+                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.floor(findMin(data)/60/24+"days ago")):(Math.floor(findMin(data)/60)+" hrs ago")))
+                       }
                     </p>
                   </div>
                 </div>
@@ -94,7 +96,7 @@ const findMin=(data)=>{
 
           <div className="p-2 border-top d-grid"
          >
-            <Link to="/leave/approvals"
+            <Link to="/leave/requests"
             onClick={handleClick}
             className="btn btn-sm btn-link font-size-14 text-center">
               <i className="mdi mdi-arrow-right-circle me-1" 

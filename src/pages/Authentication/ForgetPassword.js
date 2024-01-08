@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Alert, Card, CardBody, Container, FormFeedback, Input, Label, Form } from "reactstrap";
 
 //redux
@@ -12,13 +12,12 @@ import withRouter from "components/Common/withRouter";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-// action
-import { userForgetPassword } from "../../store/actions";
+import {sendPasswordResetEmail} from 'firebase/auth'
 
 // import images
-import profile from "../../assets/images/profile-img.png";
 import logo from "../../assets/images/logosm.png";
 import { auth } from "firebase-config";
+
 
 const ForgetPasswordPage = props => {
 
@@ -38,7 +37,11 @@ const ForgetPasswordPage = props => {
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
-      dispatch(userForgetPassword(values, props.history));
+      sendPasswordResetEmail(auth,values.email).then(()=>{
+        setSuccessMsg(true)
+      }).catch((err)=>{
+          console.log(err.code);
+      })
     }
   });
 
@@ -55,12 +58,17 @@ const ForgetPasswordPage = props => {
     const {
       forgetError,
       forgetSuccessMsg
-  } = useSelector(ForgotPasswordProperties);    
+  } = useSelector(ForgotPasswordProperties);   
+  
+ 
+    
+  const [successMsg,setSuccessMsg]=useState(false) 
+  
 
   return (
     <React.Fragment>
       <div className="home-btn d-none d-sm-block">
-        <Link to="/" className="text-dark">
+        <Link to="/dashboard" className="text-dark">
           <i className="bx bx-home h2" />
         </Link>
       </div>
@@ -103,12 +111,11 @@ const ForgetPasswordPage = props => {
                         {forgetError}
                       </Alert>
                     ) : null}
-                    {forgetSuccessMsg ? (
+                    {successMsg ? (
                       <Alert color="success" style={{ marginTop: "13px" }}>
-                        {forgetSuccessMsg}
+                        {"Reset link has been sent to your mailbox"}
                       </Alert>
                     ) : null}
-
                     <Form
                       className="form-horizontal"
                       onSubmit={(e) => {
@@ -149,18 +156,6 @@ const ForgetPasswordPage = props => {
                   </div>
                 </CardBody>
               </Card>
-              {/* <div className="mt-5 text-center">
-                <p>
-                  Go back to{" "}
-                  <Link to="login" className="font-weight-medium text-primary">
-                    Login
-                  </Link>{" "}
-                </p>
-                <p>
-                  © {new Date().getFullYear()} Skote. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by Themesbrand
-                </p>
-              </div> */}
             </Col>
           </Row>
         </Container>

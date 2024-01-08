@@ -94,7 +94,7 @@ const LeaveForm = props => {
   const level=Cookies.get('level')
   console.log("level",level);
   if(team==='Delivery'){
-    details=[...details,'Yuvashini','Gobi','Krishna kumar']
+    details=[...details,'Gobi','Krishna kumar']
   if(level==='L1'){
     values.reportingManager=details[0];
     // userName=[...userName,details[0]];

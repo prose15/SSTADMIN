@@ -27,9 +27,9 @@ import AllRecords from "pages/LeaveTracker/AllRecords";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   //leave tracker
-  { path: "/leavetracker", component: <LeaveTracker /> },
-  { path: "/leave/records", component: <LeaveRecords /> },
-  { path: "/leave/approvals", component: <LeaveApprovals /> },
+  // { path: "/leavetracker", component: <LeaveTracker /> },
+  // { path: "/leave/records", component: <LeaveRecords /> },
+  // { path: "/leave/approvals", component: <LeaveApprovals /> },
   { path:"/leave/requests",component: <TeamRequests />},
   { path: "/addleave", component: <AddLeave/> },
   { path: "/allrecords", component: <AllRecords /> },

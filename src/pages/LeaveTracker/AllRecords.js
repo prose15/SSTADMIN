@@ -70,7 +70,7 @@ console.log(details);
     return (
         <div className="page-content">
             <div className="container-fluid">
-                <Breadcrumbs title='All Records' breadcrumbItem="My Records" />
+                <Breadcrumbs title='Team Request' breadcrumbItem="All Records" />
                 <TableContainer
                     columns={columns}
                     data={details}

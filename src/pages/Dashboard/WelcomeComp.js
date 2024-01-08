@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import profileImg from "../../assets/images/profile-img.png"
 import { useStateContext } from "Context/ContextProvider"
 import NoProfile from "pages/Authentication/NoProfile"
+import Cookies from "js-cookie"
 const WelcomeComp = (props) => {
   const {url} =useStateContext()
   return (
@@ -44,12 +45,12 @@ const WelcomeComp = (props) => {
               <div className="pt-4">
                 <Row>
                   <Col xs="6">
-                    <h5 className="font-size-15">30</h5>
-                    <p className="text-muted mb-0">Hours worked</p>
+                    <h5 className="font-size-15">Team</h5>
+                    <p className="text-muted mb-0">{Cookies.get('team')}</p>
                   </Col>
                   <Col xs="6">
-                    <h5 className="font-size-15">3</h5>
-                    <p className="text-muted mb-0">Days off</p>
+                    <h5 className="font-size-15">Level</h5>
+                    <p className="text-muted mb-0">{Cookies.get('level')}</p>
                   </Col>
                 </Row>
                 <div className="mt-4">

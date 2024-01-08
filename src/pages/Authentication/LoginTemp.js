@@ -18,7 +18,7 @@ import lightlogo from "../../assets/images/logo-light.svg";
 // Firebase
 import {auth} from "firebase-config"
 import {signInWithEmailAndPassword,sendPasswordResetEmail} from 'firebase/auth'
-import { values } from "lodash";
+
 
 const initialValues = {
   email:"",
@@ -30,14 +30,12 @@ const Login = () => {
     email: Yup.string().min(3).email("Please Enter Valid Email").required("Please Enter Your username"),
     password: Yup.string().min(3).required("Please Enter Your Password"),
   })
-  const [newName,setNewName]=useState('');
-  const [uid,setUid]=useState('');
-  const[newPassword,setNewPassword]=useState('');
-  const [resetEmail,setResetEmail]=useState('');
+
   const nav = useNavigate();
 
   const [show, setShow] = useState(false);
-
+  const[error,seterror] = useState('');
+// const error = error;
   // Form validation 
  const {values,handleBlur,handleChange,handleSubmit,errors}= useFormik({
     initialValues: initialValues,
@@ -48,14 +46,12 @@ const Login = () => {
         // Login successful, access the user object
         var user = userCredential.user;
         sessionStorage.setItem("uid",JSON.stringify(user.uid));
-        console.log('logged in');
         nav('/dashboard');
       })
       .catch((error) => {
         // Handle errors
-        const errorCode = error.code;
-        console.log(errorCode);
-        
+        error.code === "auth/invalid-credential" ? (
+          seterror(" wrong password or invalid email")) : (seterror("Invalid password."))
       }) 
     }   
   });
@@ -109,7 +105,11 @@ const Login = () => {
               
                     >
                     <Form className="form-horizontal"
-                    onSubmit={handleSubmit}>
+                    onSubmit={
+                      
+                      handleSubmit
+                      
+                      }>
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
                         <Field
@@ -120,15 +120,8 @@ const Login = () => {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.email}
-                          // invalid={
-                          //   values.touched.email && values.errors.email ? true : false
-                          // }
-                        />
-                   
+                        />              
                         {errors.email && <small className="text-danger m-0">{errors.email}</small>}
-                        {/* {values.touched.password && values.errors.password ? (
-                          <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
-                        ) : null} */}
                       </div>
 
                       <div className="mb-3">
@@ -153,10 +146,6 @@ const Login = () => {
                             
                         </div>
                         {errors.password && <small className="text-danger m-0">{errors.password}</small>}
-                       
-                        {/* {validation.touched.password && validation.errors.password ? (
-                          <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
-                        ) : null} */}
                       </div>
 
                       <div className="form-check">
@@ -182,7 +171,7 @@ const Login = () => {
                           Log In
                         </button>
                       </div>
-
+                      <div className="text-danger mx-auto pt-2 d-flex justify-content-center">{error}</div>
                       <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted">
                           <i className="mdi mdi-lock me-1" /> Forgot your

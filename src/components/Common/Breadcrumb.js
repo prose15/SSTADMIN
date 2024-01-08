@@ -17,7 +17,7 @@ const Breadcrumb = props => {
                   <>
                     
                     <BreadcrumbItem>
-                      <Link to="/leave/records">{props.title}</Link>
+                      <Link to="/leave/requests">{props.title}</Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>
                       <Link to="/allrecords">{props.breadcrumbItem}</Link>

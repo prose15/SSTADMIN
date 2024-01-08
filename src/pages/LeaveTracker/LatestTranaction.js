@@ -21,12 +21,12 @@ import {
   Reason,
   Status
 } from "./LatestTranactionCol";
-
+import Breadcrumbs from '../../components/Common/Breadcrumb';
 import TableContainer from "../../components/Common/TableContainer";
 import Cookies from "js-cookie";
-
+import { useStateContext } from "Context/ContextProvider";
 const LatestTranaction = props => {
-
+  const {request} = useStateContext()
   const [details, setDetails] = useState([])
   const [admin, setAdmin] = useState([]);
   // const collectionRef = collection(db, 'leave submssion')
@@ -51,12 +51,12 @@ const LatestTranaction = props => {
         //   })
         // }
         // else{
-          if (docSnap.exists()) {
-            const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name), orderBy('timestamp','asc'));
-            onSnapshot(filteredUsersQuery, (data) => {
-              setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-            })
-          }
+          // if (docSnap.exists()) {
+          //   const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name), orderBy('timestamp','asc'));
+          //   onSnapshot(filteredUsersQuery, (data) => {
+          //     setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          //   })
+          // }
        
     };
     getData();
@@ -164,12 +164,24 @@ const LatestTranaction = props => {
     <React.Fragment>
       <div className="page-content">
         <RejectModal />
+    
+          {
+                    (Cookies.get('name')==='Keerthana')?(
+                    <Breadcrumbs title='Team Request' breadcrumbItem="All Records" />
+                    ):(
+                        <Breadcrumbs title='Leave Tracker' breadcrumbItem="Team Request" />
+                    )
+                }
+       
         <Card>
+        
+       
           <CardBody>
+        
             <div className="mb-4 h4 card-title">Latest Requests</div>
             <TableContainer
               columns={columns}
-              data={details}
+              data={request}
               isGlobalFilter={false}
               isAddOptions={false}
               isPagination={true}

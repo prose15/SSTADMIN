@@ -139,25 +139,25 @@ export const Accept = async(id,users,admin) =>{
     updateDoc(userDoc, detail).then(() => {
       users.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
-          if (detail.leaveType === 'Casual leave') {
-            user.casualAvailable = 12 - user.casual
+          if (detail.leaveType === 'Casualleave') {
+            user.casualAvailable -= 1
             if (user.casualAvailable <= 0) {
               user.casualAvailable = 0;
             }
           }
-          else if (detail.leaveType === 'Earned leave') {
-            user.earnedAvailable = 12 - user.earned
+          else if (detail.leaveType === 'Earnedleave') {
+            user.earnedAvailable -= 1
             if (user.earnedAvailable <= 0) {
               user.earnedAvailable = 0;
             }
           }
-          else if (detail.leaveType === 'Sick leave') {
-            user.sickAvailable = 12 - user.sick
+          else if (detail.leaveType === 'Sickleave') {
+            user.sickAvailable -= 1
             if (user.sickAvailable <= 0) {
               user.sickAvailable = 0;
             }
           }
-          else if (detail.leaveType === 'Paternity leave') {
+          else if (detail.leaveType === 'Paternityleave') {
             user.paternityAvailable = 0 + user.paternity
           }
           else if (detail.leaveType === 'Leave without pay') {
@@ -177,31 +177,31 @@ export const Accept = async(id,users,admin) =>{
 
       admin.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
-          if (detail.leaveType === 'Casual leave') {
-            console.log(user.casualAvailable);
-            user.casualAvailable = 12 - user.casual
+          if (detail.leaveType === 'Casualleave') {
+      
+            user.casualAvailable -= 1
             if (user.casualAvailable <= 0) {
               user.casualAvailable = 0;
             }
           }
-          else if (detail.leaveType === 'Earned leave') {
-            user.earnedAvailable = 12 - user.earned
+          else if (detail.leaveType === 'Earnedleave') {
+            user.earnedAvailable -= 1
             if (user.earnedAvailable <= 0) {
               user.earnedAvailable = 0;
             }
           }
-          else if (detail.leaveType === 'Sick leave') {
-            user.sickAvailable = 12 - user.sick
+          else if (detail.leaveType === 'Sickleave') {
+            user.sickAvailable -= 1
             if (user.sickAvailable <= 0) {
               user.sickAvailable = 0;
             }
           }
-          else if (detail.leaveType === 'Paternity leave') {
+          else if (detail.leaveType === 'Paternityleave') {
             user.paternityAvailable = 0 + user.paternity
           }
-          else if (detail.leaveType === 'Leave without pay') {
-            user.lopAvailable = 0 + user.lop
-          }
+          // else if (detail.leaveType === 'Leave without pay') {
+          //   user.lopAvailable = 0 + user.lop
+          // }
 
           const profile = doc(adminRef, user.id)
           updateDoc(profile, user).then(() => {

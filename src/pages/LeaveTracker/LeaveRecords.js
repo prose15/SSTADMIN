@@ -8,7 +8,7 @@ import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firest
 import { db } from "firebase-config";
 // import Leavedata from "pages/Tables/Leavedata";
 //import components
-import Breadcrumbs from '../../components/Common/Breadcrumb';
+
 import TableContainer from '../../components/Common/TableContainer';
 // import DatatableTables from "pages/Tables/DatatableTables";
 import { Status } from "pages/timesheet/Dashboard-saas/pages/MytimesheetCol";
@@ -68,13 +68,7 @@ console.log(details);
     return (
         <div className="page-content">
             <div className="container-fluid">
-                {
-                    (Cookies.get('name')==='Keerthana')?(
-                    <Breadcrumbs title='My Records' breadcrumbItem="All Records" />
-                    ):(
-                        <Breadcrumbs title='Leave Tracker' breadcrumbItem="My Records" />
-                    )
-                }
+              
                 
                 <TableContainer
                     columns={columns}

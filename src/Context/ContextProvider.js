@@ -10,6 +10,7 @@ export const ContextProvider=({children})=>{
   const [url,setUrl]=useState('')
   const [user,setUser]=useState()
   const [detail,setDetail]=useState([])
+  const [request,setRequest]=useState([])
   const [subscribemodal,setSubscribemodal]=useState(false)
   const [id,setId]=useState('')
   useEffect(()=>{
@@ -33,18 +34,17 @@ export const ContextProvider=({children})=>{
 
   useEffect(()=>{
       const handleGet=async()=>{
-        const email=Cookies.get('email') 
-        
-          const filteredUsersQuery =query(collection(db,'leave submssion'),where('email','==',email),where('status','!=','pending'));
-          onSnapshot(filteredUsersQuery,(data)=>{
-            setDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-          })
+        const name=Cookies.get('name') 
+        const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name), orderBy('timestamp','asc'));
+        onSnapshot(filteredUsersQuery, (data) => {
+          setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        })
           console.log(detail); 
         
         }
-        setTimeout(()=>handleGet(),2000)
+        handleGet()
         
-  },[])
+  },[user])
  
   var today = new Date();
     var startDate = new Date()
@@ -62,7 +62,7 @@ export const ContextProvider=({children})=>{
     enddate.setMinutes(59);
     enddate.setSeconds(59);
     enddate.setMilliseconds(59);
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request}}>
         {children}
     </StateContext.Provider>)
 }

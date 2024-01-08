@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import Cookies from "js-cookie";
 import NoProfile from "pages/Authentication/NoProfile";
+import { Link } from "react-router-dom";
 const ProfileLayout = props => {
 // let user = Cookies.get('user')
 // console.log(user.name);
@@ -60,7 +61,9 @@ const ProfileLayout = props => {
                           <Label htmlFor="formrow-email-Input" className="font-size-14">Password</Label>
                           </Col>
                           <Col>
-                          <i className="mt-3 fas fa-edit"></i>
+                          <Link to="/forgot-password">
+                          <i className="mt-3 fas fa-edit text-secondary"></i>
+                          </Link>
                           </Col>
                           </Row>
                           

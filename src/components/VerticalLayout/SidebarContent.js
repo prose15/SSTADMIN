@@ -165,15 +165,15 @@ const SidebarContent = props => {
                 <span>Leave Tracker</span>
               </Link>
               <ul className="sub-menu">
-                <li>
+                {/* <li>
                   <Link to="/leavetracker">Dashboard</Link>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <Link to="/leave/records">My Records</Link>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <Link to="/leave/approvals">My Approvals</Link>
-                </li>
+                </li> */}
                 <li>
                   <Link to="/leave/requests">Team Requests</Link>
                 </li>

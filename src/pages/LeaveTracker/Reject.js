@@ -16,7 +16,7 @@ export const Reject = async (id,reason) => {
 
      if (detail.team === 'Delivery') {
       rpm = [...rpm,'Yuvashini', 'Keerthana', 'Gobi']
-      status=[...status,'L1 denied','L2 denied','denied']
+      status=[...status,'denied','denied','denied']
       const forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
       let flag=0;
@@ -25,6 +25,7 @@ export const Reject = async (id,reason) => {
         detail.reportManager=forwardedRpm[forwardedRpm.length-1]
         detail.status=status[status.length-1]
         detail.reasonOfReject = reason
+        detail.timestamp = Timestamp.now()
       }
       else{
         rpm.map((data,index)=>{
@@ -37,6 +38,7 @@ export const Reject = async (id,reason) => {
           detail.reportManager=forwardedRpm[forwardedRpm.length-1]
             detail.status=status[index1]
             detail.reasonOfReject = reason
+            detail.timestamp = Timestamp.now()
         }
       } 
     }
@@ -51,6 +53,7 @@ export const Reject = async (id,reason) => {
       detail.reportManager=forwardedRpm[forwardedRpm.length-1]
       detail.status=status[status.length-1]
       detail.reasonOfReject = reason
+      detail.timestamp = Timestamp.now()
     }
     else{
       rpm.map((data,index)=>{
@@ -63,6 +66,7 @@ export const Reject = async (id,reason) => {
         detail.reportManager=forwardedRpm[forwardedRpm.length-1]
           detail.status=status[status.length-1]
           detail.reasonOfReject = reason
+          detail.timestamp = Timestamp.now()
       }
     } 
   }
