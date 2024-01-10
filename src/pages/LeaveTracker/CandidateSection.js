@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { Card, CardBody, Col, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown,Alert } from 'reactstrap';
 
 //import images
 import jobs from "../../assets/images/jobs.png";
@@ -17,7 +17,7 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "../../../node_modules/swiper/swiper.scss";
 import Cookies from 'js-cookie';
 
-const CandidateSection = () => {
+const CandidateSection = ({upcomingLeaves}) => {
     const LeaveContent = "You will notify here about your upcoming leaves!"
     const team=Cookies.get('team')
     const level=Cookies.get('level')
@@ -53,14 +53,28 @@ console.log(swiper1.length)
     return (
         <React.Fragment>
             <Col lg={12}>
-                <Card>
+            <Card>
                     <CardBody>
-                        <div className="d-flex">
-                            <div>
-                                <h4 className="card-title mb-3">Upcoming Leaves</h4>
-                                <p className="text-muted">{LeaveContent}</p>
-                            </div>
-                          
+                        <div className="d-flex flex-column">
+                        <h4 className="card-title mb-3">Upcoming Leaves</h4>
+                            <div className='container overflow-y-auto' id='upcoming'>
+                                
+                                <p className="text-muted">{(upcomingLeaves.length===0)?(LeaveContent):(
+                                    document.getElementById('upcoming').style.height='110px',
+                                    upcomingLeaves.map((data)=>(
+                                <div key={data.id} >
+                                   <Alert color="success">
+                                    <div className='d-flex flex-direction-row'>
+                                        <i className="mdi mdi-check-all me-2"></i>                              
+                                        {`Your have upcoming ${data.leaveType} from ${data.from} to ${data.to}`}
+                                    </div>
+                                    </Alert>
+                                {/* <p></p> */}
+                                </div>
+                                    ))
+                                
+                                )}</p>
+                            </div>                        
                         </div>
                     </CardBody>
                 </Card>

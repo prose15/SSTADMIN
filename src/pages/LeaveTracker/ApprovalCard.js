@@ -35,7 +35,7 @@ const ApprovalCard = (props) => {
                   <div className="px-4 py-3 border-top">
                     <ul className="list-inline mb-0">
                       <li className="list-inline-item me-3">
-                        {(ele.status==='accept')?(<Badge className={"bg-success"}>
+                      {(ele.status.includes('approved'))?(<Badge className={"bg-success"}>
                           {ele.status}
                         </Badge>):(<Badge className={"bg-danger"}>
                           {ele.status}

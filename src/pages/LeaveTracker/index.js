@@ -27,17 +27,13 @@ const LeaveTracker = () => {
           })
       }
       handleGet()
-
   },[])
-// console.log(upcomingLeaves)
 const [details,setDetails]=useState([])
 const name=Cookies.get('name')
 
 useEffect(()=>{
     const getData=async()=>{
-        // const collection=collection(db,'timesheet')
         const filteredUsersQuery =query(collection(db,'leave submssion'),where('name','==',name));
-        
         const data=await getDocs(filteredUsersQuery).catch((err)=>{
           console.log(err);
         })

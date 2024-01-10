@@ -2,7 +2,7 @@ import React , {useContext,createContext,useState,useEffect} from "react";
 import { auth, storage } from "firebase-config";
 import {getDownloadURL,ref,uploadBytes} from 'firebase/storage'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firestore'
+import {collection,getDoc,query,where,orderBy,onSnapshot,doc} from 'firebase/firestore'
 import Cookies from "js-cookie";
 import { db } from "firebase-config";
 const StateContext=createContext();
@@ -12,6 +12,7 @@ export const ContextProvider=({children})=>{
   const [detail,setDetail]=useState([])
   const [request,setRequest]=useState([])
   const [subscribemodal,setSubscribemodal]=useState(false)
+  
   const [id,setId]=useState('')
   useEffect(()=>{
     onAuthStateChanged(auth,(user)=>{
@@ -21,6 +22,21 @@ export const ContextProvider=({children})=>{
     })
     async function getURL(user){
       if(user){
+        const docRef = doc(db, "admin", user);
+        const docSnap = await getDoc(docRef)
+        if(docSnap.exists()){ 
+        const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', docSnap.data().name), orderBy('timestamp','asc'));
+        onSnapshot(filteredUsersQuery, (data) => {
+          setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        })
+        const filteredApprovalQuery =query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','desc'));
+          onSnapshot(
+            filteredApprovalQuery,(data)=>{
+              setDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          },(error)=>{
+            console.log(error)
+          })
+        }
         const fileRef=ref(storage,'users/'+user+'.jpg');
         await getDownloadURL(fileRef).then((url) => {
           setUrl(url)
@@ -32,19 +48,7 @@ export const ContextProvider=({children})=>{
     getURL(user)
   },[user])
 
-  useEffect(()=>{
-      const handleGet=async()=>{
-        const name=Cookies.get('name') 
-        const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', name), orderBy('timestamp','asc'));
-        onSnapshot(filteredUsersQuery, (data) => {
-          setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
-          console.log(detail); 
-        
-        }
-        handleGet()
-        
-  },[user])
+
  
   var today = new Date();
     var startDate = new Date()
