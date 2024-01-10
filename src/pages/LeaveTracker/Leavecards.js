@@ -28,7 +28,7 @@ let user
  useEffect(()=>{
 
      const handleGet=async()=>{
-         const docRef = doc(db, "users", JSON.parse(sessionStorage.getItem('uid')));
+         const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
          setName(()=>Cookies.get('name'))
        
  const docSnap = await getDoc(docRef)
@@ -94,19 +94,16 @@ let user
 
    let leavetype=localStorage.getItem('type')
       
-   if(leavetype==='Casual leave'){
+   if(leavetype==='Casualleave'){
      leavetype='casual'
    }
-   else if(leavetype==='Earned leave'){
+   else if(leavetype==='Earnedleave'){
      leavetype='earned'
    }
-  else if (leavetype==='Leave without pay'){
-     leavetype='lop'
-   }
-   else if(leavetype==='Sick leave'){
+   else if(leavetype==='Sickleave'){
      leavetype='sick'
    }
-  else if (leavetype==='Paternity leave'){
+  else if (leavetype==='Paternityleave'){
      leavetype='paternity'
    }
 
@@ -119,7 +116,7 @@ let user
    const  getData=async()=>{
      for(let i in booked){
          if(i===leavetype){
-             const docRef = doc(db, "users", JSON.parse(sessionStorage.getItem('uid')));
+             const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
              const docSnap = await getDoc(docRef)
              const newData=docSnap.data();
              newData[leavetype]+=1;
@@ -147,9 +144,9 @@ let user
 
             <div className="d-flex">
                 <p className="mb-0 flex-grow-1 text-success me-5">
-                    Available :{casualAvail}</p>
+                    Available {casualAvail}</p>
                     
-                <p className="mb-0 text-danger">Booked : {casual}</p>
+                <p className="mb-0 text-danger">Booked  {casual}</p>
             </div>
         </CardBody>
     </Card>
@@ -162,8 +159,8 @@ let user
 
             <div className="d-flex">
                 <p className="mb-0 flex-grow-1 text-success me-5">
-                    Available : {lopAvailable}</p>
-                <p className="mb-0 text-danger">Booked : {lop}</p>
+                    Available  {lopAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {lop}</p>
             </div>
         </CardBody>
     </Card>
@@ -176,9 +173,8 @@ let user
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available
-                     : {earnedAvailable}</p>
-                <p className="mb-0 text-danger">Booked : {earned}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available {earnedAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {earned}</p>
             </div>
         </CardBody>
     </Card>
@@ -191,8 +187,8 @@ let user
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available : {paternityAvailable}</p>
-                <p className="mb-0 text-danger">Booked : {paternity}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available  {paternityAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {paternity}</p>
             </div>
         </CardBody>
     </Card>
@@ -204,8 +200,8 @@ let user
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available : {sickAvailable}</p>
-                <p className="mb-0 text-danger">Booked : {sick}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available  {sickAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {sick}</p>
             </div>
         </CardBody>
     </Card>

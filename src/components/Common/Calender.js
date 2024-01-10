@@ -52,57 +52,9 @@ const Calender = props => {
 //   const [event, setEvent] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
 
-  // category validation
-//   const categoryValidation = useFormik({
-//     // enableReinitialize : use this flag when initial values needs to be changed
-//     enableReinitialize: true,
-
-//     initialValues: {
-//       title: (event && event.title) || '',
-//       category: (event && event.category) || '',
-//     },
-//     validationSchema: Yup.object({
-//       title: Yup.string().required("Please Enter Your Event Name"),
-//       category: Yup.string().required("Please Enter Your Billing Name"),
-//     }),
-//     onSubmit: (values) => {
-//       if (isEdit) {
-//         const updateEvent = {
-//           id: event.id,
-//           title: values.title,
-//           classNames: values.category + " text-white",
-//           start: event.start,
-//         };
-//         // update event
-//         // dispatch(onUpdateEvent(updateEvent));
-//         // categoryValidation.resetForm();
-//       } else {
-//         // const newEvent = {
-//         //   id: Math.floor(Math.random() * 100),
-//         //   title: values["title"],
-//         //   start: selectedDay ? selectedDay.date : new Date(),
-//         //   className: values['category']
-//         //     ? values['category'] + " text-white"
-//         //     : "bg-primary text-white"
-//         //   ,
-//         // };
-//         // // save new event
-//         // dispatch(onAddNewEvent(newEvent));
-//         // categoryValidation.resetForm()
-//       }
-//       toggle();
-//     },
-//   });
-
 
   const selectCalendarState = (state) => state.calendar;
-//   const CalendarProperties = createSelector(
-//     selectCalendarState,
-//     (Calendar) => ({
-//       events: Calendar.events,
-//       categories: Calendar.categories,
-//     })
-//   );
+
   const event = [
     {
         title: 'New Year\'s Day',
@@ -140,7 +92,7 @@ const Calender = props => {
       allDay: true, 
       className: 'holiday-event'
     }, {
-        title: 'Ajith Kumar B\'day',
+        title: 'May Day',
       start: '2024-05-01',
       allDay: true, 
       className: 'holiday-event'

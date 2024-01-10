@@ -22,20 +22,13 @@ const CandidateSection = () => {
     const team=Cookies.get('team')
     const level=Cookies.get('level')
     let details = []
-    if (team === 'Delivery') {
-        if(level=='L2'){
-            details = [...details, {id:1, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }, { id:3,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }] 
-        }
-        else if(level=='L3'){
-            details = [...details, { id:1,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
-        }
-        
+    if (team === 'Delivery' && level=='L1' || team === 'HR' &&  level=='L2') {
+            details = [...details, {id:1, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }]   
     }
 
-    else if (team === 'Sales') {
-        if(level=='L2'){
+    else if (team === 'Sales' && level=='L2') {
             details = [...details,{ id:1,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
-        }
+        
         // details = [...details,{id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{ id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 },{ id:3,name: "Balaji", designation: 'Team manager',img:avatar5 }]
     }
 
@@ -72,15 +65,13 @@ console.log(swiper1.length)
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardBody>
-                        <h4 className="card-title mb-3">Reporting Manager</h4> 
+                <CardBody>
+                        <h4 className="card-title mb-3">Reporting Manager</h4>
 {
-  
-                           (swiper1.length===2)?(
-                            
+                           (swiper1.length===1)?(
                            details.map((data)=>(
                             <div className="bg-light p-3 d-flex mb-3 rounded" key={data}>
-                            <img src={data.img} alt="" className="avatar-sm rounded me-3" />
+                            <img src={data.img} alt="" className="avatar-sm rounded-circle me-3" />
                             <div className="flex-grow-1">
                                 <h5 className="font-size-15 mb-2"><a href="candidate-overview" className="text-body" key={data.name}>{data.name}</a></h5>
                                 <p className="mb-0 text-muted"><i className="me-2 bx bx-briefcase text-body align-middle"></i>{data.designation}</p>
@@ -108,7 +99,7 @@ console.log(swiper1.length)
                                     swiper1.map((data)=>( 
                                     
                                         <div className="bg-light p-3 d-flex mb-3 rounded" key={data.id}>
-                                            <img src={data.img} alt="" className="avatar-sm rounded me-3" />
+                                            <img src={data.img} alt="" className="avatar-sm rounded-circle me-3" />
                                             <div className="flex-grow-1">
                                                 <h5 className="font-size-15 mb-2"><b>{data.name}</b></h5>
                                                 <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i>{data.designation}</p>
@@ -116,7 +107,6 @@ console.log(swiper1.length)
                                         </div>
                                         ))}
                                     </div>
-                                
                                 </SwiperSlide>
                                 
 
@@ -126,7 +116,7 @@ console.log(swiper1.length)
                                     {swiper2.map((data)=>( 
                                     
                                         <div className="bg-light p-3 d-flex mb-3 rounded" key={data.id}>
-                                            <img src={data.img} alt="" className="avatar-sm rounded me-3" />
+                                            <img src={data.img} alt="" className="avatar-sm rounded-circle me-3" />
                                             <div className="flex-grow-1">
                                                 <h5 className="font-size-15 mb-2"><b>{data.name}</b></h5>
                                                 <p className="mb-0 text-muted"><i className="bx bx-map text-body align-middle"></i>{data.designation}</p>
