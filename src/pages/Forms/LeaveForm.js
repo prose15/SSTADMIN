@@ -22,7 +22,6 @@ import { db,storage} from "firebase-config";
 import { collection,addDoc, Timestamp, } from "firebase/firestore";
 import Cookies from 'js-cookie'
 import {ref,uploadBytes} from 'firebase/storage'
-import { leaveprojects } from "common/data/leaveprojects";
 const LeaveForm = props => {
   const team = Cookies.get('team');
     const name = Cookies.get('name')
