@@ -43,8 +43,8 @@ export const Reject = async (id,reason) => {
       } 
     }
   else if (detail.team === 'Sales') {
-    rpm = [...rpm, 'Keerthana', 'Krishna kumar']
-    status=[...status,'L1 denied','L2 denied','denied']
+    rpm = [...rpm,'Balaji', 'Keerthana', 'Krishna kumar']
+    status=[...status,'denied','denied','denied']
     const forwardedRpm=rpm.filter((data,index)=>(index>0))
     forwardedRpm.push('')
     let flag=0;
@@ -64,13 +64,41 @@ export const Reject = async (id,reason) => {
       })
       if(flag==1){
         detail.reportManager=forwardedRpm[forwardedRpm.length-1]
-          detail.status=status[status.length-1]
+          detail.status=status[index1]
           detail.reasonOfReject = reason
           detail.timestamp = Timestamp.now()
       }
     } 
   }
-  
+  else if (detail.team === 'HR') {
+    rpm = [...rpm,'Keerthana', 'Gobi']
+    status=[...status,'denied','denied',]
+    const forwardedRpm=rpm.filter((data,index)=>(index>0))
+    forwardedRpm.push('')
+    let flag=0;
+    let index1=0;
+    if(Cookies.get('level')==='L3'){
+      detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+      detail.status=status[status.length-1]
+      detail.reasonOfReject = reason
+      detail.timestamp = Timestamp.now()
+    }
+    else{
+      rpm.map((data,index)=>{
+        if(detail.reportManager===data){
+          flag=1
+          index1=index
+        }
+      })
+      if(flag==1){
+        detail.reportManager=forwardedRpm[forwardedRpm.length-1]
+        detail.status=status[index1]
+        detail.reasonOfReject = reason
+        detail.timestamp = Timestamp.now()
+      }
+    } 
+    console.log(detail,rpm[1])
+  }
   // else if (detail.team === 'HR') {
   //   rpm = [...rpm, 'Gobi', 'Krishna kumar']
   //   if (detail.reportManager == 'Keerthana') {
@@ -107,6 +135,7 @@ export const Reject = async (id,reason) => {
   //     detail.reasonOfReject = reason
   //   }
   // }
+  
   
   updateDoc(docRef, detail).then(() => {
     console.log('rejected successfully');

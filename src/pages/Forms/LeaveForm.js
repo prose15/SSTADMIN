@@ -19,7 +19,8 @@ import "flatpickr/dist/themes/material_blue.css";
 import * as Yup from "yup";
 import { Formik, useFormik } from "formik";
 import { db,storage} from "firebase-config";
-import { collection,addDoc, Timestamp, } from "firebase/firestore";
+import { collection,addDoc, Timestamp,
+ } from "firebase/firestore";
 import Cookies from 'js-cookie'
 import {ref,uploadBytes} from 'firebase/storage'
 const LeaveForm = props => {
@@ -48,7 +49,7 @@ else if(team==='Sales'){
   const nav = useNavigate()
   const date=new Date().getDate()+'-'+(new Date().getMonth()+1)+'-'+new Date().getFullYear()
   async function upload(file){
-    const fileRef=ref(storage,'MedicalProof/'+`${date}/`+email);
+    const fileRef=ref(storage,`'MedicalProof/'+${date}`/+email);
      await uploadBytes(fileRef,file).then(()=>{
       console.log('uploaded');
     }).catch((err)=>{
@@ -68,6 +69,8 @@ const initialValues = {
   toDate:toDate,
   subject:subject,
   reason:"",
+file:""
+
 }
 const [alert,setAlert]=useState('d-none')
 const [alertErr,setAlertErr]=useState('d-none')
@@ -94,7 +97,8 @@ const flexidays =['2024-01-01','2024-01-15','2024-01-26','2024-04-09','2024-04-1
 const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
   initialValues:initialValues,
   validationSchema: schema,
-  onSubmit:(values) =>{        
+  onSubmit:(values) =>{    
+    console.log(values);
             const startDate = new Date(values.fromDate)
             const endDate = new Date(values.toDate)
               
@@ -137,13 +141,17 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
               addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
                 if(file){
                   upload(file)
-                }
-                else{
                   console.log("message added successfully");
                   setAlert('d-block')
                   localStorage.setItem('type',newDetails.leaveType)
                   setTimeout(()=>{nav('/leavetracker')},2000)
                 }
+                
+                  console.log("message added successfully");
+                  setAlert('d-block')
+                  localStorage.setItem('type',newDetails.leaveType)
+                  setTimeout(()=>{nav('/leavetracker')},2000)
+                
               })
                 
           .catch((err) => {
@@ -182,12 +190,12 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                 if(file){
                   upload(file)
                 }
-                else{
+                
                   console.log("message added successfully");
                   setAlert('d-block')
                   localStorage.setItem('type',newDetails.leaveType)
                   setTimeout(()=>{nav('/leavetracker')},2000)
-                }
+                
               })
                 
           .catch((err) => {
@@ -213,12 +221,12 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
               if(file){
                 upload(file)
               }
-              else{
+              
                 console.log("message added successfully");
                 setAlert('d-block')
                 localStorage.setItem('type',newDetails.leaveType)
                 setTimeout(()=>{nav('/leavetracker')},2000)
-              }
+              
             })
               
         .catch((err) => {
@@ -228,6 +236,11 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     
   
 }})
+const countDays=(fromDate,toDate)=>{
+                const dates = getDatesBetweenDates(fromDate,toDate)
+                const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) ) 
+           return dates.length-holidays.length  
+              }
   return (
     <React.Fragment>
       <div className="page-content">
@@ -352,7 +365,11 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                   </div>
                   {errors.reason && <small className="text-danger m-0">{errors.reason}</small>}
                   {
-                    (values.leaveType==='Sick leave' && dates.length-holidays.length>2)?(<div className="mt-3">
+                    (values.leaveType==='Sickleave' &&   countDays(new Date(values.fromDate),new Date(values.toDate))>2)?(
+                      <>
+                    <div 
+                    className="mt-3"
+                    name = "file">
                     <Label htmlFor="formFile" className="form-label">Add File</Label>
                     <Input className="form-control" type="file" id="formFile" onChange={(e)=>{
                             if(e.target.files[0]){
@@ -360,8 +377,13 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                              
                             }
                           }}/>
-                  </div>):(<></>)
+                 
+                  </div>
+                           {errors.file && <small className="text-danger m-0">{errors.file}</small>}
+                           </>
+                  ):(<></>)
                   }
+                  
                   
                   <div>
                       <button type="submit" className="btn btn-primary w-md mt-5" 

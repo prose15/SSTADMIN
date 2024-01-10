@@ -108,15 +108,16 @@ export const Accept = async(id,users,admin) =>{
       rpm = [...rpm,'Keerthana', 'Gobi']
       status=[...status,'L1 approved','approved']
       const forwardedRpm=rpm.filter((data,index)=>index>0)
+      forwardedRpm.push('')
+      let flag=0;
+      let index1=0;
       if(Cookies.get('level')==='L3'){
         detail.reportManager=forwardedRpm[forwardedRpm.length-1]
         detail.status=status[status.length-1]
         detail.timestamp=Timestamp.now()
       }
       else{
-      forwardedRpm.push('')
-      let flag=0;
-      let index1=0;
+     
       rpm.map((data,index)=>{
         if(detail.reportManager===data){
           flag=1
