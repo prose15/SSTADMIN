@@ -24,30 +24,58 @@ import { collection,addDoc, Timestamp,
 import Cookies from 'js-cookie'
 import {ref,uploadBytes} from 'firebase/storage'
 const LeaveForm = props => {
-  const team = Cookies.get('team');
-    const name = Cookies.get('name')
-    const email=Cookies.get('email');
-    const earnedLeave=Cookies.get('earnedLeave')
-    const [file,setFile]=useState(null);
-    const [alertMsg,setAlertMsg] = useState('')
   let details=[]
+  let reportingManager=''
+  let customErrorMessage = 'invalid option';
+  const team = Cookies.get('team');
+  const nav = useNavigate()
+  const name = Cookies.get('name')
+  const email=Cookies.get('email');
+  const earnedLeave=Cookies.get('earnedLeave')
   const today = new Date();
   const level=Cookies.get('level')
-  let reportingManager=''
-  if(team==='Delivery' || 'HR'){
+  const date=new Date().getDate()+'-'+(new Date().getMonth()+1)+'-'+new Date().getFullYear()
+  const yesterday = new Date()
+  yesterday.setDate(today.getDate()-1)
+  const [file,setFile]=useState(null);
+  const [alertMsg,setAlertMsg] = useState('')
+  const [addDetails, setNewDetails] = useState([])
+  const [fromDate,setFromDate] = useState('')
+  const [toDate,setToDate] = useState('')
+  const [subject,setSubject] = useState('')
+  const [condition,setCondition] = useState(true)
+  const [alert,setAlert]=useState('d-none')
+  const [alertErr,setAlertErr]=useState('d-none')
+  const flexidays =['2024-01-01','2024-01-15','2024-01-26','2024-04-09','2024-04-11','2024-04-14','2024-05-01','2024-06-17','2024-07-07','2024-07-17','2024-08-15','2024-09-15','2024-09-16','2024-10-02','2024-10-31','2024-12-25',] 
+  const isFlexi=(date)=>{
+    let flag=0;
+    for(let i=0;i<flexidays.length;i++){
+      if(flexidays[i]===date){
+        flag=1;
+        break;
+      }
+    }
+    if(flag===1){
+      return true
+    }
+    else{
+      return false
+    }
+  }
+
+  if(team==='Delivery' || team=== 'HR'){
     details=[...details,'Gobi',]
   if(level==='L1' || level==='L2'){
     reportingManager=details[0];
   }
-}
-else if(team==='Sales'){
+  }
+  else if(team==='Sales'){
    details= [...details,'Krishna kumar']
    if(level=='L1'){
     reportingManager=details[0];
   }
-}
-  const nav = useNavigate()
-  const date=new Date().getDate()+'-'+(new Date().getMonth()+1)+'-'+new Date().getFullYear()
+  }
+ 
   async function upload(file){
     const fileRef=ref(storage,`'MedicalProof/'+${date}`/+email);
      await uploadBytes(fileRef,file).then(()=>{
@@ -56,26 +84,16 @@ else if(team==='Sales'){
       console.log(err);
     })
   }
-  const [addDetails, setNewDetails] = useState([])
-const [fromDate,setFromDate] = useState('')
-const [toDate,setToDate] = useState('')
-const [subject,setSubject] = useState('')
-const [condition,setCondition] = useState(true)
-let customErrorMessage = 'invalid option';
-const initialValues = {
-  leaveType:"",
-  reportingManager:reportingManager,
-  fromDate:fromDate,
-  toDate:toDate,
-  subject:subject,
-  reason:"",
-file:""
-
-}
-const [alert,setAlert]=useState('d-none')
-const [alertErr,setAlertErr]=useState('d-none')
-const yesterday = new Date()
-yesterday.setDate(today.getDate()-1)
+  const initialValues = {
+    leaveType:"",
+    reportingManager:reportingManager,
+    fromDate:fromDate,
+    toDate:toDate,
+    subject:subject,
+    reason:"",
+  file:""
+  
+  }
 const schema = Yup.object().shape({
     leaveType: Yup.string()
     .required('Please select an option'),
@@ -92,8 +110,6 @@ function getDatesBetweenDates(startDate, endDate) {
   }
   return dates;
 }
-
-const flexidays =['2024-01-01','2024-01-15','2024-01-26','2024-04-09','2024-04-11','2024-04-14','2024-05-01','2024-06-17','2024-07-07','2024-07-17','2024-08-15','2024-09-15','2024-09-16','2024-10-02','2024-10-31','2024-12-25',] 
 const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
   initialValues:initialValues,
   validationSchema: schema,
@@ -117,130 +133,76 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
               }
               const datesWithoutHolidays = dates.filter(date => (date.getDay()!=5 && date.getDay()!=6) )
               console.log(datesWithoutHolidays);
-              if(values.leaveType === 'Casualleave'){
-                console.log(datesWithoutHolidays.length);
-               if(datesWithoutHolidays.length<5){
+              function CorrectPath () {
+                const fromYear=values.fromDate.split('-')
+                const toYear=values.toDate.split('-')
+                const dates = getDatesBetweenDates(startDate,endDate)
+                const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) )
+                const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',L1status:'',L2status:'',L3status:'',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
+                fromYear:fromYear[0],
+                toYear:toYear[0]}
+                const newData = [...addDetails, details];
+                    setNewDetails(newData)
+      
+              addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
+                if(file){
+                  upload(file)
+                  console.log("message added successfully");
+                  setAlert('d-block')
+                  localStorage.setItem('type',newDetails.leaveType)
+                  setTimeout(()=>{nav('/leavetracker')},2000)
+                }
+                
+                  console.log("message added successfully");
+                  setAlert('d-block')
+                  localStorage.setItem('type',newDetails.leaveType)
+                  setTimeout(()=>{nav('/leavetracker')},2000)
+                
+              })
+                
+          .catch((err) => {
+              console.log(err.message);
+              })
+              }
+             
+               if(values.leaveType === 'Casualleave' && datesWithoutHolidays.length<5){
                 setAlertMsg("You ought to reserve a maximum of 5 days, ensuring it is fewer than 5 days!")
               document.getElementById('timeLimit')
               setAlertErr('d-block')
               setTimeout(()=>{
-                setAlertErr('d-none')},2000);
+                setAlertErr('d-none')},5000);
                 setCondition(false)
-              }
-              else{
-                const fromYear=values.fromDate.split('-')
-                const toYear=values.toDate.split('-')
-                const dates = getDatesBetweenDates(startDate,endDate)
-                const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) )
-                const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',L1status:'',L2status:'',L3status:'',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
-                fromYear:fromYear[0],
-                toYear:toYear[0]}
-                const newData = [...addDetails, details];
-                    setNewDetails(newData)
-      
-              addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
-                if(file){
-                  upload(file)
-                  console.log("message added successfully");
-                  setAlert('d-block')
-                  localStorage.setItem('type',newDetails.leaveType)
-                  setTimeout(()=>{nav('/leavetracker')},2000)
-                }
-                
-                  console.log("message added successfully");
-                  setAlert('d-block')
-                  localStorage.setItem('type',newDetails.leaveType)
-                  setTimeout(()=>{nav('/leavetracker')},2000)
-                
-              })
-                
-          .catch((err) => {
-              console.log(err.message);
-              })
-                }
-            }
-            else if(values.leaveType==='Flexileave'){
-              if(values.leaveType === "Flexileave"){
-                flexidays.includes(values.fromDate) ?  (setCondition(true)): (
-                  setAlertMsg("Sorry its not a flexi day!"),
-                  document.getElementById('timeLimit'),
-                  setAlertErr('d-block'),
+               }
+               else{
+                if(values.leaveType.includes('Flexileave') && !isFlexi(values.fromDate)){
+                  setAlertMsg("Sorry it's not a flexi day!")
+                document.getElementById('timeLimit')
+                setAlertErr('d-block')
+                setTimeout(()=>{
+                  setAlertErr('d-none')},5000);
                   setCondition(false)
-                  )}
-              else if(datesWithoutHolidays.length<7){
-                setAlertMsg("You ought to reserve a maximum of 7 days, ensuring it is fewer than 7 days!")
-              document.getElementById('timeLimit')
-              setAlertErr('d-block')
-              setTimeout(()=>{
-                setAlertErr('d-none')},2000);
-                setCondition(false)
-              }               
-              else{
-                const fromYear=values.fromDate.split('-')
-                const toYear=values.toDate.split('-')
-                const dates = getDatesBetweenDates(startDate,endDate)
-                const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) )
-                const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',L1status:'',L2status:'',L3status:'',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
-                fromYear:fromYear[0],
-                toYear:toYear[0]}
-                const newData = [...addDetails, details];
-                    setNewDetails(newData)
-      
-              addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
-                if(file){
-                  upload(file)
                 }
-                
-                  console.log("message added successfully");
-                  setAlert('d-block')
-                  localStorage.setItem('type',newDetails.leaveType)
-                  setTimeout(()=>{nav('/leavetracker')},2000)
-                
-              })
-                
-          .catch((err) => {
-              console.log(err.message);
-              })
+                else if(values.leaveType.includes('Flexileave') && datesWithoutHolidays.length<7){
+                  setAlertMsg("You ought to reserve a maximum of 7 days, ensuring it is fewer than 7 days!")
+                document.getElementById('timeLimit')
+                setAlertErr('d-block')
+                setTimeout(()=>{
+                  setAlertErr('d-none')},5000);
+                  setCondition(false)
                 }
-             }
-            else if(startDate>endDate){
-            // console.log('please set date ');
-              }
-              else{
-                const fromYear=values.fromDate.split('-')
-                const toYear=values.toDate.split('-')
-              const dates = getDatesBetweenDates(startDate,endDate)
-              const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) )
-              const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',L1status:'',L2status:'',L3status:'',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
-            fromYear:fromYear[0],
-          toYear:toYear[0]}
-              const newData = [...addDetails, details];
-                  setNewDetails(newData)
-    
-            addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
-              if(file){
-                upload(file)
-              }
+                 
+                else{
+                  CorrectPath()
+                }
               
-                console.log("message added successfully");
-                setAlert('d-block')
-                localStorage.setItem('type',newDetails.leaveType)
-                setTimeout(()=>{nav('/leavetracker')},2000)
-              
-            })
-              
-        .catch((err) => {
-            console.log(err.message);
-            })
               }
-    
-  
-}})
-const countDays=(fromDate,toDate)=>{
-                const dates = getDatesBetweenDates(fromDate,toDate)
-                const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) ) 
-           return dates.length-holidays.length  
-              }
+                
+                }})
+  const countDays=(fromDate,toDate)=>{
+    const dates = getDatesBetweenDates(fromDate,toDate)
+    const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) ) 
+    return dates.length-holidays.length  
+                }            
   return (
     <React.Fragment>
       <div className="page-content">
@@ -334,7 +296,27 @@ const countDays=(fromDate,toDate)=>{
                       </Col>
                     </Row>
                     <div className="mt-3">
-                    <Label>Subject</Label>
+                    {
+                        values.leaveType==='Sickleave'?(
+                        <>
+                        <Label htmlFor="formrow-email-Input">Choose Illness</Label>
+                         <select
+        className="form-select"
+          name="subject"
+          onChange={handleChange}
+          onBlur={handleBlur}
+          value={values.subject}
+        >
+          <option value="">Choose Your Illness</option>
+          <option value="Fever">Fever</option>
+          <option value="Stomachache">Stomach Ache</option>
+          <option value="Mitigation">Mitigation</option>
+          <option value="others">Others</option>
+        </select>
+                        </>
+                        ):(
+                        <>
+                        <Label>Subject</Label>
                     <Input
                       type="text"
                       id="subject"
@@ -346,10 +328,16 @@ const countDays=(fromDate,toDate)=>{
                       onBlur={handleBlur}
                       value={values.subject}
                     />
+                        </>)
+                      }
+                    
                   </div>
                   {errors.subject && <small className="text-danger m-0">{errors.subject}</small>}
                     <div className="mt-3">
-                    <Label>Reason</Label>
+                      {
+                        values.subject==='others' && values.leaveType==='Sickleave'?(
+                        <>
+                         <Label>Explain Your Illness</Label>
                     <Input
                       type="textarea"
                       id="reason"
@@ -362,7 +350,49 @@ const countDays=(fromDate,toDate)=>{
                       onBlur={handleBlur}
                       value={values.reason}
                     />
+                        </>
+                        ):(
+                        <>
+                         <Label>Reason</Label>
+                    <Input
+                      type="textarea"
+                      id="reason"
+                      className= {errors.reason ? "  border-danger form-control" : "form-control"}
+                      name="reason"
+                      maxLength="225"
+                      rows="3"
+                      placeholder="Don't exists 250 words..."
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.reason}
+                    />
+                    </>
+                        )
+                      }
+                   
                   </div>
+                  
+                  {errors.reason && <small className="text-danger m-0">{errors.reason}</small>}
+                  {
+                    (values.leaveType==='Sickleave' &&   countDays(new Date(values.fromDate),new Date(values.toDate))>2)?(
+                      <>
+                    <div 
+                    className="mt-3"
+                    name = "file">
+                    <Label htmlFor="formFile" className="form-label">Add File</Label>
+                    <Input className="form-control" type="file" id="formFile" onChange={(e)=>{
+                            if(e.target.files[0]){
+                              setFile(e.target.files[0])
+                             
+                            }
+                          }}/>
+                 
+                  </div>
+                           {errors.file && <small className="text-danger m-0">{errors.file}</small>}
+                           </>
+                  ):(<></>)
+                  }
+                 
                   {errors.reason && <small className="text-danger m-0">{errors.reason}</small>}
                   {
                     (values.leaveType==='Sickleave' &&   countDays(new Date(values.fromDate),new Date(values.toDate))>2)?(

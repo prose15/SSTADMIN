@@ -26,7 +26,7 @@ const CandidateSection = ({upcomingLeaves}) => {
             details = [...details, {id:1, name: 'Gobi', designation: 'Chief Operational Officer',img:avatar2 }]   
     }
 
-    else if (team === 'Sales' && level=='L2') {
+    else if (team === 'Sales' && level=='L1') {
             details = [...details,{ id:1,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 }]
         
         // details = [...details,{id:1, name: "Keerthana", designation: 'HR',img:avatar4 },{ id:2,name: 'Krishna kumar', designation: 'Chief Excuetive Officer',img:avatar7 },{ id:3,name: "Balaji", designation: 'Team manager',img:avatar5 }]

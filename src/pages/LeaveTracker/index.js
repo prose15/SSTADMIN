@@ -6,7 +6,7 @@ import Section from 'pages/timesheet/Dashboard-saas/Section';
 import Leavecards from './Leavecards';
 import FormLayouts from 'pages/Forms/ProfileLayout';
 import { useState,useEffect } from 'react';
-import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firestore'
+import {collection,getDocs,query,where,orderBy,onSnapshot,updateDoc,doc} from 'firebase/firestore'
 import Cookies from 'js-cookie';
 import { db } from "firebase-config";
 // import { useState,useEffect } from 'react';
@@ -93,7 +93,7 @@ for(let i=0;i<available.length;i++){
 const remaining=available[i]-leave[i]
 if(remaining>0){
 if(i==11){
-  earnedLeave+=remaining
+  earnedLeave+=remaining/2
 }
 else{
 available[i+1]+=remaining
@@ -103,6 +103,13 @@ if(i!==11){
 available[i+1]+=1.5
 }
 }
+console.log(earnedLeave);
+ updateDoc(doc(db,'users',JSON.parse(sessionStorage.getItem('uid'))),{earnedAvailable:earnedLeave}).then(()=>{
+  console.log('earned leave updated')
+  Cookies.set('earnedLeave',earnedLeave)
+}).catch((err)=>{
+  console.log(err)
+})
 
     return (
         <React.Fragment>
