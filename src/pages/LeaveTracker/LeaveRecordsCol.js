@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Badge,DropdownMenu,DropdownToggle,UncontrolledDropdown,Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import { db } from "firebase-config"
 import { getDoc,doc, deleteDoc ,updateDoc } from "firebase/firestore"
@@ -9,7 +9,7 @@ const Status = (cell) => {
     return (
         <Badge
           className={"font-size-11 badge-soft-" + 
-          ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('muted'):((cell.value==='revoke'|| cell.value==='escalate')?('warning'):('danger'))))}          
+          ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('info'):((cell.value==='revoke'|| cell.value==='escalate')?('warning'):(cell.value==='re-apply')?('secondary'):('danger'))))}          
         >
           {cell.value}
         </Badge>
@@ -103,6 +103,7 @@ const Actions=(cell)=>{
     },[])
    
   const today=new Date()  
+  const nav= useNavigate()
     return(
        
             <UncontrolledDropdown className="ms-auto">
@@ -119,6 +120,16 @@ const Actions=(cell)=>{
                         <Tooltip className="dropdown-item" title={data.reasonOfReject} placement='top' arrow>
                         Reason of Reject
                     </Tooltip>
+                    ):(<></>)
+                    }
+                    {
+                      (data && data.status.includes('denied') && data && new Date(data.from)>=today)?(
+                        <>
+                         <Button className='btn dropdown-item' onClick={()=>{nav(`/addleave/${cell.value}`)}}> 
+                         Apply Again
+                         <i className="ms-2 far fa-hand-pointer font-size-17"/>
+                       </Button> 
+                       </>
                     ):(<></>)
                     }
                   {

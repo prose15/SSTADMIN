@@ -78,7 +78,7 @@ const Status = (cell) => {
     return (
         <Badge
         className={"font-size-11 badge-soft-" + 
-        ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('muted'):(cell.value==='revoke'?('warning'):('danger'))))}          
+        ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('info'):((cell.value==='revoke'|| cell.value==='escalate')?('warning'):(cell.value==='re-apply')?('secondary'):('danger'))))}         
       >
         {cell.value}
       </Badge>

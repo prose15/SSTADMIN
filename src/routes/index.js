@@ -9,6 +9,7 @@ import CreateTImeSheet from "pages/timesheet/Dashboard-saas/pages/CreateTImeShee
 import MyTicket from "pages/Ticket/MyTicket";
 import TicketDashboard from "pages/Ticket/Dashboard";
 import RiseTicket from "pages/Ticket/RiseTIcket";
+import ApplyAgain from "pages/Forms/ApplyAgain";
 
 // Authentication related pages
 import Login from "../pages/Authentication/LoginTemp";
@@ -33,7 +34,7 @@ const authProtectedRoutes = [
   { path:"/leave/requests",component: <TeamRequests />},
   { path: "/addleave", component: <AddLeave/> },
   { path: "/allrecords", component: <AllRecords /> },
-
+  { path: "/addleave/:id", component: <ApplyAgain /> },
   
   //timesheet
   // { path: "/timesheet/dashboard", component: <DashboardSaas /> },

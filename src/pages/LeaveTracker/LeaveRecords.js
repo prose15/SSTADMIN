@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firestore'
 import logo from 'assets/images/logo.png'
-// import {collection,getDocs,query,where,orderBy,onSnapshot} from 'firebase/firestore'
-// import { useState,useEffect } from 'react';
-
 import { db } from "firebase-config";
 import { Col,Row } from "reactstrap";
 import TableContainer from '../../components/Common/TableContainer';
@@ -79,8 +76,6 @@ useEffect(()=>{
     handleGet()
 },[])
 
-console.log(details);
-
 const today=new Date()
 let thisYear=today.getFullYear()
 const startYear=2019
@@ -89,7 +84,7 @@ while(startYear!==thisYear){
     downloadYears.push(thisYear)
     thisYear--;
 }
-console.log("downloadYears",downloadYears)
+
 
 const handleDownloadClick = (year) => {
     

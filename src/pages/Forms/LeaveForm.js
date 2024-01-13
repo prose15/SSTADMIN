@@ -16,6 +16,7 @@ import {
   Alert,
 } from "reactstrap";
 import "flatpickr/dist/themes/material_blue.css";
+import { DatePicker } from "antd";
 import * as Yup from "yup";
 import { Formik, useFormik } from "formik";
 import { db,storage} from "firebase-config";
@@ -117,12 +118,9 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     console.log(values);
             const startDate = new Date(values.fromDate)
             const endDate = new Date(values.toDate)
-              
               console.log("startDate",startDate,"endDate",endDate)
-              
               const fromTimeStamp=Timestamp.fromMillis(startDate.getTime())
               const toTimeStamp=Timestamp.fromMillis(endDate.getTime())
-
               console.log(fromTimeStamp,"and",toTimeStamp)
               let dates = [];
               const today = new Date();
@@ -202,7 +200,11 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     const dates = getDatesBetweenDates(fromDate,toDate)
     const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) ) 
     return dates.length-holidays.length  
-                }            
+                } 
+                const disabledDate = current => {
+                  // Disable dates that are not in the enabledDates array
+                  return !flexidays.includes(current.format('YYYY-MM-DD'));
+                };             
   return (
     <React.Fragment>
       <div className="page-content">
@@ -256,39 +258,76 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={6}>
-                        <div className="mb-3">
+                    <Col md={6}>
+                        <div className="">
                           <Label htmlFor="formrow-email-Input">Start Date</Label>
-                          <Input
-                            type="date"
-                            className= {errors.fromDate ? "  border-danger form-control" : "form-control"}
-                            id="formrow-email-Input"
-                            name="fromDate"
-                            placeholder="Enter Your Email ID"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.fromDate}
-                          />
+                          {
+                            values.leaveType==='Flexileave'?(
+                              
+                              <DatePicker
+                              className={errors.fromDate ? "  border-danger form-control" : "form-control"}
+                              id="formrow-email-Input"
+                              name="fromDate"
+                              placeholder="Enter From Date"
+                              onChange={(date,string)=>values.fromDate=string}
+                              onBlur={handleBlur}
+                                disabledDate={disabledDate}
+                                format='YYYY-MM-DD'
+                                 />
+                                 
+                            ):(
+                              <DatePicker
+                              className={errors.fromDate ? "  border-danger form-control" : "form-control"}
+                              id="formrow-email-Input"
+                             
+                              placeholder="Enter From Date"
+                              onChange={(date,string)=>values.fromDate=string}
+                              onBlur={handleBlur}
+                              format='YYYY-MM-DD'
+                                 />
+                                 
+                            )
+                          }
                            {errors.fromDate && <small className="text-danger">
                             {errors.fromDate}</small>}
-                            {errors.customErrorMessage && <small className="text-danger">
-                            {errors.customErrorMessage}</small>}
+                            {/* {errors.customErrorMessage && <small className="text-danger">
+                            {errors.customErrorMessage}</small>} */}
                         </div>
                        
                       </Col>
                       <Col md={6}>
-                        <div className="mb-3">
+                        <div className="">
                           <Label htmlFor="formrow-password-Input">End Date</Label>
-                          <Input
-                            type="date"
-                            className= {errors.toDate ? "  border-danger form-control" : "form-control"}
-                            autoComplete="off"
-                            id="formrow-password-Input"
-                            name="toDate"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.toDate}
-                          />
+                          {
+                            values.leaveType==='Flexileave'?(
+                              <DatePicker
+                              className={errors.toDate ? "  border-danger form-control" : "form-control"}
+                              id="formrow-email-Input"
+                              name="toDate"
+                              placeholder="Enter From Date"
+                              onChange={(date,string)=>{
+                                values.toDate=string
+                                
+                               }}
+                               onBlur={handleBlur}
+                                disabledDate={disabledDate}
+                                format='YYYY-MM-DD'
+                                 />
+                            ):(
+                              <DatePicker
+                              className={errors.toDate ? "  border-danger form-control" : "form-control"}
+                              id="formrow-email-Input"
+                              name="toDate"
+                              placeholder="Enter From Date"
+                              onChange={(date,string)=>{
+                                values.toDate=string
+                                
+                               }}
+                               onBlur={handleBlur}
+                                format='YYYY-MM-DD'
+                                 />
+                            )
+                          }
                            {errors.toDate && <small className="text-danger">
                             {errors.toDate}</small>}
                         </div>

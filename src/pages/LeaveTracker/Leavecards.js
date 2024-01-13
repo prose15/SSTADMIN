@@ -133,8 +133,8 @@ let user
 
 
   return (
-    <div className="d-flex cards-box">
-    <Card className="leave-cards me-3">
+    <div className="d-flex  cards-box">
+    <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
           
@@ -150,7 +150,7 @@ let user
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards me-3">
+    <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
             <i className='fas fa-exclamation-circle fa-2x'></i>
@@ -164,7 +164,7 @@ let user
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards me-3">
+    <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
                 <i className="fas fa-wallet fa-2x">
@@ -178,7 +178,7 @@ let user
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards me-3">
+    <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
              <i className="fas fa-baby-carriage fa-2x">
@@ -192,7 +192,7 @@ let user
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards me-3">
+    <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
            <i className="fas fa-hospital fa-2x"></i>

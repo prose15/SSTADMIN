@@ -8,6 +8,8 @@ import {
   Button,
   Card,
   CardBody,
+  Row,
+  Modal
 } from "reactstrap";
 import { getDocs, collection, doc, getDoc, updateDoc, addDoc, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 import EcommerceOrdersModal from "../Ecommerce/EcommerceOrders/EcommerceOrdersModal";
@@ -173,13 +175,16 @@ const LatestTranaction = props => {
                         <Breadcrumbs title='Leave Tracker' breadcrumbItem="Team Request" />
                     )
                 }
+                
        
         <Card>
         
        
           <CardBody>
-        
+        <Row>
             <div className="mb-4 h4 card-title">Latest Requests</div>
+            
+                    </Row>
             <TableContainer
               columns={columns}
               data={request}
