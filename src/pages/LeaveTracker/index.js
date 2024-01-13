@@ -103,8 +103,8 @@ if(i!==11){
 available[i+1]+=1.5
 }
 }
-console.log(earnedLeave);
- updateDoc(doc(db,'users',JSON.parse(sessionStorage.getItem('uid'))),{earnedAvailable:earnedLeave}).then(()=>{
+console.log('earnedLeave',earnedLeave);
+ updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{earnedAvailable:earnedLeave}).then(()=>{
   console.log('earned leave updated')
   Cookies.set('earnedLeave',earnedLeave)
 }).catch((err)=>{

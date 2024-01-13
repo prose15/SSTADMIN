@@ -173,7 +173,7 @@ let user
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available {earnedAvailable}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available {Cookies.get('earnedLeave')}</p>
                 <p className="mb-0 text-danger">Booked  {earned}</p>
             </div>
         </CardBody>

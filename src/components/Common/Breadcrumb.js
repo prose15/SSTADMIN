@@ -35,7 +35,7 @@ const [varyingModal, setVaryingModal] = useState(false);
       getData()
     },[])
 
-const downloadHelloWorldAsPDF = (leaverecords) => {   
+const downloadHelloWorldAsPDF = (leaverecords , name) => {   
    
     const pdf = new jsPDF();
     const data = leaverecords
@@ -46,8 +46,10 @@ const downloadHelloWorldAsPDF = (leaverecords) => {
     pdf.setFont('helvetica', 'bold');
     pdf.setTextColor(75,75,75);
     pdf.text('Employee Details', 15, 30);
+    
+    const personalData=users.filter(user=>user.name===name)  
     const detailsheader=['ID','Name','Team','Designation']
-    const detailsdata=[[`${id}`,`${name}`,`${team}`,`${designation}`]]
+    let detailsdata=[[`${personalData[0].employeeID}`,`${name}`,`${personalData[0].team}`,`${personalData[0].designation}`]]
     pdf.autoTable({
         head:[detailsheader],
         body:detailsdata,
@@ -81,13 +83,8 @@ while(startYear!==thisYear){
 const details=props.details
 
 const handleDownloadClick = (year,name) => {
-  console.log(name)
-    const personalData=users.filter(user=>user.name===name)
-    console.log(personalData)
-    setId(personalData[0].employeeID)
-    setDesignation(personalData[0].designation)
-    setTeam(personalData[0].team)
-    console.log(id,team,designation)
+  
+  
   
   const leaveDetails=details.filter(detail=>(detail.fromYear===year||detail.toYear===year)&&(detail.status==="approved") && (detail.name===name))
 setYear(0)
@@ -107,7 +104,7 @@ setYear(0)
       leaverecords.push(detailarray)
   }
   console.log("leaverecordsss",leaverecords)
-  downloadHelloWorldAsPDF(leaverecords);
+  downloadHelloWorldAsPDF(leaverecords,name);
 }
   return (
     <Row>
@@ -145,7 +142,7 @@ setYear(0)
                                 <form>
                                   <div className="mb-2">
                                   <select className="form-select mb-3"
-                                     name="team"
+                                     name="name"
                                 onChange={(e)=>setName(e.target.value)}
                                      value={name}
                                   >
