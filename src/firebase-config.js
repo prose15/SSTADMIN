@@ -1,6 +1,7 @@
 import {initializeApp} from "firebase/app";
 import {getAuth}from "firebase/auth"
 import {getFirestore} from 'firebase/firestore'
+import {getMessaging, getToken, onMessage} from 'firebase/messaging'
 import {getDownloadURL,getStorage,ref,uploadBytes} from 'firebase/storage'
 const firebaseConfig = {
 
@@ -26,10 +27,24 @@ const firebaseConfig = {
   const db=getFirestore(app)
   const auth = getAuth(app); 
   const storage=getStorage()
-// export const user = JSON.parse(sessionStorage.getItem('uid'))
-   
-    // updateProfile(user,{photoURL:profileURL})
+  const messaging = getMessaging(app)
+  export {auth,db ,storage ,messaging}
+  export const requestPermission= async()=>{
+   const permission=await Notification.requestPermission()
+      if(permission==='granted'){
+        console.log('permission granted')
+        const token=await getToken(messaging,{
+          vapidKey:"BLX_Cgc9zYvyOHjzZj6EikSyvdqkiwIMtas5NnN0kezZta6WxmIi-tM3Wj6NXgttiVfnhaqyZIIenSgPZHZdXM0" 
+        }
+        )
+        console.log(token)
+      }
+      else{
+        console.log('permission denied')
+      }
+    
 
+    
+  }
  
-  export {auth,db ,storage}
 

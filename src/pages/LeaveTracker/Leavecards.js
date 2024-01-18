@@ -55,12 +55,7 @@ let user
   if(docSnap.data().earnedAvailable<=0){
      setEarnedAvail(0)
   }else{
-     if(docSnap.data().earnedAvailable==12){
-         setEarnedAvail(12)
-     }
-     else{
          setEarnedAvail(docSnap.data().earnedAvailable)
-     }
  
   }
   if(docSnap.data().paternityAvailable==0){
@@ -91,45 +86,6 @@ let user
      },[]
    )
 
-
-   let leavetype=localStorage.getItem('type')
-      
-   if(leavetype==='Casualleave'){
-     leavetype='casual'
-   }
-   else if(leavetype==='Earnedleave'){
-     leavetype='earned'
-   }
-   else if(leavetype==='Sickleave'){
-     leavetype='sick'
-   }
-  else if (leavetype==='Paternityleave'){
-     leavetype='paternity'
-   }
-
-   
-
-  
- let  days = { casual:casualAvail,earned:earnedAvailable,lop:lopAvailable,paternity:paternityAvailable,sick:sickAvailable  }
- const booked={ casual: casual, earned: earned, lop:  lop, paternity: paternity, sick: sick }
- useEffect(()=>{
-   const  getData=async()=>{
-     for(let i in booked){
-         if(i===leavetype){
-             const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
-             const docSnap = await getDoc(docRef)
-             const newData=docSnap.data();
-             newData[leavetype]+=1;
-             updateDoc(docRef,newData)
-             localStorage.removeItem('type')
-            
-             break;
-             
-         }
-     }
- }
- getData()
- },[days,booked])
 
 
   return (
@@ -173,7 +129,7 @@ let user
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available {Cookies.get('earnedLeave')}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available {earnedAvailable}</p>
                 <p className="mb-0 text-danger">Booked  {earned}</p>
             </div>
         </CardBody>

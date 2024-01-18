@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { Routes, Route } from "react-router-dom";
 import { layoutTypes } from "./constants/layout";
 // Import Routes all
 import { authProtectedRoutes, publicRoutes } from "./routes";
-
+import logosm from 'assets/images/logosm.png'
 // Import all middleware
 import Authmiddleware from "./routes/route";
 
@@ -14,7 +14,7 @@ import Authmiddleware from "./routes/route";
 import VerticalLayout from "./components/VerticalLayout/";
 import HorizontalLayout from "./components/HorizontalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
-
+import { Toast,ToastBody, ToastHeader } from 'reactstrap';
 // Import scss
 import "./assets/scss/theme.scss";
 
@@ -22,25 +22,10 @@ import "./assets/scss/theme.scss";
 // import { initFirebaseBackend } from "./helpers/firebase_helper";
 
 import fakeBackend from "./helpers/AuthType/fakeBackend";
-
+import { requestPermission, messaging} from 'firebase-config';
+import { onMessage } from 'firebase/messaging';
 // Activating fake backend
 fakeBackend();
-
-// const firebaseConfig = {
-//   apiKey: process.env.REACT_APP_APIKEY,
-//   authDomain: process.env.REACT_APP_AUTHDOMAIN,
-//   databaseURL: process.env.REACT_APP_DATABASEURL,
-//   projectId: process.env.REACT_APP_PROJECTID,
-//   storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-//   messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-//   appId: process.env.REACT_APP_APPID,
-//   measurementId: process.env.REACT_APP_MEASUREMENTID,
-// };
-
-// init firebase backend
-// initFirebaseBackend(firebaseConfig);
-
-
 const getLayout = (layoutType) => {
   let Layout = VerticalLayout;
   switch (layoutType) {
@@ -57,8 +42,15 @@ const getLayout = (layoutType) => {
 };
 
 const App = () => {
-
-
+const [toast,setToast]=useState(false)
+const [message,setMessage]=useState(null)
+useEffect(()=>{
+requestPermission()
+onMessage(messaging,payload=>{
+  setToast(true)
+  setMessage(payload)
+})
+},[])
   const selectLayoutState = (state) => state.Layout;
   const LayoutProperties = createSelector(
     selectLayoutState,
@@ -75,6 +67,26 @@ const App = () => {
 
   return (
     <React.Fragment>
+      {
+        message && 
+        <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: "1005" }}>
+        <Toast
+        isOpen={toast}
+        role="alert"
+    >
+      
+        <ToastHeader toggle={() => setToast(!toast)}>
+            <img src={logosm} alt="" className="me-2" height="18" />
+            <strong className="me-auto">{message.notification.title}</strong>
+            {/* <small style={{ marginLeft: "165px" }} className="text-muted">11 mins ago</small> */}
+        </ToastHeader>
+        <ToastBody>
+        {message.notification.body}
+        </ToastBody>
+    </Toast>
+    </div>
+      }
+      
       <Routes>
         {publicRoutes.map((route, idx) => (
           <Route

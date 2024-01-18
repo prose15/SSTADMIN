@@ -185,6 +185,11 @@ const SidebarContent = props => {
                   <Link to="/leave/requests">Team Requests</Link>
                 </li>)
                 }
+                {
+                  Cookies.get('level')==='L2' && <li>
+                  <Link to="/leave/festiveleave">Declare Holiday</Link>
+                </li>
+                }
              
                
               </ul>
