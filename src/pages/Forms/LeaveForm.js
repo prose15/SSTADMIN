@@ -439,6 +439,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                                 
                                }}
                                onBlur={handleBlur}
+                               disabledDate={WeekEnds}
                                 format='YYYY-MM-DD'
                                  />
                             )
