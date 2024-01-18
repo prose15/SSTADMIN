@@ -37,9 +37,10 @@ export const Accept = async(id,users,admin) =>{
     }
     else if (detail.team === 'Sales') {
       rpm = [...rpm,'Balaji', 'Keerthana',]
-      status=[...status,'L1 approved','approved',]
-      let forwardedRpm=rpm.filter((data,index)=>index>0).push('')
+      status=[...status,'L1 approved','approved','approved']
+      let forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
+      console.log('arr',forwardedRpm)
       let flag=0;
       let index1=0;
       if(Cookies.get('level')==='L3'){
@@ -48,24 +49,26 @@ export const Accept = async(id,users,admin) =>{
         detail.timestamp=Timestamp.now()
       }
       else{
-      rpm.map((data,index)=>{
-        if(detail.reportManager===data){
-          flag=1
-          index1=index
+        rpm.map((data,index)=>{
+          if(detail.reportManager===data){
+            flag=1
+            index1=index
+          }
+        })
+        if(flag==1){
+          detail.reportManager=forwardedRpm[index1]
+            detail.status=status[index1]
+            detail.timestamp=Timestamp.now()
         }
-      })
-      if(flag==1){
-        detail.reportManager=forwardedRpm[index1]
-          detail.status=status[index1]
-          detail.timestamp=Timestamp.now()
-      }
-    }
+      } 
     }
     else if (detail.team === 'HR') {
       rpm = [...rpm,'Keerthana', 'Gobi']
       status=[...status,'L1 approved','approved']
-      let forwardedRpm=rpm.filter((data,index)=>index>0)
+      status=[...status,'L1 approved','approved','approved']
+      let forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
+      console.log('arr',forwardedRpm)
       let flag=0;
       let index1=0;
       if(Cookies.get('level')==='L3'){
@@ -74,18 +77,18 @@ export const Accept = async(id,users,admin) =>{
         detail.timestamp=Timestamp.now()
       }
       else{
-      rpm.map((data,index)=>{
-        if(detail.reportManager===data){
-          flag=1
-          index1=index
+        rpm.map((data,index)=>{
+          if(detail.reportManager===data){
+            flag=1
+            index1=index
+          }
+        })
+        if(flag==1){
+          detail.reportManager=forwardedRpm[index1]
+            detail.status=status[index1]
+            detail.timestamp=Timestamp.now()
         }
-      })
-      if(flag==1){
-        detail.reportManager=forwardedRpm[index1]
-          detail.status=status[index1]
-          detail.timestamp=Timestamp.now()
-      }
-    }
+      } 
         
       }
  
