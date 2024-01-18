@@ -28,6 +28,7 @@ import AllRecords from "pages/LeaveTracker/AllRecords";
 import WFH from "pages/WFH/index";
 import WFHRecord from "pages/WFH/WFHRecord";
 import WFHTeamRequests from "pages/WFH/WFHTeamRequests";
+import FestiveLeave from "pages/Forms/FestiveLeave";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -36,6 +37,7 @@ const authProtectedRoutes = [
   { path: "/leave/records", component: <LeaveRecords /> },
   { path: "/leave/approvals", component: <LeaveApprovals /> },
   { path:"/leave/requests",component: <TeamRequests />},
+  { path:"/leave/festiveleave",component: <FestiveLeave />},
   { path: "/addleave", component: <AddLeave/> },
   { path: "/allrecords", component: <AllRecords /> },
   { path: "/addleave/:id", component: <ApplyAgain /> },

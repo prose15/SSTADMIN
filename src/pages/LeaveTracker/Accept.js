@@ -2,59 +2,16 @@ import { db } from "firebase-config"
 import { getDoc,doc, updateDoc,collection,Timestamp } from "firebase/firestore"
 import Cookies from "js-cookie";
 export const Accept = async(id,users,admin) =>{
-  // console.log('users:',users,'id:',id,'admin:',admin);
-  const userRef=collection(db,'users');
-  const adminRef=collection(db,'admin');
   const docRef = doc(db, 'leave submssion',id)
   const docSnap = await getDoc(docRef);
   if(docSnap.exists()){
     const detail= docSnap.data()
     let rpm = []
     let status=[]
-    users.map((user) => {
-      if (user.name == detail.name && detail.email === user.email) {
-        if (detail.leaveType === 'Casual leave') {
-          user.casualAvailable = user.casualAvailable - 1
-        }
-        else if (detail.leaveType === 'Earned leave') {
-          user.earnedAvailable = user.earnedAvailable - 1
-        }
-        else if (detail.leaveType === 'Leave without pay') {
-          user.lopAvailable = user.lopAvailable + 1
-        }
-        else if (detail.leaveType === 'Sick leave') {
-          user.sickAvailable = user.sickAvailable - 1
-        }
-        else if (detail.leaveType === 'Paternity leave') {
-          user.paternityAvailable = user.paternityAvailable + 1
-        }
-      }
-    })
-
-
-    admin.map((user) => {
-      if (user.name == detail.name && detail.email === user.email) {
-        if (detail.leaveType === 'Casual leave') {
-          user.casualAvailable = user.casualAvailable - 1
-        }
-        else if (detail.leaveType === 'Earned leave') {
-          user.earnedAvailable = user.earnedAvailable - 1
-        }
-        else if (detail.leaveType === 'Leave without pay') {
-          user.lopAvailable = user.lopAvailable + 1
-        }
-        else if (detail.leaveType === 'Sick leave') {
-          user.sickAvailable = user.sickAvailable - 1
-        }
-        else if (detail.leaveType === 'Paternity leave') {
-          user.paternityAvailable = user.paternityAvailable + 1
-        }
-      }
-    })
     if (detail.team === 'Delivery') {
-      rpm = [...rpm,'Yuvashini', 'Keerthana', 'Gobi']
+      rpm = [...rpm,'Yuvashini', 'Keerthana',]
       status=[...status,'L1 approved','approved','approved']
-      const forwardedRpm=rpm.filter((data,index)=>(index>0))
+      let forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
       console.log('arr',forwardedRpm)
       let flag=0;
@@ -79,9 +36,9 @@ export const Accept = async(id,users,admin) =>{
       } 
     }
     else if (detail.team === 'Sales') {
-      rpm = [...rpm,'Balaji', 'Keerthana', 'Krishna kumar']
-      status=[...status,'L1 approved','approved','approved']
-      const forwardedRpm=rpm.filter((data,index)=>index>0).push('')
+      rpm = [...rpm,'Balaji', 'Keerthana',]
+      status=[...status,'L1 approved','approved',]
+      let forwardedRpm=rpm.filter((data,index)=>index>0).push('')
       forwardedRpm.push('')
       let flag=0;
       let index1=0;
@@ -107,7 +64,7 @@ export const Accept = async(id,users,admin) =>{
     else if (detail.team === 'HR') {
       rpm = [...rpm,'Keerthana', 'Gobi']
       status=[...status,'L1 approved','approved']
-      const forwardedRpm=rpm.filter((data,index)=>index>0)
+      let forwardedRpm=rpm.filter((data,index)=>index>0)
       forwardedRpm.push('')
       let flag=0;
       let index1=0;
@@ -117,7 +74,6 @@ export const Accept = async(id,users,admin) =>{
         detail.timestamp=Timestamp.now()
       }
       else{
-     
       rpm.map((data,index)=>{
         if(detail.reportManager===data){
           flag=1
@@ -133,40 +89,34 @@ export const Accept = async(id,users,admin) =>{
         
       }
  
-    console.log(detail)
 
     const userDoc = doc(collection(db,'leave submssion'), id)
 
     updateDoc(userDoc, detail).then(() => {
       users.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
-          if (detail.leaveType === 'Casualleave') {
-            user.casualAvailable -= 1
-            if (user.casualAvailable <= 0) {
-              user.casualAvailable = 0;
-            }
+          let str=detail.leaveType
+          let subLeave=detail.subLeave
+          console.log(subLeave)
+          let leave = str.substring(0,str.length-5).toLocaleLowerCase()
+          if(detail.leaveType!=='Paternityleave'){
+          user[leave+'Available']-=detail.noofdays
+          user[leave+'Available']<=0 &&(user[leave+'Available']=0)
+          if(subLeave==='lop'){
+           user.lopAvailable=user.lopAvailable+detail.lopBooked
+          }else if(subLeave==='earned'){
+            user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
+          } 
+          }else{
+            user[leave+'Available']+=detail.noofdays 
+            if(subLeave==='lop'){
+              user.lopAvailable=user.lopAvailable+detail.lopBooked
+             }else if(subLeave==='earned'){
+               user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
+             } 
           }
-          else if (detail.leaveType === 'Earnedleave') {
-            user.earnedAvailable -= 1
-            if (user.earnedAvailable <= 0) {
-              user.earnedAvailable = 0;
-            }
-          }
-          else if (detail.leaveType === 'Sickleave') {
-            user.sickAvailable -= 1
-            if (user.sickAvailable <= 0) {
-              user.sickAvailable = 0;
-            }
-          }
-          else if (detail.leaveType === 'Paternityleave') {
-            user.paternityAvailable = 0 + user.paternity
-          }
-          else if (detail.leaveType === 'Leave without pay') {
-            user.lopAvailable = 0 + user.lop
-          }
-
-          const profile = doc(userRef, user.id)
-          updateDoc(profile, user).then(() => {
+          console.log(user)
+          updateDoc(doc(db,'users', user.id), user).then(() => {
             console.log('profile update');
 
           }).catch((err) => {
@@ -175,38 +125,31 @@ export const Accept = async(id,users,admin) =>{
 
         }
       })
-
       admin.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
-          if (detail.leaveType === 'Casualleave') {
-      
-            user.casualAvailable -= 1
-            if (user.casualAvailable <= 0) {
-              user.casualAvailable = 0;
-            }
+          let str=detail.leaveType
+          let subLeave=detail.subLeave
+          console.log(subLeave)
+          let leave = str.substring(0,str.length-5).toLocaleLowerCase()
+          if(detail.leaveType!=='Paternityleave'){
+          user[leave+'Available']-=detail.noofdays
+          user[leave+'Available']<=0 &&(user[leave+'Available']=0)
+          if(subLeave==='lop'){
+           user.lopAvailable=user.lopAvailable+detail.lopBooked
+          }else if(subLeave==='earned'){
+            user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
+          } 
+          }else{
+            user[leave+'Available']+=detail.noofdays 
+            if(subLeave==='lop'){
+              user.lopAvailable=user.lopAvailable+detail.lopBooked
+             }else if(subLeave==='earned'){
+               user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
+             } 
           }
-          else if (detail.leaveType === 'Earnedleave') {
-            user.earnedAvailable -= 1
-            if (user.earnedAvailable <= 0) {
-              user.earnedAvailable = 0;
-            }
-          }
-          else if (detail.leaveType === 'Sickleave') {
-            user.sickAvailable -= 1
-            if (user.sickAvailable <= 0) {
-              user.sickAvailable = 0;
-            }
-          }
-          else if (detail.leaveType === 'Paternityleave') {
-            user.paternityAvailable = 0 + user.paternity
-          }
-          // else if (detail.leaveType === 'Leave without pay') {
-          //   user.lopAvailable = 0 + user.lop
-          // }
-
-          const profile = doc(adminRef, user.id)
-          updateDoc(profile, user).then(() => {
-            console.log('profile updated in admin');
+          console.log(user)
+          updateDoc(doc(db,'admin', user.id), user).then(() => {
+            console.log('profile update');
 
           }).catch((err) => {
             console.log(err);
@@ -220,5 +163,4 @@ export const Accept = async(id,users,admin) =>{
       console.log(err);
     })
   }
-  
 }

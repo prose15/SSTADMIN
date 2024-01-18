@@ -57,9 +57,9 @@ const NotificationDropdown = props => {
           tag="button"
           id="page-header-notifications-dropdown"
         >
-         {request.length === 0 ?  (
+         {request.length+ WFHDetail.length + revokeDetail.length === 0 ?  (
           <i id="bell" className="bx bx-bell" />) :  ( <i id="bell" className="bx bx-bell bx-tada" />) }
-          <span id="detail" className="badge bg-danger rounded-pill">{request.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length) }</span>
+          <span id="detail" className="badge bg-danger rounded-pill">{request.length+ WFHDetail.length + revokeDetail.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length) }</span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
           <div className="p-3">

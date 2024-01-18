@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React ,{useState,useEffect} from "react";
+import React ,{useState,useEffect, useMemo} from "react";
 import EChart from "pages/Charts/EChart";
 import { Link } from "react-router-dom";
 import StackedColumnChart from "./StackedColumnChart";
@@ -34,17 +34,21 @@ import { collection, getDocs, where, query,doc,getDoc,onSnapshot } from 'firebas
 
 //i18n
 import { withTranslation } from "react-i18next";
-import { Rectangle } from "react-leaflet";
 import Cookies from 'js-cookie'
 import Calender from "components/Common/Calender";
 import TeamMates from "./TeamMates";
-
+import { Toast,ToastBody, ToastHeader } from 'reactstrap';
 
 const Dashboard = props => {
-
+  const [toast,setToast]=useState(false)
   const [name,setName]=useState('')
   const [team,setTeam]=useState([])
   const [role,setRole]=useState('')
+  const [holiday,setHoliday]=useState([])
+  const todayTimeStamp=new Date()
+  todayTimeStamp.setHours(23)
+  todayTimeStamp.setMinutes(59)
+  todayTimeStamp.setSeconds(59)
    useEffect(()=>{
 
        const handleGet=async()=>{
@@ -66,13 +70,26 @@ const Dashboard = props => {
           console.log(err);
         })
         setTeam(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        
+        
+       
    }
    }
-
-    handleGet()   
+    handleGet() 
+      
        },[]
      )
-  
+     useMemo(()=>{
+      const getData=  async()=>{
+        const filteredLeaveQuery =query(collection(db,'Holidays'),where('fromTimeStamp','>',todayTimeStamp));
+        const data1=await getDocs(filteredLeaveQuery).catch((err)=>{
+          console.log(err);
+        })
+        setHoliday(data1.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        setToast(true)
+      } 
+      getData()
+     },[])
   const reports = [
     { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: "12" },
     { title: "Worked Hours", iconClass: "bx bxs-time", description: "128" },
@@ -82,8 +99,6 @@ const Dashboard = props => {
       description: "3",
     },
   ];
-
-
   const totHours =  (startTime, endTime) => {
     let hours = 0, totminutes = 0, minutes = 0
     for (let i = 0; i < startTime.length; i++) {
@@ -139,7 +154,7 @@ const Dashboard = props => {
     handleGet()
 },[])
 
-console.log("details:",details)
+
 const startTime=[]
 const endTime=[]
 for(let i=0;i<details.length;i++){
@@ -148,16 +163,52 @@ for(let i=0;i<details.length;i++){
   endTime.push(details[i].endTime)
 }
 
-// console.log(startTime)
+console.log(holiday)
 // console.log(endTime)
 
 const workedHours=(totHours(startTime,endTime))?(totHours(startTime,endTime)):0
 console.log("workedhours",workedHours)
-
+const findMin=(data)=>{
+  const seconds    = data.timestamp?.seconds
+  const nanoseconds = data.timestamp?.nanoseconds
+  const timestampInMilliseconds = seconds * 1000 + Math.floor(nanoseconds / 1e6);
+    const dateObject = new Date(timestampInMilliseconds);
+    const today =new Date()
+    const timeDiff = today - dateObject
+    const minsDiff = Math.floor(timeDiff/(1000 * 60))
+    return minsDiff
+}
   return (
     <React.Fragment>
       <div className="page-content">
-        <Container fluid><Row>
+        <Container fluid>
+          <Row>
+            {
+              holiday &&  <>
+                {
+                  holiday.map((data)=>(
+                    <div key={data.id} className="position-fixed d-flex justify-content-end top-0 end-0 p-3" style={{ zIndex: "1005" }}>
+            <Toast 
+              isOpen={toast}
+              role="alert"
+              >
+              <ToastHeader toggle={() => setToast(!toast)}>
+                  <strong className="me-auto">{data.subject}</strong>
+                  <small style={{ marginLeft: "145px" }} className="text-muted"> {(findMin(data)===0)?('Just now'):((findMin(data)<60)?
+                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.floor(findMin(data)/60/24+"days ago")):(Math.floor(findMin(data)/60)+" hrs ago")))
+                       }</small>
+              </ToastHeader>
+              <ToastBody>
+              {data.reason}
+              </ToastBody>
+          </Toast>
+          </div>
+                  ))
+                }
+              
+              </>
+            }
+         
             <Col xl="4">
               <WelcomeComp name={name} role={role} />
               {/* <Col xl="6"> */}

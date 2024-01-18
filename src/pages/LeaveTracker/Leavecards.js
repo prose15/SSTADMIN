@@ -19,11 +19,13 @@ const [lop,setLop]=useState(0);
 const [earned,setEarned]=useState(0);
 const [paternity,setPaternity]=useState(0);
 const [sick,setSick]=useState(0);
+const [flexi, setFlexi] = useState(0);
 const [casualAvail,setCasualAvail]=useState(0);
 const [lopAvailable,setLopAvail]=useState(0);
 const [earnedAvailable,setEarnedAvail]=useState(0);
 const [paternityAvailable,setPaternityAvail]=useState(0);
 const [sickAvailable,setSickAvail]=useState(0);
+const [flexiAvailable, setFlexiAvail] = useState(0);
 let user
  useEffect(()=>{
 
@@ -39,7 +41,7 @@ let user
  setPaternity(docSnap.data().paternity)
  setLop(docSnap.data().lop)
  setSick(docSnap.data().sick)
-  
+ setFlexi(docSnap.data().flexi)
   setEmail(Cookies.get('email'))
   if(docSnap.data().casualAvailable<=0){
      setCasualAvail(0)
@@ -55,12 +57,7 @@ let user
   if(docSnap.data().earnedAvailable<=0){
      setEarnedAvail(0)
   }else{
-     if(docSnap.data().earnedAvailable==12){
-         setEarnedAvail(12)
-     }
-     else{
          setEarnedAvail(docSnap.data().earnedAvailable)
-     }
  
   }
   if(docSnap.data().paternityAvailable==0){
@@ -85,51 +82,19 @@ let user
          setSickAvail(docSnap.data().sickAvailable)
      }
      
- }}
+ }
+ if(docSnap.data().flexiAvailable<=0){
+    setFlexiAvail(0)
+}
+else{
+    setFlexiAvail(docSnap.data().flexiAvailable)
+}
+}
 }
   handleGet()   
      },[]
    )
 
-
-   let leavetype=localStorage.getItem('type')
-      
-   if(leavetype==='Casualleave'){
-     leavetype='casual'
-   }
-   else if(leavetype==='Earnedleave'){
-     leavetype='earned'
-   }
-   else if(leavetype==='Sickleave'){
-     leavetype='sick'
-   }
-  else if (leavetype==='Paternityleave'){
-     leavetype='paternity'
-   }
-
-   
-
-  
- let  days = { casual:casualAvail,earned:earnedAvailable,lop:lopAvailable,paternity:paternityAvailable,sick:sickAvailable  }
- const booked={ casual: casual, earned: earned, lop:  lop, paternity: paternity, sick: sick }
- useEffect(()=>{
-   const  getData=async()=>{
-     for(let i in booked){
-         if(i===leavetype){
-             const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
-             const docSnap = await getDoc(docRef)
-             const newData=docSnap.data();
-             newData[leavetype]+=1;
-             updateDoc(docRef,newData)
-             localStorage.removeItem('type')
-            
-             break;
-             
-         }
-     }
- }
- getData()
- },[days,booked])
 
 
   return (
@@ -153,14 +118,13 @@ let user
     <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
-            <i className='fas fa-exclamation-circle fa-2x'></i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Loss of pay</b></h5>
+           <i className="fas fa-hospital fa-2x"></i>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Sick Leave</b></h5>
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">
-                    Available  {lopAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {lop}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available  {sickAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {sick}</p>
             </div>
         </CardBody>
     </Card>
@@ -173,7 +137,7 @@ let user
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available {Cookies.get('earnedLeave')}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available {earnedAvailable}</p>
                 <p className="mb-0 text-danger">Booked  {earned}</p>
             </div>
         </CardBody>
@@ -181,27 +145,28 @@ let user
     <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
-             <i className="fas fa-baby-carriage fa-2x">
+             <i className="mdi mdi-party-popper fa-2x">
                 </i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Paternity</b></h5>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Flexi Leave</b></h5>
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available  {paternityAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {paternity}</p>
+            <p className="mb-0 flex-grow-1 text-success me-5">Available  {flexiAvailable}</p>
+                    <p className="mb-0 text-danger">Booked  {flexi}</p>
             </div>
         </CardBody>
     </Card>
     <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
-           <i className="fas fa-hospital fa-2x"></i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Sick Leave</b></h5>
+            <i className='fas fa-exclamation-circle fa-2x'></i>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Loss of pay</b></h5>
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available  {sickAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {sick}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">
+                    Available  {lopAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {lop}</p>
             </div>
         </CardBody>
     </Card>

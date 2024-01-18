@@ -35,7 +35,7 @@ const downloadHelloWorldAsPDF = (leaverecords) => {
     const email=Cookies.get('email')
     const team=Cookies.get('team')
     const designation=Cookies.get('role')
-    const headers = ['Date of Request','Leave Type','Subject','From','To'];
+    const headers = ['Date of Request','Leave Type','Subject','From','To']
     pdf.addImage(logo,'JPEG',90,10,30,10)
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');

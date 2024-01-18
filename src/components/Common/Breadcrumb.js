@@ -11,9 +11,10 @@ import { collection, getDocs } from "firebase/firestore"
 const Breadcrumb = props => {
   const [year,setYear]=useState(0);
   const [users,setUsers]=useState([])
+  const [month,setMonth]=useState(0)
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 const [modal_1, setModal_1] = useState("varying");
 const [varyingModal, setVaryingModal] = useState(false);
-
     function tog_varyingModal() {
         setVaryingModal(!varyingModal);
       }
@@ -34,19 +35,15 @@ const [varyingModal, setVaryingModal] = useState(false);
       }
       getData()
     },[])
-
 const downloadHelloWorldAsPDF = (leaverecords , name) => {   
-   
     const pdf = new jsPDF();
     const data = leaverecords
-   
-    const headers = ['Date of Request','Leave Type','Subject','From','To'];
-    pdf.addImage(logo,'JPEG',90,10,30,10)
+    const headers = ['Date of Request','Leave Type','Subject','From','To','LOP'];
+    pdf.addImage(logo,'PNG',90,10,30,10)
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');
     pdf.setTextColor(75,75,75);
     pdf.text('Employee Details', 15, 30);
-    
     const personalData=users.filter(user=>user.name===name)  
     const detailsheader=['ID','Name','Team','Designation']
     let detailsdata=[[`${personalData[0].employeeID}`,`${name}`,`${personalData[0].team}`,`${personalData[0].designation}`]]
@@ -72,7 +69,24 @@ const downloadHelloWorldAsPDF = (leaverecords , name) => {
     });
     pdf.save('Leave Records.pdf');
 }
-      const today=new Date()
+const downloadAllRecords=(leaverecords)=>{
+  const pdf = new jsPDF();
+    const data = leaverecords
+    const headers = ['Name','Date of Request','Leave Type','Subject','From','To','LOP'];
+    pdf.addImage(logo,'JPEG',90,10,30,10)
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(75,75,75);
+    pdf.text('Leave Records', 15, 70);
+    pdf.autoTable({
+      head: [headers],
+      body: data,
+      theme: 'striped',
+      startY: 35
+    });
+    pdf.save('All Leave Records.pdf');
+}
+const today=new Date()
 let thisYear=today.getFullYear()
 const startYear=2019
 const downloadYears=[]
@@ -81,30 +95,56 @@ while(startYear!==thisYear){
     thisYear--;
 }
 const details=props.details
-
-const handleDownloadClick = (year,name) => {
-  
-  
-  
-  const leaveDetails=details.filter(detail=>(detail.fromYear===year||detail.toYear===year)&&(detail.status==="approved") && (detail.name===name))
+const handleDownloadClick = (year,name,month) => {
+  let leaveDetails=[]
+  if(name==='allEmployees'){
+     leaveDetails=details.filter(detail=>(detail.fromYear===year||detail.toYear===year)&&(detail.status==="approved"))
+  }else{
+    leaveDetails=details.filter(detail=>(detail.fromYear===year||detail.toYear===year)&&(detail.status==="approved") && (detail.name===name))
+  }
+  const data=[]
+  leaveDetails.map(ele=>{
+    const fromdate=ele.from
+    const todate=ele.to
+    const fromMonth=fromdate.substring(5,7)
+    const toMonth=todate.substring(5,7)
+    if(fromMonth.includes(parseInt(month)+1) && toMonth.includes(parseInt(month)+1)){
+      data.push(ele)
+    }
+  })
+  console.log(data)
 setYear(0)
-  console.log("yearrr",year)
-  console.log("detailss",details)
-  console.log("leaveDetailss",leaveDetails)
   let leaverecords=[]
-
-  for(let i=0;i<leaveDetails.length;i++){
-      const detail=leaveDetails[i]
+ 
+  if(name.includes('allEmployees')){
+    for(let i=0;i<data.length;i++){
+      const detail=data[i]
+      const name=detail.name
       const dateOfRequest=detail.requestDate
       const leaveType=detail.leaveType
       const subject=detail.subject
       const from=detail.from
       const to=detail.to
-      const detailarray=[dateOfRequest,leaveType,subject,from,to]
+      const lop=detail.lopBooked
+      const detailarray=[name,dateOfRequest,leaveType,subject,from,to,lop]
       leaverecords.push(detailarray)
   }
-  console.log("leaverecordsss",leaverecords)
-  downloadHelloWorldAsPDF(leaverecords,name);
+    downloadAllRecords(leaverecords)
+  }
+  else{ 
+    for(let i=0;i<data.length;i++){
+      const detail=data[i]
+      const dateOfRequest=detail.requestDate
+      const leaveType=detail.leaveType
+      const subject=detail.subject
+      const from=detail.from
+      const to=detail.to
+      const lop=detail.lopBooked
+      const detailarray=[dateOfRequest,leaveType,subject,from,to,lop]
+      leaverecords.push(detailarray)
+  } 
+    downloadHelloWorldAsPDF(leaverecords,name);
+  }
 }
   return (
     <Row>
@@ -115,8 +155,7 @@ setYear(0)
             <ol className="breadcrumb m-0">
               {
                 (Cookies.get('name') === 'Keerthana') ? (
-                  <>
-                    
+                  <> 
                     <BreadcrumbItem>
                       <Link to="/leave/requests">{props.title}</Link>
                     </BreadcrumbItem>
@@ -147,13 +186,14 @@ setYear(0)
                                      value={name}
                                   >
                                     <option defaultValue='#'>Select Name</option>
+                                    <option value='allEmployees'>All Employees</option>
                                        {
                                 users.map((user)=>(
                                     <option key={user.id} value={user.name}>{user.name}</option>
                                 ))
                                       }         
                                   </select>
-                                  <select className="form-select"
+                                  <select className="form-select mb-3"
                                      name="year"
                                 onChange={(e)=>setYear(e.target.value)}
                                      value={year}
@@ -165,12 +205,20 @@ setYear(0)
                                 ))
                                       }         
                                   </select>
+                                  <select className="form-select" onChange={(e)=>setMonth(e.target.value)}>
+                                  <option defaultValue='#'>Select Month</option>
+                                  {
+                                    months.map((month,index)=>(
+                                      <option value={index} key={index}>{month}</option>
+                                    ))
+                                  }
+                                  </select>
                                   
                                   </div>
                                 </form>
                               </div>
                               <div className="modal-footer">
-                                <button type="button" onClick={()=>{handleDownloadClick(year,name)}} className="btn btn-primary">Download pdf</button>
+                                <button type="button" onClick={()=>{handleDownloadClick(year,name,month)}} className="btn btn-primary">Download pdf</button>
                               </div>
                             </Modal>
                             <button onClick={() => {
@@ -201,10 +249,4 @@ setYear(0)
     </Row>
   )
 }
-
-// Breadcrumb.propTypes = {
-//   breadcrumbItem: PropTypes.string,
-//   title: PropTypes.string
-// }
-
 export default Breadcrumb
