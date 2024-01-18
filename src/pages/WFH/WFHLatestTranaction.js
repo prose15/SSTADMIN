@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import withRouter from "components/Common/withRouter";
 import { isEmpty } from "lodash";
 import { db } from "firebase-config";
-import RejectModal from "components/Common/RejectModal";
+import WFHRejectModal from "./WFHRejectModal";
 import {
   Button,
   Card,
@@ -14,20 +14,19 @@ import {
 import { getDocs, collection, doc, getDoc, updateDoc, addDoc, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 import {
   EmployeeName,
-  LeaveType,
+  workType,
   From,
   To,
   Actions,
   Reason,
   Status
-} from "./LatestTranactionCol";
+} from "./WFHLatestTranactionCol";
 import Breadcrumbs from '../../components/Common/Breadcrumb';
 import TableContainer from "../../components/Common/TableContainer";
 import Cookies from "js-cookie";
 import { useStateContext } from "Context/ContextProvider";
-const LatestTranaction = props => {
-  const {request} = useStateContext()
-  const [details, setDetails] = useState([])
+const WFHLatestTranaction = props => {
+  const {WFHDetail} = useStateContext()
   const [admin, setAdmin] = useState([]);
   // const collectionRef = collection(db, 'leave submssion')
   const userRef = collection(db, 'users');
@@ -59,16 +58,6 @@ const LatestTranaction = props => {
         disableFilters: true,
         Cell: cellProps => {
           return <EmployeeName {...cellProps} />;
-        },
-      },
-
-      {
-        Header: "Leave Type",
-        accessor: "leaveType",
-        disableFilters: true,
-        filterable: false,
-        Cell: cellProps => {
-          return <LeaveType {...cellProps} />;
         },
       },
 
@@ -127,39 +116,18 @@ const LatestTranaction = props => {
     ],
     [users, admin]
   );
-  // if(Cookies.get('level') != 'L1')  {
-  //  columns.push(
-  //   {
-  //     Header: "Actions",
-  //     accessor: "id",
-  //     disableFilters: true,
-  //     Cell: cellProps => {
-  //       return <Actions {...cellProps} users={users} admin={admin} />;
-  //     },
-  //   })
-    
-  // }else{
-  //   columns.push(
-     
-  //   )
-  // }
-
-
 
   return (
     <React.Fragment>
       <div className="page-content">
-        <RejectModal />
-    
+        <WFHRejectModal />   
           {
                     (Cookies.get('name')==='Keerthana')?(
                     <Breadcrumbs title='Team Request' breadcrumbItem="All Records" />
                     ):(
                         <Breadcrumbs title='Leave Tracker' breadcrumbItem="Team Request" />
                     )
-                }
-                
-       
+                }          
         <Card>
         
        
@@ -170,7 +138,7 @@ const LatestTranaction = props => {
                     </Row>
             <TableContainer
               columns={columns}
-              data={request}
+              data={WFHDetail}
               isGlobalFilter={false}
               isAddOptions={false}
               isPagination={true}
@@ -185,10 +153,10 @@ const LatestTranaction = props => {
   );
 };
 
-LatestTranaction.propTypes = {
-  orders: PropTypes.array,
-  onGetOrders: PropTypes.func,
-};
+// LatestTranaction.propTypes = {
+//   orders: PropTypes.array,
+//   onGetOrders: PropTypes.func,
+// };
 
 
-export default withRouter(LatestTranaction);
+export default withRouter(WFHLatestTranaction);

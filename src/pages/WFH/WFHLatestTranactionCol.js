@@ -42,7 +42,6 @@ const deleteData=async(id)=>{
                 console.log(err);
             })
         }
-        
        
     }
     
@@ -63,7 +62,7 @@ const EmployeeName = (cell) => {
     );
 };
 
-const LeaveType = (cell) => {
+const workType = (cell) => {
     return cell.value ? cell.value : '';
 };
 
@@ -97,7 +96,7 @@ const {setSubscribemodal,setId}=useStateContext()
         <span>
            
                 <>
-                <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>Accept(cell.value,users,admin)} />
+                <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>Accept(cell.value)} />
                 <i style={{cursor:"pointer"}} onClick={()=>{
             setSubscribemodal(true) 
             setId(cell.value)
@@ -111,7 +110,7 @@ const {setSubscribemodal,setId}=useStateContext()
 export {
     CheckBox,
     EmployeeName,
-    LeaveType,
+    workType,
     From,
     To,
     Reason,

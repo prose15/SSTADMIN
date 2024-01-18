@@ -24,6 +24,10 @@ import LeaveTracker from "pages/LeaveTracker/index";
 import TeamRequests from "pages/LeaveTracker/TeamRequests";
 import TimesheetTeamRequests from "pages/timesheet/Dashboard-saas/TimesheetTeamRequests";
 import AllRecords from "pages/LeaveTracker/AllRecords";
+//WFH
+import WFH from "pages/WFH/index";
+import WFHRecord from "pages/WFH/WFHRecord";
+import WFHTeamRequests from "pages/WFH/WFHTeamRequests";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -35,7 +39,10 @@ const authProtectedRoutes = [
   { path: "/addleave", component: <AddLeave/> },
   { path: "/allrecords", component: <AllRecords /> },
   { path: "/addleave/:id", component: <ApplyAgain /> },
-  
+  //WFH
+  {path: '/WFH', component: <WFH/>},
+  {path: "/WFH/records", component: <WFHRecord/>},
+  { path:"/WFH/requests",component: <WFHTeamRequests />},
   //timesheet
   // { path: "/timesheet/dashboard", component: <DashboardSaas /> },
   // { path: "/timesheet/mytimesheet", component: <Mytimesheet /> },

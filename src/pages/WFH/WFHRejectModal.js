@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import { Modal,Input,Button,ModalHeader } from 'reactstrap'
 import { useStateContext } from 'Context/ContextProvider'
-import { Reject } from 'pages/LeaveTracker/Reject'
-const RejectModal = () => {
+import { Reject } from './Reject'
+const WFHRejectModal = () => {
   const {subscribemodal,setSubscribemodal,id}= useStateContext()
  const [reason,setReason]=useState('')
   return (
@@ -66,4 +66,4 @@ const RejectModal = () => {
   )
 }
 
-export default RejectModal
+export default WFHRejectModal

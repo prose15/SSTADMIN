@@ -7,14 +7,23 @@ import SimpleBar from "simplebar-react";
 import { withTranslation } from "react-i18next";
 import { useStateContext } from "Context/ContextProvider";
 import { Timestamp } from "firebase/firestore";
+import { LeaveType } from "pages/LeaveTracker/LatestTranactionCol";
+import WFH from "pages/WFH";
 
 const NotificationDropdown = props => {
   const [menu, setMenu] = useState(false);
-  const {request} = useStateContext();
-  const arr=[...request]
-  const new_arr = arr.reverse().filter((data,index)=>index<=2)
+  const {request,WFHDetail,revokeDetail} = useStateContext();
+  const arr1= [...request]
+  const arr2= [...WFHDetail]
+  const arr3= [...revokeDetail]
+  const new_arr1 = arr1.reverse().filter((data,index)=>index<1)
+  const new_arr2 = arr2.reverse().filter((data,index)=>index<1) 
+  const new_arr3 = arr3.reverse().filter((data,index)=>index<1)
+  const final_arr = [...new_arr1, ... new_arr2, ...new_arr3]
+  console.log(final_arr);
+ 
   const findMin=(data)=>{
-    const seconds    = data.timestamp?.seconds
+    const seconds   = data.timestamp?.seconds
     const nanoseconds = data.timestamp?.nanoseconds
     const timestampInMilliseconds = seconds * 1000 + Math.floor(nanoseconds / 1e6);
       const dateObject = new Date(timestampInMilliseconds);
@@ -23,8 +32,6 @@ const NotificationDropdown = props => {
       const minsDiff = Math.floor(timeDiff/(1000 * 60))
       return minsDiff
   }
- 
-
 
   const handleClick = () =>{
     setMenu(!menu)
@@ -51,8 +58,8 @@ const NotificationDropdown = props => {
           id="page-header-notifications-dropdown"
         >
          {request.length === 0 ?  (
-          <i id="bell" className="bx bx-bell" />) : ( <i id="bell" className="bx bx-bell bx-tada" />)}
-          <span id="detail" className="badge bg-danger rounded-pill">{request.length === 0 ? empty : request.length}</span>
+          <i id="bell" className="bx bx-bell" />) :  ( <i id="bell" className="bx bx-bell bx-tada" />) }
+          <span id="detail" className="badge bg-danger rounded-pill">{request.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length) }</span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
           <div className="p-3">
@@ -64,27 +71,42 @@ const NotificationDropdown = props => {
           </div>
 
           <SimpleBar style={{ height: "230px" }}>
-          {new_arr.map((data)=> 
+          {final_arr.map((data)=> 
           <div key={data.id} className="text-reset notification-item">
             <div  className="d-flex">
                 <div className="avatar-xs me-3">
+
+                {data.WFH==='Work From Home' ? 
+                <span className="avatar-title bg-primary rounded-circle font-size-17">
                   
-                <span className="avatar-title bg-primary rounded-circle font-size-13">
-                    <i className="bx bx-calendar"/></span>
+                    <i className="mdi mdi-laptop-windows"/>
+                    </span>
+                    : 
+                    data.status === 'revoke' ?  
+                     <span className="avatar-title bg-primary rounded-circle font-size-20"> 
+                    <i className="bx bx-transfer-alt"/>
+                    </span> :
+                    <span className="avatar-title bg-primary rounded-circle font-size-17"> 
+                    <i className="bx bx-calendar"/>
+                    </span>
+                    
+                    }
                   
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
-                    {data.leaveType}
+                    {data.leaveType || data.WFH}
                   </h6>
                   <div className="font-size-12 text-muted">
-                    <p className="mb-1">
-                     {`${data.name} sent you a message`}
+                    <p className="mb-1">                 
+                     {
+                      data.status === "revoke" ? 
+                      (`${data.name} has revoked`) : (`${data.name} sent you a request`) }
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-clock-outline" />
                       {(findMin(data)===0)?('Just now'):((findMin(data)<60)?
-                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.floor(findMin(data)/60/24+"days ago")):(Math.floor(findMin(data)/60)+" hrs ago")))
+                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.round(findMin(data)/60/24)+" days ago"):(Math.floor(findMin(data)/60)+" hrs ago")))
                        }
                     </p>
                   </div>
