@@ -38,14 +38,18 @@ const data={leaveType,fromDate,subject,reason,fromTimeStamp,timestamp:Timestamp.
 addDoc(collection(db,'Holidays'),data).then(()=>{
     users.map((user)=>{
         updateDoc(doc(db,'users',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-            console.log('updated')
+          filteredAdmins.map((user)=>{
+            updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
+                console.log('admin updated')
+            }).catch((err)=>{
+              console.log(err)
+            })
+        })
+        }).catch((err)=>{
+          console.log(err)
         })
     })
-    filteredAdmins.map((user)=>{
-        updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-            console.log('admin updated')
-        })
-    })
+    
 }).catch((err)=>{
 
     console.log(err)
