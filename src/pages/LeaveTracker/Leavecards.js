@@ -19,11 +19,13 @@ const [lop,setLop]=useState(0);
 const [earned,setEarned]=useState(0);
 const [paternity,setPaternity]=useState(0);
 const [sick,setSick]=useState(0);
+const [flexi, setFlexi] = useState(0);
 const [casualAvail,setCasualAvail]=useState(0);
 const [lopAvailable,setLopAvail]=useState(0);
 const [earnedAvailable,setEarnedAvail]=useState(0);
 const [paternityAvailable,setPaternityAvail]=useState(0);
 const [sickAvailable,setSickAvail]=useState(0);
+const [flexiAvailable, setFlexiAvail] = useState(0);
 let user
  useEffect(()=>{
 
@@ -39,7 +41,7 @@ let user
  setPaternity(docSnap.data().paternity)
  setLop(docSnap.data().lop)
  setSick(docSnap.data().sick)
-  
+ setFlexi(docSnap.data().flexi)
   setEmail(Cookies.get('email'))
   if(docSnap.data().casualAvailable<=0){
      setCasualAvail(0)
@@ -80,7 +82,14 @@ let user
          setSickAvail(docSnap.data().sickAvailable)
      }
      
- }}
+ }
+ if(docSnap.data().flexiAvailable<=0){
+    setFlexiAvail(0)
+}
+else{
+    setFlexiAvail(docSnap.data().flexiAvailable)
+}
+}
 }
   handleGet()   
      },[]
@@ -142,8 +151,8 @@ let user
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available  {paternityAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {paternity}</p>
+            <p className="mb-0 flex-grow-1 text-success me-5">Available  {flexiAvailable}</p>
+                    <p className="mb-0 text-danger">Booked  {flexi}</p>
             </div>
         </CardBody>
     </Card>
