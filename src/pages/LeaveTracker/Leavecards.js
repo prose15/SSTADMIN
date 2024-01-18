@@ -153,14 +153,13 @@ let user
     <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
-            <i className='fas fa-exclamation-circle fa-2x'></i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Loss of pay</b></h5>
+           <i className="fas fa-hospital fa-2x"></i>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Sick Leave</b></h5>
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">
-                    Available  {lopAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {lop}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Available  {sickAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {sick}</p>
             </div>
         </CardBody>
     </Card>
@@ -181,9 +180,9 @@ let user
     <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
-             <i className="fas fa-baby-carriage fa-2x">
+             <i className="mdi mdi-party-popper fa-2x">
                 </i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Paternity</b></h5>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Flexi Leave</b></h5>
             </div>
 
             <div className="d-flex">
@@ -195,13 +194,14 @@ let user
     <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
-           <i className="fas fa-hospital fa-2x"></i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Sick Leave</b></h5>
+            <i className='fas fa-exclamation-circle fa-2x'></i>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Loss of pay</b></h5>
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available  {sickAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {sick}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">
+                    Available  {lopAvailable}</p>
+                <p className="mb-0 text-danger">Booked  {lop}</p>
             </div>
         </CardBody>
     </Card>
