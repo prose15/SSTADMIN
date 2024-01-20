@@ -112,8 +112,6 @@ const LeaveForm = props => {
     toDate:toDate,
     subject:subject,
     reason:"",
-  file:""
-  
   }
 const schema = Yup.object().shape({
     leaveType: Yup.string()
@@ -300,7 +298,13 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                 const disabledDate = current => {
                   // Disable dates that are not in the enabledDates array
                   return !flexidays.includes(current.format('YYYY-MM-DD'));
-                };    
+                };  
+                
+                const WeekEnds = current => {
+                  const dayOfWeek = current.day();
+                  return dayOfWeek === 5 || dayOfWeek === 6;
+                };
+                  
                 const optionGroup = [
                   {
                     label: "Casual Leave",
@@ -323,7 +327,8 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                   values.leaveType=selectedGroup.value
                   setLeaveID(selectedGroup.id)
                   console.log(values.leaveType)
-                }         
+                }
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -392,6 +397,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                               placeholder="Enter From Date"
                               onChange={(date,string)=>values.fromDate=string}
                               onBlur={handleBlur}
+                              disabledDate={WeekEnds}
                               format='YYYY-MM-DD'
                                  />
                                  
@@ -433,6 +439,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                                 
                                }}
                                onBlur={handleBlur}
+                               disabledDate={WeekEnds}
                                 format='YYYY-MM-DD'
                                  />
                             )
@@ -540,8 +547,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                            </>
                   ):(<></>)
                   }
-                 
-                  {errors.reason && <small className="text-danger m-0">{errors.reason}</small>}
                   {
                     (values.leaveType==='Sickleave' &&   countDays(new Date(values.fromDate),new Date(values.toDate))>2)?(
                       <>
@@ -557,7 +562,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                           }}/>
                  
                   </div>
-                           {errors.file && <small className="text-danger m-0">{errors.file}</small>}
                            </>
                   ):(<></>)
                   }

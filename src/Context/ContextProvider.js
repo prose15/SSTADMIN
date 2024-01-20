@@ -7,13 +7,21 @@ import Cookies from "js-cookie";
 import { db } from "firebase-config";
 const StateContext=createContext();
 export const ContextProvider=({children})=>{
+
+  //States
   const [url,setUrl]=useState('')
   const [user,setUser]=useState()
   const [detail,setDetail]=useState([])
+  const [WFHDetail,setWFHDetail] = useState([])
   const [request,setRequest]=useState([])
   const [subscribemodal,setSubscribemodal]=useState(false)
   const [modal_backdrop, setmodal_backdrop] = useState(false);
   const [id,setId]=useState('')
+  const [revokeDetail,setRevokeDetail] = useState([])
+
+  //Cookies
+  const level = Cookies.get('level')
+  
   useEffect(()=>{
     onAuthStateChanged(auth,(user)=>{
       if(user){
@@ -36,6 +44,36 @@ export const ContextProvider=({children})=>{
           },(error)=>{
             console.log(error)
           })
+          const todayTimeStamp=new Date()
+          todayTimeStamp.setHours(23)
+          todayTimeStamp.setMinutes(59)
+          todayTimeStamp.setSeconds(59)
+          if(level === 'L2'){
+          const filteredRevokeQuery = query(collection(db,'leave submssion'), where('status', '==','revoke'),where('fromTimeStamp','>',todayTimeStamp));
+          onSnapshot(
+            filteredRevokeQuery,(data)=>{
+              setRevokeDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          },(error)=>{
+            console.log(error)
+          })
+        }
+        else if(level==='L1'){
+          const filteredRevokeQuery = query(collection(db,'leave submssion'), where('status', '==','revoke'),where('team','==',docSnap.data().team),where('fromTimeStamp','>',todayTimeStamp));
+          onSnapshot(
+            filteredRevokeQuery,(data)=>{
+              setRevokeDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          },(error)=>{
+            console.log(error)
+          })
+        }
+          const filteredWFHQuery = query(collection(db,'WFH'),where('reportManager','==',docSnap.data().name),orderBy('timestamp','desc'));
+          
+          onSnapshot(
+            filteredWFHQuery,(data)=>{
+              setWFHDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          },(error)=>{
+            console.log(error)
+          })
         }
         const fileRef=ref(storage,'users/'+user+'.jpg');
         await getDownloadURL(fileRef).then((url) => {
@@ -47,8 +85,6 @@ export const ContextProvider=({children})=>{
     }
     getURL(user)
   },[user])
-
-
  
   var today = new Date();
     var startDate = new Date()
@@ -117,7 +153,7 @@ if(i!==11){
 available[i+1]+=1.5
 }
 }
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail}}>
         {children}
     </StateContext.Provider>)
 }

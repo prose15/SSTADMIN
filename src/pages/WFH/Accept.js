@@ -1,9 +1,10 @@
 import { db } from "firebase-config"
 import { getDoc,doc, updateDoc,collection,Timestamp } from "firebase/firestore"
 import Cookies from "js-cookie";
-export const Accept = async(id,users,admin) =>{
-  const docRef = doc(db, 'leave submssion',id)
+export const Accept = async(id) =>{
+  const docRef = doc(db, 'WFH',id)
   const docSnap = await getDoc(docRef);
+
   if(docSnap.exists()){
     const detail= docSnap.data()
     let rpm = []
@@ -92,78 +93,15 @@ export const Accept = async(id,users,admin) =>{
         
       }
  
+    console.log(detail)
 
-    const userDoc = doc(collection(db,'leave submssion'), id)
+    const WFHDoc = doc(collection(db,'WFH'), id)
 
-    updateDoc(userDoc, detail).then(() => {
-      users.map((user) => {
-        if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
-          let str=detail.leaveType
-          let subLeave=detail.subLeave
-          console.log(subLeave)
-          let leave = str.substring(0,str.length-5).toLocaleLowerCase()
-          if(detail.leaveType!=='Paternityleave'){
-          user[leave+'Available']-=detail.noofdays
-          user[leave+'Available']<=0 &&(user[leave+'Available']=0)
-          if(subLeave==='lop'){
-           user.lopAvailable=user.lopAvailable+detail.lopBooked
-          }else if(subLeave==='earned'){
-            user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
-          } 
-          }else{
-            user[leave+'Available']+=detail.noofdays 
-            if(subLeave==='lop'){
-              user.lopAvailable=user.lopAvailable+detail.lopBooked
-             }else if(subLeave==='earned'){
-               user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
-             } 
-          }
-          console.log(user)
-          updateDoc(doc(db,'users', user.id), user).then(() => {
-            console.log('profile update');
-
-          }).catch((err) => {
-            console.log(err);
-          })
-
-        }
-      })
-      admin.map((user) => {
-        if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
-          let str=detail.leaveType
-          let subLeave=detail.subLeave
-          console.log(subLeave)
-          let leave = str.substring(0,str.length-5).toLocaleLowerCase()
-          if(detail.leaveType!=='Paternityleave'){
-          user[leave+'Available']-=detail.noofdays
-          user[leave+'Available']<=0 &&(user[leave+'Available']=0)
-          if(subLeave==='lop'){
-           user.lopAvailable=user.lopAvailable+detail.lopBooked
-          }else if(subLeave==='earned'){
-            user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
-          } 
-          }else{
-            user[leave+'Available']+=detail.noofdays 
-            if(subLeave==='lop'){
-              user.lopAvailable=user.lopAvailable+detail.lopBooked
-             }else if(subLeave==='earned'){
-               user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
-             } 
-          }
-          console.log(user)
-          updateDoc(doc(db,'admin', user.id), user).then(() => {
-            console.log('profile update');
-
-          }).catch((err) => {
-            console.log(err);
-          })
-
-        }
-      })
-
+    updateDoc(WFHDoc, detail).then(() => {
       console.log('added successfully');
     }).catch((err) => {
       console.log(err);
     })
   }
+  
 }

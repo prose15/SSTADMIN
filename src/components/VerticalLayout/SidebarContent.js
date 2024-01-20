@@ -194,7 +194,24 @@ const SidebarContent = props => {
                
               </ul>
             </li>
-
+            <li>
+              <Link to="/#" className="has-arrow">
+              <i className='mdi mdi-laptop-windows'></i>
+                <span>Work From Home</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/WFH">Add Work From Home</Link>
+                </li>
+                <li>
+                  <Link to="/WFH/records">My Records</Link>
+                </li>
+                <li>
+                  <Link to="/WFH/requests">Team's Request</Link>
+                </li>
+                
+              </ul>
+            </li>
             
               {(Cookies.get('team')!='Sales')?(
                 <li>
