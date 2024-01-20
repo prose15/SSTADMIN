@@ -12,13 +12,14 @@ import WFH from "pages/WFH";
 
 const NotificationDropdown = props => {
   const [menu, setMenu] = useState(false);
-  const {request,WFHDetail,revokeDetail} = useStateContext();
+  const {request,WFHDetail,revokeDetail,holidays} = useStateContext();
   const arr1= [...request]
   const arr2= [...WFHDetail]
   const arr3= [...revokeDetail]
   const new_arr1 = arr1.reverse().filter((data,index)=>index<1)
   const new_arr2 = arr2.reverse().filter((data,index)=>index<1) 
   const new_arr3 = arr3.reverse().filter((data,index)=>index<1)
+  const new_arr4=holidays.filter((data,index)=>index<1)
   const final_arr = [...new_arr1, ... new_arr2, ...new_arr3]
   console.log(final_arr);
  
@@ -57,9 +58,9 @@ const NotificationDropdown = props => {
           tag="button"
           id="page-header-notifications-dropdown"
         >
-         {request.length+ WFHDetail.length + revokeDetail.length === 0 ?  (
+         {request.length+ WFHDetail.length + revokeDetail.length+new_arr4.length === 0 ?  (
           <i id="bell" className="bx bx-bell" />) :  ( <i id="bell" className="bx bx-bell bx-tada" />) }
-          <span id="detail" className="badge bg-danger rounded-pill">{request.length+ WFHDetail.length + revokeDetail.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length) }</span>
+          <span id="detail" className="badge bg-danger rounded-pill">{request.length+ WFHDetail.length + revokeDetail.length+new_arr4.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length+holidays.length) }</span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
           <div className="p-3">
@@ -71,6 +72,33 @@ const NotificationDropdown = props => {
           </div>
 
           <SimpleBar style={{ height: "230px" }}>
+          {new_arr4.map((data)=> 
+          <div key={data.id} className="text-reset notification-item">
+            <div  className="d-flex">
+                <div className="avatar-xs me-3 ">
+                <span className="avatar-title bg-primary rounded-circle font-size-16  p-3">
+                    <i className="fas fa-gift "/>
+                    </span>  
+                </div>
+                <div className="flex-grow-1">
+                  <h6 className="mt-0 mb-1">
+                    {data.subject}
+                  </h6>
+                  <div className="font-size-12 text-muted">
+                    <p className="mb-1">
+                    {data.reason}
+                    </p>
+                    <p className="mb-0">
+                      <i className="mdi mdi-clock-outline" />
+                       {(findMin(data)===0)?('Just now'):((findMin(data)<60)?
+                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.floor(findMin(data)/60/24)+"days ago"):(Math.floor(findMin(data)/60)+" hrs ago")))
+                       }
+                    
+                    </p>
+                  </div>
+                </div>
+            </div>
+          </div>)}
           {final_arr.map((data)=> 
           <div key={data.id} className="text-reset notification-item">
             <div  className="d-flex">

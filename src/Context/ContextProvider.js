@@ -18,7 +18,7 @@ export const ContextProvider=({children})=>{
   const [modal_backdrop, setmodal_backdrop] = useState(false);
   const [id,setId]=useState('')
   const [revokeDetail,setRevokeDetail] = useState([])
-
+  const [holidays,setHolidays]=useState([])
   //Cookies
   const level = Cookies.get('level')
   
@@ -74,6 +74,11 @@ export const ContextProvider=({children})=>{
           },(error)=>{
             console.log(error)
           })
+          const filteredLeaveQuery =query(collection(db,'Holidays'),where('fromTimeStamp','>',todayTimeStamp));
+    const data1=await getDocs(filteredLeaveQuery).catch((err)=>{
+      console.log(err);
+    })
+    setHolidays(data1.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }
         const fileRef=ref(storage,'users/'+user+'.jpg');
         await getDownloadURL(fileRef).then((url) => {
@@ -103,9 +108,6 @@ export const ContextProvider=({children})=>{
     enddate.setSeconds(59);
     enddate.setMilliseconds(59);
 const graphdetails=detail.filter((detail)=>new Date(detail.from).getFullYear()==today.getFullYear()||new Date(detail.to).getFullYear()==today.getFullYear())
-
-
-
 const leave=[0,0,0,0,0,0,0,0,0,0,0,0]
 const nextyearleave=[0,0,0,0,0,0,0,0,0,0,0,0]
 let checkyear=new Date()
@@ -153,7 +155,7 @@ if(i!==11){
 available[i+1]+=1.5
 }
 }
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays}}>
         {children}
     </StateContext.Provider>)
 }

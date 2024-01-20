@@ -109,7 +109,10 @@ const WFH = props => {
                 })
                 
                   }})
-                    
+                  const WeekEnds = current => {
+                    const dayOfWeek = current.day();
+                    return dayOfWeek === 5 || dayOfWeek === 6;
+                  }; 
   return (
     <React.Fragment>
       <div className="page-content">
@@ -146,21 +149,7 @@ const WFH = props => {
                       <Col md={6}>
                         <div className="">
                           <Label htmlFor="formrow-email-Input">Start Date</Label>
-                          {
-                            values.leaveType==='Flexileave'?(
-                              
-                              <DatePicker
-                              className={errors.fromDate ? "  border-danger form-control" : "form-control"}
-                              id="formrow-email-Input"
-                              name="fromDate"
-                              placeholder="Enter From Date"
-                              onChange={(date,string)=>values.fromDate=string}
-                              onBlur={handleBlur}
-                                disabledDate={disabledDate}
-                                format='YYYY-MM-DD'
-                                 />
-                                 
-                            ):(
+                          
                               <DatePicker
                               className={errors.fromDate ? "  border-danger form-control" : "form-control"}
                               id="formrow-email-Input"
@@ -168,11 +157,10 @@ const WFH = props => {
                               placeholder="Enter From Date"
                               onChange={(date,string)=>values.fromDate=string}
                               onBlur={handleBlur}
+                              disabledDate={WeekEnds}
                               format='YYYY-MM-DD'
                                  />
-                                 
-                            )
-                          }
+                            
                            {errors.fromDate && <small className="text-danger">
                             {errors.fromDate}</small>}
                         </div>
@@ -181,8 +169,6 @@ const WFH = props => {
                       <Col md={6}>
                         <div className="">
                           <Label htmlFor="formrow-password-Input">End Date</Label>
-                          {
-                            values.leaveType==='Flexileave'?(
                               <DatePicker
                               className={errors.toDate ? "  border-danger form-control" : "form-control"}
                               id="formrow-email-Input"
@@ -193,24 +179,10 @@ const WFH = props => {
                                 
                                }}
                                onBlur={handleBlur}
-                                disabledDate={disabledDate}
+                               disabledDate={WeekEnds}
                                 format='YYYY-MM-DD'
                                  />
-                            ):(
-                              <DatePicker
-                              className={errors.toDate ? "  border-danger form-control" : "form-control"}
-                              id="formrow-email-Input"
-                              name="toDate"
-                              placeholder="Enter From Date"
-                              onChange={(date,string)=>{
-                                values.toDate=string
-                                
-                               }}
-                               onBlur={handleBlur}
-                                format='YYYY-MM-DD'
-                                 />
-                            )
-                          }
+                           
                            {errors.toDate && <small className="text-danger">
                             {errors.toDate}</small>}
                         </div>

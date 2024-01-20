@@ -44,7 +44,6 @@ const Dashboard = props => {
   const [name,setName]=useState('')
   const [team,setTeam]=useState([])
   const [role,setRole]=useState('')
-  const [holiday,setHoliday]=useState([])
   const todayTimeStamp=new Date()
   todayTimeStamp.setHours(23)
   todayTimeStamp.setMinutes(59)
@@ -79,17 +78,6 @@ const Dashboard = props => {
       
        },[]
      )
-     useMemo(()=>{
-      const getData=  async()=>{
-        const filteredLeaveQuery =query(collection(db,'Holidays'),where('fromTimeStamp','>',todayTimeStamp));
-        const data1=await getDocs(filteredLeaveQuery).catch((err)=>{
-          console.log(err);
-        })
-        setHoliday(data1.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        setToast(true)
-      } 
-      getData()
-     },[])
   const reports = [
     { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: "12" },
     { title: "Worked Hours", iconClass: "bx bxs-time", description: "128" },
@@ -158,13 +146,10 @@ const Dashboard = props => {
 const startTime=[]
 const endTime=[]
 for(let i=0;i<details.length;i++){
-  // console.log("startTime",details[i].startTime)
   startTime.push(details[i].startTime)
   endTime.push(details[i].endTime)
 }
 
-console.log(holiday)
-// console.log(endTime)
 
 const workedHours=(totHours(startTime,endTime))?(totHours(startTime,endTime)):0
 console.log("workedhours",workedHours)
@@ -182,33 +167,7 @@ const findMin=(data)=>{
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Row>
-            {
-              holiday &&  <>
-                {
-                  holiday.map((data)=>(
-                    <div key={data.id} className="position-fixed d-flex justify-content-end top-0 end-0 p-3" style={{ zIndex: "1005" }}>
-            <Toast 
-              isOpen={toast}
-              role="alert"
-              >
-              <ToastHeader toggle={() => setToast(!toast)}>
-                  <strong className="me-auto">{data.subject}</strong>
-                  <small style={{ marginLeft: "145px" }} className="text-muted"> {(findMin(data)===0)?('Just now'):((findMin(data)<60)?
-                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.floor(findMin(data)/60/24+"days ago")):(Math.floor(findMin(data)/60)+" hrs ago")))
-                       }</small>
-              </ToastHeader>
-              <ToastBody>
-              {data.reason}
-              </ToastBody>
-          </Toast>
-          </div>
-                  ))
-                }
-              
-              </>
-            }
-         
+          <Row>        
             <Col xl="4">
               <WelcomeComp name={name} role={role} />
               {/* <Col xl="6"> */}

@@ -10,22 +10,13 @@ import Cookies from 'js-cookie';
 import { db } from "firebase-config";
 import { useStateContext } from 'Context/ContextProvider';
 const LeaveTracker = () => {
-  const {earnedLeave,available,leave}= useStateContext()
-  const [upcomingLeaves,setUpcomingLeaves]=useState([])
+  const {earnedLeave,available,leave,detail}= useStateContext()
   const email=Cookies.get('email')
   const todayTimeStamp=new Date()
   todayTimeStamp.setHours(23)
   todayTimeStamp.setMinutes(59)
   todayTimeStamp.setSeconds(59)
-  useMemo(()=>{
-      const handleGet=async()=>{
-          const filteredUsersQuery =query(collection(db,'leave submssion'),where('email','==',email),where('status','==','approved'),where('fromTimeStamp','>',todayTimeStamp),orderBy('timestamp','desc'));
-          onSnapshot(filteredUsersQuery,(data)=>{
-            setUpcomingLeaves(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-          })
-      }
-      handleGet()
-  },[])
+  const upcomingLeaves=detail.filter((data)=>data.fromTimeStamp>todayTimeStamp)
 const today=new Date();
 if(today.getMonth()===11 ){
   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{earnedAvailable:earnedLeave}).then(()=>{
