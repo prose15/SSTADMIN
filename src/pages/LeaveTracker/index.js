@@ -4,7 +4,6 @@ import CandidateSection from './CandidateSection';
 import Leaveapaexlinecolumn from "../AllCharts/Apex/leaveapaexlinecolumn"
 import Section from 'pages/timesheet/Dashboard-saas/Section';
 import Leavecards from './Leavecards';
-import FormLayouts from 'pages/Forms/ProfileLayout';
 import { useState,useEffect } from 'react';
 import {collection,getDocs,query,where,orderBy,onSnapshot,updateDoc,doc} from 'firebase/firestore'
 import Cookies from 'js-cookie';

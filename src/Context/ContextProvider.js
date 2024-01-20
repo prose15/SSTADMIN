@@ -29,7 +29,7 @@ export const ContextProvider=({children})=>{
         onSnapshot(filteredUsersQuery, (data) => {
           setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         })
-        const filteredApprovalQuery =query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','desc'));
+        const filteredApprovalQuery=query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','desc'));
           onSnapshot(
             filteredApprovalQuery,(data)=>{
               setDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
@@ -66,26 +66,7 @@ export const ContextProvider=({children})=>{
     enddate.setMinutes(59);
     enddate.setSeconds(59);
     enddate.setMilliseconds(59);
-    const [leaveData,setLeaveData]=useState([])
-const name=Cookies.get('name')
-
-useEffect(()=>{
-    const getData=async()=>{
-        // const collection=collection(db,'timesheet')
-        const filteredUsersQuery =query(collection(db,'leave submssion'),where('name','==',name));
-        
-        const data=await getDocs(filteredUsersQuery).catch((err)=>{
-        
-        })
-        setLeaveData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        
-    }
-    getData()
-  },[])
-
-
-
-const graphdetails=leaveData.filter((detail)=>new Date(detail.from).getFullYear()==today.getFullYear()||new Date(detail.to).getFullYear()==today.getFullYear())
+const graphdetails=detail.filter((detail)=>new Date(detail.from).getFullYear()==today.getFullYear()||new Date(detail.to).getFullYear()==today.getFullYear())
 
 
 

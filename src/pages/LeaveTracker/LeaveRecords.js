@@ -225,8 +225,8 @@ setYear(0)
                     </button> 
                     </div>
                     </Col>
-                    <Col>
-                    <TableContainer
+                    <Col >
+                    <TableContainer 
                         columns={columns}
                         data={details}
                         isGlobalFilter={true}
