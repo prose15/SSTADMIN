@@ -163,9 +163,6 @@ for(let i=0;i<details.length;i++){
   endTime.push(details[i].endTime)
 }
 
-console.log(holiday)
-// console.log(endTime)
-
 const workedHours=(totHours(startTime,endTime))?(totHours(startTime,endTime)):0
 console.log("workedhours",workedHours)
 const findMin=(data)=>{
@@ -178,6 +175,7 @@ const findMin=(data)=>{
     const minsDiff = Math.floor(timeDiff/(1000 * 60))
     return minsDiff
 }
+console.log(holiday);
   return (
     <React.Fragment>
       <div className="page-content">
@@ -187,7 +185,7 @@ const findMin=(data)=>{
               holiday &&  <>
                 {
                   holiday.map((data)=>(
-                    <div key={data.id} className="position-fixed d-flex justify-content-end top-0 end-0 p-3" style={{ zIndex: "1005" }}>
+                    <div key={data.id} className="position-fixed d-flex justify-content-center top-0 end-0 p-3" style={{ zIndex: "1005" }}>
             <Toast 
               isOpen={toast}
               role="alert"
