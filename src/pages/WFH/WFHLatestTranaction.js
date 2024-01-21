@@ -47,7 +47,7 @@ const WFHLatestTranaction = props => {
     getData();
   }, [])
   const [modal1, setModal1] = useState(false);
-
+  console.log(users,admin);
   const toggleViewModal = () => setModal1(!modal1);
   const columns = useMemo(
     () => [
@@ -108,11 +108,6 @@ const WFHLatestTranaction = props => {
           return <Actions {...cellProps} users={users} admin={admin} />;
         },
       }
-
-     
-
-
-
     ],
     [users, admin]
   );

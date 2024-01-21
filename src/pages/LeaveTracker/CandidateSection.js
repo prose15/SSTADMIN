@@ -17,8 +17,10 @@ import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "../../../node_modules/swiper/swiper.scss";
 import Cookies from 'js-cookie';
 
+import { useStateContext } from "Context/ContextProvider";
 const CandidateSection = ({upcomingLeaves}) => {
-    const LeaveContent = "You will notify here about your upcoming leaves!"
+    const {holidays} = useStateContext();
+    const LeaveContent = "Stay in the loop about your upcoming and officially approved time off!"
     const team=Cookies.get('team')
     const level=Cookies.get('level')
     let details = []
@@ -54,13 +56,25 @@ console.log(swiper1.length)
         <React.Fragment>
             <Col lg={12}>
             <Card>
-                    <CardBody>
+            <CardBody>
                         <div className="d-flex flex-column">
-                        <h4 className="card-title mb-3">Upcoming Leaves</h4>
+                        <h4 className="card-title mb-3">Vacation Hub</h4>
                             <div className='container overflow-y-auto' id='upcoming'>
                                 
-                                <p className="text-muted">{(upcomingLeaves.length===0)?(LeaveContent):(
-                                    document.getElementById('upcoming').style.height='110px',
+                                <p className="text-muted">{(upcomingLeaves.length+holidays.length===0)?(LeaveContent):(
+                                    <div style={{height:'100px'}}>{
+                                    holidays.map((data)=>(
+                                        <div key={data.id} >
+                                   <Alert color="success">
+                                    <div className='d-flex flex-direction-row'>
+                                        <i className="mdi mdi-check-all me-2"></i>                              
+                                        {data.reason}
+                                    </div>
+                                    </Alert>
+                                {/* <p></p> */}
+                                </div>
+                                    ))}
+                                    {
                                     upcomingLeaves.map((data)=>(
                                 <div key={data.id} >
                                    <Alert color="success">
@@ -72,7 +86,9 @@ console.log(swiper1.length)
                                 {/* <p></p> */}
                                 </div>
                                     ))
-                                
+}
+                                    </div>
+
                                 )}</p>
                             </div>                        
                         </div>

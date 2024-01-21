@@ -20,7 +20,7 @@ import "flatpickr/dist/themes/material_blue.css";
 import * as Yup from "yup";
 import { Field, Formik, useFormik } from "formik";
 import { db,storage} from "firebase-config";
-import { collection,addDoc, Timestamp, } from "firebase/firestore";
+import { collection,addDoc, Timestamp, updateDoc,doc} from "firebase/firestore";
 import Cookies from 'js-cookie'
 import {ref,uploadBytes} from 'firebase/storage'
 const WFH = props => {
@@ -28,6 +28,7 @@ const WFH = props => {
     const name = Cookies.get('name')
     const email=Cookies.get('email');
     const level= Cookies.get('level');
+    const [newData,setNewData]=useState(null)
   let details=[]
   const today = new Date();
   let reportingManager=''
@@ -54,6 +55,15 @@ const WFH = props => {
   const [toDate,setToDate] = useState()
   const [subject,setSubject] = useState()
   const WFH = "Work From Home"
+  useEffect(()=>{
+    const getData=async()=>{
+      const docSnap= await getDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))))
+      if(docSnap.exists()){
+        setNewData(docSnap.data())
+      }
+    }
+    getData()
+  },[])
   const initialValues = {
     WFH:WFH,
     reportingManager:reportingManager,
@@ -100,6 +110,12 @@ const WFH = props => {
                       setNewDetails(newData)
                 addDoc(collection(db,'WFH'),newDetails).then(()=>{
                     console.log("message added successfully");
+                    newData.WFH+=newDetails.noofdays
+                    updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
+                      console.log('profile updated')
+                    }).catch((err)=>{
+                      console.log(err);
+                    })
                     setAlert('d-block')
                     localStorage.setItem('type',newDetails.leaveType)
                     setTimeout(()=>{nav('/WFH/records')},2000)
@@ -109,7 +125,10 @@ const WFH = props => {
                 })
                 
                   }})
-                    
+                  const WeekEnds = current => {
+                    const dayOfWeek = current.day();
+                    return dayOfWeek === 5 || dayOfWeek === 6;
+                  }; 
   return (
     <React.Fragment>
       <div className="page-content">
@@ -146,21 +165,7 @@ const WFH = props => {
                       <Col md={6}>
                         <div className="">
                           <Label htmlFor="formrow-email-Input">Start Date</Label>
-                          {
-                            values.leaveType==='Flexileave'?(
-                              
-                              <DatePicker
-                              className={errors.fromDate ? "  border-danger form-control" : "form-control"}
-                              id="formrow-email-Input"
-                              name="fromDate"
-                              placeholder="Enter From Date"
-                              onChange={(date,string)=>values.fromDate=string}
-                              onBlur={handleBlur}
-                                disabledDate={disabledDate}
-                                format='YYYY-MM-DD'
-                                 />
-                                 
-                            ):(
+                          
                               <DatePicker
                               className={errors.fromDate ? "  border-danger form-control" : "form-control"}
                               id="formrow-email-Input"
@@ -168,11 +173,10 @@ const WFH = props => {
                               placeholder="Enter From Date"
                               onChange={(date,string)=>values.fromDate=string}
                               onBlur={handleBlur}
+                              disabledDate={WeekEnds}
                               format='YYYY-MM-DD'
                                  />
-                                 
-                            )
-                          }
+                            
                            {errors.fromDate && <small className="text-danger">
                             {errors.fromDate}</small>}
                         </div>
@@ -181,8 +185,6 @@ const WFH = props => {
                       <Col md={6}>
                         <div className="">
                           <Label htmlFor="formrow-password-Input">End Date</Label>
-                          {
-                            values.leaveType==='Flexileave'?(
                               <DatePicker
                               className={errors.toDate ? "  border-danger form-control" : "form-control"}
                               id="formrow-email-Input"
@@ -193,24 +195,10 @@ const WFH = props => {
                                 
                                }}
                                onBlur={handleBlur}
-                                disabledDate={disabledDate}
+                               disabledDate={WeekEnds}
                                 format='YYYY-MM-DD'
                                  />
-                            ):(
-                              <DatePicker
-                              className={errors.toDate ? "  border-danger form-control" : "form-control"}
-                              id="formrow-email-Input"
-                              name="toDate"
-                              placeholder="Enter From Date"
-                              onChange={(date,string)=>{
-                                values.toDate=string
-                                
-                               }}
-                               onBlur={handleBlur}
-                                format='YYYY-MM-DD'
-                                 />
-                            )
-                          }
+                           
                            {errors.toDate && <small className="text-danger">
                             {errors.toDate}</small>}
                         </div>

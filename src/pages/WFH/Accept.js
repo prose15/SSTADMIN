@@ -1,7 +1,7 @@
 import { db } from "firebase-config"
 import { getDoc,doc, updateDoc,collection,Timestamp } from "firebase/firestore"
 import Cookies from "js-cookie";
-export const Accept = async(id) =>{
+export const Accept = async(id,users,admin) =>{
   const docRef = doc(db, 'WFH',id)
   const docSnap = await getDoc(docRef);
 
@@ -93,11 +93,35 @@ export const Accept = async(id) =>{
         
       }
  
-    console.log(detail)
+    
 
     const WFHDoc = doc(collection(db,'WFH'), id)
 
     updateDoc(WFHDoc, detail).then(() => {
+      users.map((user) => {
+        if (user.email===detail.email && detail.status==='approved') {
+          user.WFHApproved+=detail.noofdays
+          updateDoc(doc(db,'users',user.id),user).then(()=>{
+            console.log('profile updated');
+          }).catch((err)=>{
+            console.log(err);
+          console.log('user',user)
+          })
+          console.log(detail,users,admin)
+        }
+       
+      })
+    
+      admin.map((user) => {
+        if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
+          user.WFHApproved+=detail.noofdays
+          updateDoc(doc(db,'admin',user.id),user).then(()=>{
+            console.log('admin updated');
+          }).catch((err)=>{
+            console.log(err);
+          })
+        } 
+      })
       console.log('added successfully');
     }).catch((err) => {
       console.log(err);

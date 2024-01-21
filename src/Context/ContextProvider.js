@@ -18,7 +18,7 @@ export const ContextProvider=({children})=>{
   const [modal_backdrop, setmodal_backdrop] = useState(false);
   const [id,setId]=useState('')
   const [revokeDetail,setRevokeDetail] = useState([])
-
+  const [holidays,setHolidays]=useState([])
   //Cookies
   const level = Cookies.get('level')
   
@@ -37,7 +37,7 @@ export const ContextProvider=({children})=>{
         onSnapshot(filteredUsersQuery, (data) => {
           setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         })
-        const filteredApprovalQuery =query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','desc'));
+        const filteredApprovalQuery=query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','desc'));
           onSnapshot(
             filteredApprovalQuery,(data)=>{
               setDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
@@ -66,7 +66,7 @@ export const ContextProvider=({children})=>{
             console.log(error)
           })
         }
-          const filteredWFHQuery = query(collection(db,'WFH'),where('reportManager','==',docSnap.data().name),orderBy('timestamp','desc'));
+          const filteredWFHQuery = query(collection(db,'WFH'),where('reportManager','==',docSnap.data().name),orderBy('timestamp','asc'));
           
           onSnapshot(
             filteredWFHQuery,(data)=>{
@@ -74,6 +74,11 @@ export const ContextProvider=({children})=>{
           },(error)=>{
             console.log(error)
           })
+          const filteredLeaveQuery =query(collection(db,'Holidays'),where('fromTimeStamp','>',todayTimeStamp));
+    const data1=await getDocs(filteredLeaveQuery).catch((err)=>{
+      console.log(err);
+    })
+    setHolidays(data1.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }
         const fileRef=ref(storage,'users/'+user+'.jpg');
         await getDownloadURL(fileRef).then((url) => {
@@ -102,29 +107,7 @@ export const ContextProvider=({children})=>{
     enddate.setMinutes(59);
     enddate.setSeconds(59);
     enddate.setMilliseconds(59);
-    const [leaveData,setLeaveData]=useState([])
-const name=Cookies.get('name')
-
-useEffect(()=>{
-    const getData=async()=>{
-        // const collection=collection(db,'timesheet')
-        const filteredUsersQuery =query(collection(db,'leave submssion'),where('name','==',name));
-        
-        const data=await getDocs(filteredUsersQuery).catch((err)=>{
-        
-        })
-        setLeaveData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        
-    }
-    getData()
-  },[])
-
-
-
-const graphdetails=leaveData.filter((detail)=>new Date(detail.from).getFullYear()==today.getFullYear()||new Date(detail.to).getFullYear()==today.getFullYear())
-
-
-
+const graphdetails=detail.filter((detail)=>new Date(detail.from).getFullYear()==today.getFullYear()||new Date(detail.to).getFullYear()==today.getFullYear())
 const leave=[0,0,0,0,0,0,0,0,0,0,0,0]
 const nextyearleave=[0,0,0,0,0,0,0,0,0,0,0,0]
 let checkyear=new Date()
@@ -172,7 +155,7 @@ if(i!==11){
 available[i+1]+=1.5
 }
 }
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays}}>
         {children}
     </StateContext.Provider>)
 }

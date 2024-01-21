@@ -62,8 +62,8 @@ const letter = userName()
         className="d-inline-block"
       >
         <DropdownToggle
-          className="btn header-item"
-          id="page-header-user-dropdown"
+          className="btn header-item d-flex  align-items-center"
+          id="page-header-user-dropdown "
           tag="button"
         >
           {
@@ -72,7 +72,7 @@ const letter = userName()
               src={url}
               alt="Header Avatar"
             />):(
-              <span  className='  rounded-circle   bg-primary-subtle text-primary p-2 ' style={{width:'20px',height:'20px'}}>
+              <span  className='avatar-title  rounded-circle   bg-primary-subtle text-primary p-3 ' style={{width:'20px',height:'20px'}}>
                 {letter}
               </span>
               

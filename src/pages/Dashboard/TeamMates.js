@@ -23,7 +23,7 @@ const TeamMates = (props) => {
               </span>
                     <div className="flex-grow-1 mt-2">
                         <h5 className="font-size-15 mb-2"><a href="candidate-overview" className="text-body" key={data.name}>{data.name}</a></h5>
-                        <p className="mb-0 text-muted"><i className="me-2 bx bx-briefcase text-body align-middle"></i>{data.designation}</p>
+                        <p className="mb-0  text-muted"><i className="me-2 bx bx-briefcase text-body align-middle"></i>{data.designation}</p>
                     </div>
                 </div>
                    )) 
