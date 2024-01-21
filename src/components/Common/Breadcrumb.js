@@ -76,8 +76,6 @@ const downloadAllRecords=(leaverecords)=>{
     pdf.addImage(logo,'JPEG',90,10,30,10)
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(75,75,75);
-    pdf.text('Leave Records', 15, 70);
     pdf.autoTable({
       head: [headers],
       body: data,
@@ -102,7 +100,7 @@ const handleDownloadClick = (year,name,month) => {
   }else{
     leaveDetails=details.filter(detail=>(detail.fromYear===year||detail.toYear===year)&&(detail.status==="approved") && (detail.name===name))
   }
-  const data=[]
+  let data=[]
   leaveDetails.map(ele=>{
     const fromdate=ele.from
     const todate=ele.to

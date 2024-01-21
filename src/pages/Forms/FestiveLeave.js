@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card,CardTitle,CardBody,Form,Label,Container,Input,Row,Col } from 'reactstrap'
+import { Card,CardTitle,CardBody,Form,Label,Container,Input,Row,Col, Alert } from 'reactstrap'
 import { DatePicker } from 'antd'
 import { db } from 'firebase-config'
 import {getDocs, collection, addDoc, updateDoc,doc, Timestamp } from 'firebase/firestore'
@@ -10,6 +10,7 @@ const FestiveLeave = () => {
     const [users,setUsers]=useState([])
     const [admin,setAdmin]=useState([])
     const [filteredAdmins,setFilteredAdmin]=useState([])
+    const [display,setDisplay]=useState('d-none')
     useEffect(() => {
       const getData= async() => {
       const data = await getDocs(collection(db,'users')).then((data)=>{
@@ -31,30 +32,28 @@ const FestiveLeave = () => {
     const disabledDate = current => {
         return !flexidays.includes(current.format('YYYY-MM-DD'));
       }; 
-    const handleSubmit=()=>{
+    const handleSubmit=async()=>{
         const startDate=new Date(fromDate)
         const fromTimeStamp=Timestamp.fromMillis(startDate.getTime())
 const data={leaveType,fromDate,subject,reason,fromTimeStamp,timestamp:Timestamp.now()}
-addDoc(collection(db,'Holidays'),data).then(()=>{
+await addDoc(collection(db,'Holidays'),data)
     users.map((user)=>{
         updateDoc(doc(db,'users',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-          filteredAdmins.map((user)=>{
-            updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-                console.log('admin updated')
-            }).catch((err)=>{
-              console.log(err)
-            })
-        })
+          console.log('profile updated')
         }).catch((err)=>{
           console.log(err)
         })
     })
-    
-}).catch((err)=>{
-
-    console.log(err)
+  filteredAdmins.map((user)=>{
+    updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
+        console.log('admin updated')
+    }).catch((err)=>{
+      console.log(err)
+    })
 })
-console.log(data)
+setDisplay('d-block')
+setTimeout(()=>setDisplay('d-none'),3000)
+
     }
   return (
     <React.Fragment>
@@ -62,6 +61,7 @@ console.log(data)
       <Container>
         <Row>
           <Col>
+          <Alert color='success'className={display}>{fromDate.split("-").reverse().join('-')+" is declared as holiday!"}</Alert>
             <Card className='mt-5 w-100  mx-auto'>
               <CardBody >
                 <CardTitle className="mb-4">Declare a Festive Leave!</CardTitle>
