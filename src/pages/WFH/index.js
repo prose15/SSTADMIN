@@ -20,7 +20,7 @@ import "flatpickr/dist/themes/material_blue.css";
 import * as Yup from "yup";
 import { Field, Formik, useFormik } from "formik";
 import { db,storage} from "firebase-config";
-import { collection,addDoc, Timestamp, updateDoc,doc} from "firebase/firestore";
+import { collection,addDoc, Timestamp, updateDoc,doc,getDoc} from "firebase/firestore";
 import Cookies from 'js-cookie'
 import {ref,uploadBytes} from 'firebase/storage'
 const WFH = props => {
@@ -106,8 +106,6 @@ const WFH = props => {
                   WFH:values.WFH, reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',L1status:'',L2status:'',L3status:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
                   fromYear:fromYear[0],
                   toYear:toYear[0]}
-                  const newData = [...addDetails, details];
-                      setNewDetails(newData)
                 addDoc(collection(db,'WFH'),newDetails).then(()=>{
                     console.log("message added successfully");
                     newData.WFH+=newDetails.noofdays
