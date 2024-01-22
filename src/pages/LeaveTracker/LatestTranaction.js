@@ -64,7 +64,7 @@ const LatestTranaction = props => {
 
       {
         Header: "Leave Type",
-        accessor: "leaveType",
+        accessor: "casualType",
         disableFilters: true,
         filterable: false,
         Cell: cellProps => {
@@ -127,24 +127,6 @@ const LatestTranaction = props => {
     ],
     [users, admin]
   );
-  // if(Cookies.get('level') != 'L1')  {
-  //  columns.push(
-  //   {
-  //     Header: "Actions",
-  //     accessor: "id",
-  //     disableFilters: true,
-  //     Cell: cellProps => {
-  //       return <Actions {...cellProps} users={users} admin={admin} />;
-  //     },
-  //   })
-    
-  // }else{
-  //   columns.push(
-     
-  //   )
-  // }
-
-
 
   return (
     <React.Fragment>
@@ -160,9 +142,7 @@ const LatestTranaction = props => {
                 }
                 
        
-        <Card>
-        
-       
+        <Card>      
           <CardBody>
         <Row>
             <div className="mb-4 h4 card-title">Latest Requests</div>

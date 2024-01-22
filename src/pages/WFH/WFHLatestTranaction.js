@@ -49,7 +49,7 @@ const WFHLatestTranaction = props => {
   const [modal1, setModal1] = useState(false);
   console.log(users,admin);
   const toggleViewModal = () => setModal1(!modal1);
-  const columns = useMemo(
+  const WFHcolumns = useMemo(
     () => [
       {
         Header: "Employee Name",
@@ -120,7 +120,7 @@ const WFHLatestTranaction = props => {
                     (Cookies.get('name')==='Keerthana')?(
                     <Breadcrumbs title='Team Request' breadcrumbItem="All Records" />
                     ):(
-                        <Breadcrumbs title='Leave Tracker' breadcrumbItem="Team Request" />
+                        <Breadcrumbs title='WFH Request' breadcrumbItem="Team Request" />
                     )
                 }          
         <Card>
@@ -132,7 +132,7 @@ const WFHLatestTranaction = props => {
             
                     </Row>
             <TableContainer
-              columns={columns}
+              columns={WFHcolumns}
               data={WFHDetail}
               isGlobalFilter={false}
               isAddOptions={false}
