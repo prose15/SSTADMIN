@@ -43,10 +43,18 @@ const data={leaveType,fromDate,subject,reason,fromTimeStamp,timestamp:Timestamp.
 await addDoc(collection(db,'Holidays'),data)
 if(leaveType==='Flexileave'){
   users.map((user)=>{
-    updateDoc(doc(db,'users',user.id),{casualAvailable:0,sickAvailable:0})
+    updateDoc(doc(db,'users',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
+      console.log('profile updated')
+    }).catch((err)=>{
+      console.log(err)
+    })
 })
 filteredAdmins.map((user)=>{
-updateDoc(doc(db,'admin',user.id),{casualAvailable:0,sickAvailable:0})
+updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
+    console.log('admin updated')
+}).catch((err)=>{
+  console.log(err)
+})
 })
 }
     
