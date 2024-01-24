@@ -313,8 +313,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                       { label: "Planned Leave", value: "Casualleave",id:1 },
                       { label: "Emergency Leave", value: "Casualleave",id:2 },
                       { label: "Sick Leave", value: "Sickleave",id:3 },
-                      { label: "Earned Leave", value: "Earnedleave",id:4 },
-                      { label: "Flexi Leave", value: "Flexileave",id:5 },
+                      { label: "Flexi Leave", value: "Flexileave",id:4 },
                       Cookies.get('gender')==='Male'?{ label: "Paternityleave", value: "Paternityleave",id:5 }:{ label: "Maternity Leave", value: "Maternityleave",id:5 },
                     ]
                   }

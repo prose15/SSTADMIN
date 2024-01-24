@@ -91,7 +91,7 @@ else{
    )
 
 const getBalance=()=>{
-  let ans= Math.floor(available[today.getMonth()]-leave[today.getMonth()])
+  let ans= available[today.getMonth()]-leave[today.getMonth()]
   if(ans<=0){
     ans=0
   }
@@ -114,7 +114,7 @@ const getBalance=()=>{
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards d-inline me-3">
+    <Card className="leave-cards d-inline me-3" style={{width:'19%'}}>
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
            <i className="fas fa-hospital fa-2x"></i>
@@ -155,20 +155,20 @@ const getBalance=()=>{
             </div>
         </CardBody>
     </Card>
-    <Card className="leave-cards d-inline me-3">
-        <CardBody className="p-4">
-            <div className="text-center mb-3 text-primary">
-            <i className='fas fa-exclamation-circle fa-2x'></i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Loss of pay</b></h5>
-            </div>
-
-            <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">
-                    Available  {lopAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {lop}</p>
-            </div>
-        </CardBody>
-    </Card>
+    <Card className="leave-cards d-inline me-3" style={{width:'19%'}}>
+            <CardBody className="p-4">
+                <div className="text-center mb-3 text-primary">
+                <i className='fas fa-exclamation-circle fa-2x'></i>
+                        <h5 className="mt-4 mb-2 font-size-15"><b>Loss of pay</b></h5>
+                </div>
+    
+                <div className=" mx-auto">
+                    <div className=" text-center   text-danger ">
+                        No of days  {lopAvailable}
+                        </div>
+                </div>
+            </CardBody>
+        </Card>
     </div>
   )
 }
