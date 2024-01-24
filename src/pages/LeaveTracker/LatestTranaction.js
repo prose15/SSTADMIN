@@ -64,7 +64,7 @@ const LatestTranaction = props => {
 
       {
         Header: "Leave Type",
-        accessor: "leaveType",
+        accessor: "casualType",
         disableFilters: true,
         filterable: false,
         Cell: cellProps => {
@@ -123,6 +123,7 @@ const LatestTranaction = props => {
     ],
     [users, admin]
   );
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -135,7 +136,9 @@ const LatestTranaction = props => {
                         <Breadcrumbs title='Leave Tracker' breadcrumbItem="Team Request" />
                     )
                 }
-        <Card>
+                
+       
+        <Card>      
           <CardBody>
         <Row>
             <div className="mb-4 h4 card-title">Latest Requests</div>

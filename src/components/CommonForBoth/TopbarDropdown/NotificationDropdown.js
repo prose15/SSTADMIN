@@ -73,6 +73,7 @@ const NotificationDropdown = props => {
           <SimpleBar style={{ height: "230px" }}>
           {new_arr4.map((data)=> 
           <div key={data.id} className="text-reset notification-item">
+            <Link to= '/leave/requests' onClick={handleClick}>
             <div  className="d-flex">
                 <div className="avatar-xs me-3 ">
                 <span className="avatar-title bg-primary rounded-circle font-size-16  p-3">
@@ -97,28 +98,26 @@ const NotificationDropdown = props => {
                   </div>
                 </div>
             </div>
+            </Link>
           </div>)}
           {final_arr.map((data)=> 
           <div key={data.id} className="text-reset notification-item">
+           <Link to= {data.WFH === 'Work From Home' ? '/WFH/requests' : '/leave/requests'} onClick={handleClick}>
             <div  className="d-flex">
                 <div className="avatar-xs me-3">
-
                 {data.WFH==='Work From Home' ? 
-                <span className="avatar-title bg-primary rounded-circle font-size-17">
-                  
+                <span className="avatar-title bg-primary rounded-circle font-size-17">           
                     <i className="mdi mdi-laptop-windows"/>
                     </span>
-                    : 
+                    :
                     data.status === 'revoke' ?  
                      <span className="avatar-title bg-primary rounded-circle font-size-20"> 
                     <i className="bx bx-transfer-alt"/>
                     </span> :
                     <span className="avatar-title bg-primary rounded-circle font-size-17"> 
                     <i className="bx bx-calendar"/>
-                    </span>
-                    
-                    }
-                  
+                    </span>             
+                    }       
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
@@ -139,22 +138,11 @@ const NotificationDropdown = props => {
                   </div>
                 </div>
             </div>
+            </Link>
           </div>)}
          
           </SimpleBar>
 
-          <div className="p-2 border-top d-grid"
-         >
-            <Link to="/leave/requests"
-            onClick={handleClick}
-            className="btn btn-sm btn-link font-size-14 text-center">
-              <i className="mdi mdi-arrow-right-circle me-1" 
-              ></i> <span
-              key="t-view-more"
-              
-              >{props.t("View All..")}</span>
-            </Link>
-          </div>
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

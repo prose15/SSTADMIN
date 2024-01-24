@@ -76,7 +76,7 @@ const nav=useNavigate()
                           }} aria-label="Close"></button>
                       </div>
                       <div className="modal-body">
-                        <p>You have consumed the quoted leave for this month.This leave will be deduced from loss of pay.</p>
+                        <p>You have consumed the quoted leave for this month.This leave will be deduced from earned leave or loss of pay.</p>
                       </div>
                       <div className="modal-footer">
                         <button type="button" className="btn btn-light" onClick={() => {

@@ -64,6 +64,8 @@ const EmployeeName = (cell) => {
 };
 
 const LeaveType = (cell) => {
+
+    console.log(cell.data);
     return cell.value ? cell.value : '';
 };
 

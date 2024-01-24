@@ -20,7 +20,7 @@ import "flatpickr/dist/themes/material_blue.css";
 import * as Yup from "yup";
 import { Field, Formik, useFormik } from "formik";
 import { db,storage} from "firebase-config";
-import { collection,addDoc, Timestamp, } from "firebase/firestore";
+import { collection,addDoc, Timestamp, updateDoc,doc,getDoc} from "firebase/firestore";
 import Cookies from 'js-cookie'
 import {ref,uploadBytes} from 'firebase/storage'
 const WFH = props => {
@@ -28,6 +28,7 @@ const WFH = props => {
     const name = Cookies.get('name')
     const email=Cookies.get('email');
     const level= Cookies.get('level');
+    const [newData,setNewData]=useState(null)
   let details=[]
   const today = new Date();
   let reportingManager=''
@@ -54,6 +55,15 @@ const WFH = props => {
   const [toDate,setToDate] = useState()
   const [subject,setSubject] = useState()
   const WFH = "Work From Home"
+  useEffect(()=>{
+    const getData=async()=>{
+      const docSnap= await getDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))))
+      if(docSnap.exists()){
+        setNewData(docSnap.data())
+      }
+    }
+    getData()
+  },[])
   const initialValues = {
     WFH:WFH,
     reportingManager:reportingManager,
@@ -96,10 +106,14 @@ const WFH = props => {
                   WFH:values.WFH, reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',L1status:'',L2status:'',L3status:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
                   fromYear:fromYear[0],
                   toYear:toYear[0]}
-                  const newData = [...addDetails, details];
-                      setNewDetails(newData)
                 addDoc(collection(db,'WFH'),newDetails).then(()=>{
                     console.log("message added successfully");
+                    newData.WFH+=newDetails.noofdays
+                    updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
+                      console.log('profile updated')
+                    }).catch((err)=>{
+                      console.log(err);
+                    })
                     setAlert('d-block')
                     localStorage.setItem('type',newDetails.leaveType)
                     setTimeout(()=>{nav('/WFH/records')},2000)

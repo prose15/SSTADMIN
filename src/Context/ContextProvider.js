@@ -69,7 +69,7 @@ export const ContextProvider=({children})=>{
             console.log(error)
           })
         }
-          const filteredWFHQuery = query(collection(db,'WFH'),where('reportManager','==',docSnap.data().name),orderBy('timestamp','desc'));
+          const filteredWFHQuery = query(collection(db,'WFH'),where('reportManager','==',docSnap.data().name),orderBy('timestamp','asc'));
           
           onSnapshot(
             filteredWFHQuery,(data)=>{

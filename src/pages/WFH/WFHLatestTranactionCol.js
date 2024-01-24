@@ -96,7 +96,7 @@ const {setSubscribemodal,setId}=useStateContext()
         <span>
            
                 <>
-                <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>Accept(cell.value)} />
+                <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>Accept(cell.value,users,admin)} />
                 <i style={{cursor:"pointer"}} onClick={()=>{
             setSubscribemodal(true) 
             setId(cell.value)

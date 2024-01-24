@@ -1,11 +1,5 @@
 import PropTypes from "prop-types";
 import React ,{useState,useEffect, useMemo} from "react";
-import EChart from "pages/Charts/EChart";
-import { Link } from "react-router-dom";
-import StackedColumnChart from "./StackedColumnChart";
-import ApexCharts from "../Charts/Apexcharts";
-import DatatableTables from "../Tables/DatatableTables";
-// import './Dashboard.css'
 import {
   Container,
   Row,
@@ -20,9 +14,6 @@ import {
   ModalFooter,
   Table,
 } from "reactstrap";
-
-//Import Breadcrumb
-// import Breadcrumbs from "../../components/Common/Breadcrumb";
 import WelcomeComp from "./WelcomeComp";
 import MonthlyEarning from "./MonthlyEarning";
 import RecentFile from "pages/FileManager/RecentFile";

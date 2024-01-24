@@ -4,7 +4,10 @@ import './indexcss.css';
 import {doc,getDoc,getDocs,collection, updateDoc} from 'firebase/firestore'
 import {db,auth} from 'firebase-config'
 import Cookies from 'js-cookie'
+import { useStateContext } from 'Context/ContextProvider';
 const Leavecards = () => {
+const {available,leave}=useStateContext()
+const today=new Date()
 const [name,setName]=useState('')
 const [email,setEmail]=useState('')
 const [casual,setCasual]=useState(0);
@@ -19,7 +22,6 @@ const [earnedAvailable,setEarnedAvail]=useState(0);
 const [paternityAvailable,setPaternityAvail]=useState(0);
 const [sickAvailable,setSickAvail]=useState(0);
 const [flexiAvailable, setFlexiAvail] = useState(0);
-let user
  useEffect(()=>{
 
      const handleGet=async()=>{
@@ -88,23 +90,27 @@ else{
      },[]
    )
 
-
+const getBalance=()=>{
+  let ans= Math.floor(available[today.getMonth()]-leave[today.getMonth()])
+  if(ans<=0){
+    ans=0
+  }
+  return ans
+}
 
   return (
     <div className="d-flex  cards-box">
     <Card className="leave-cards d-inline me-3">
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
-          
                 <i className="fas fa-umbrella-beach fa-2x "></i>
                     <h5 className="mt-4 mb-2 font-size-15"><b>Total Leave</b></h5>
             </div>
-
             <div className="d-flex">
                 <p className="mb-0 flex-grow-1 text-success me-5">
-                    Available {casualAvail}</p>
+                    Available {getBalance()}</p>
                     
-                <p className="mb-0 text-danger">Booked  {casual}</p>
+                <p className="mb-0 text-danger">Booked  {casual+sick+paternity}</p>
             </div>
         </CardBody>
     </Card>
@@ -112,12 +118,12 @@ else{
         <CardBody className="p-4">
             <div className="text-center mb-3 text-primary">
            <i className="fas fa-hospital fa-2x"></i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Sick Leave</b></h5>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Approved Leave</b></h5>
             </div>
 
             <div className="d-flex">
-                <p className="mb-0 flex-grow-1 text-success me-5">Available  {sickAvailable}</p>
-                <p className="mb-0 text-danger">Booked  {sick}</p>
+                <p className="mb-0 flex-grow-1 text-success me-5">Casual  {casualAvail}</p>
+                <p className="mb-0 text-danger">Sick  {sickAvailable}</p>
             </div>
         </CardBody>
     </Card>

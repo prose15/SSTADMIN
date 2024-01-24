@@ -58,7 +58,7 @@ console.log(swiper1.length)
             <Card>
             <CardBody>
                         <div className="d-flex flex-column">
-                        <h4 className="card-title mb-3">Vacation Hub</h4>
+                        <h4 className="card-title mb-3">Declared Holidays</h4>
                             <div className='container overflow-y-auto' id='upcoming'>
                                 
                                 <p className="text-muted">{(upcomingLeaves.length+holidays.length===0)?(LeaveContent):(

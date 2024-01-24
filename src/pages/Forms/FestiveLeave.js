@@ -3,7 +3,9 @@ import { Card,CardTitle,CardBody,Form,Label,Container,Input,Row,Col, Alert } fro
 import { DatePicker } from 'antd'
 import { db } from 'firebase-config'
 import {getDocs, collection, addDoc, updateDoc,doc, Timestamp } from 'firebase/firestore'
+import { set } from 'lodash'
 const FestiveLeave = () => {
+  const [leaveType,setLeaveType]=useState('')
     const [fromDate,setFromDate]=useState('')
     const [subject,setSubject]=useState('')
     const [reason,setReason]=useState('')
@@ -27,30 +29,27 @@ const FestiveLeave = () => {
       }
       getData()
     }, [])
-    const leaveType='Flexileave'
     const flexidays =['2024-01-01','2024-01-15','2024-01-26','2024-04-09','2024-04-11','2024-04-14','2024-05-01','2024-06-17','2024-07-07','2024-07-17','2024-08-15','2024-09-15','2024-09-16','2024-10-02','2024-10-31','2024-12-25',] 
     const disabledDate = current => {
         return !flexidays.includes(current.format('YYYY-MM-DD'));
       }; 
+      const weekEnd=current=>{
+        return current.day()==5 || current.day()==6
+      }
     const handleSubmit=async()=>{
         const startDate=new Date(fromDate)
         const fromTimeStamp=Timestamp.fromMillis(startDate.getTime())
 const data={leaveType,fromDate,subject,reason,fromTimeStamp,timestamp:Timestamp.now()}
 await addDoc(collection(db,'Holidays'),data)
-    users.map((user)=>{
-        updateDoc(doc(db,'users',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-          console.log('profile updated')
-        }).catch((err)=>{
-          console.log(err)
-        })
-    })
-  filteredAdmins.map((user)=>{
-    updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-        console.log('admin updated')
-    }).catch((err)=>{
-      console.log(err)
-    })
+if(leaveType==='Flexileave'){
+  users.map((user)=>{
+    updateDoc(doc(db,'users',user.id),{casualAvailable:0,sickAvailable:0})
 })
+filteredAdmins.map((user)=>{
+updateDoc(doc(db,'admin',user.id),{casualAvailable:0,sickAvailable:0})
+})
+}
+    
 setDisplay('d-block')
 setTimeout(()=>setDisplay('d-none'),3000)
 
@@ -71,25 +70,36 @@ setTimeout(()=>setDisplay('d-none'),3000)
                     <Col md={6}>
                       <div className="mb-3">
                         <Label htmlFor="formrow-email-Input">Leave Type</Label>
-                        <Input
-                          name="keerthana"
-                          value={leaveType}
-                        />
+                        <select className='form-select' onChange={(e)=>setLeaveType(e.target.value)}>
+                          <option value='Flexileave'>Flexi Leave</option>
+                          <option value='WFH'>Work From Home</option>
+                        </select>
                       </div>
                     </Col>
                     <Col md={6}>
                       <div className="">
-                        <Label htmlFor="formrow-email-Input">Date</Label>    
-                            <DatePicker
-                            className={ "form-control"}
-                            id="formrow-email-Input"
-                            name="fromDate"
-                            placeholder="Enter From Date"
-                            onChange={(date,string)=>setFromDate(string)}
-                            // value={fromDate}
-                              disabledDate={disabledDate}
-                              format='YYYY-MM-DD'
-                               />
+                        <Label htmlFor="formrow-email-Input">Date</Label>  
+                        {
+                          leaveType==='Flexileave'?(<DatePicker
+                          className={ "form-control"}
+                          id="formrow-email-Input"
+                          name="fromDate"
+                          placeholder="Enter From Date"
+                          onChange={(date,string)=>setFromDate(string)}
+                          // value={fromDate}
+                            disabledDate={disabledDate}
+                            format='YYYY-MM-DD'
+                             />):(<DatePicker
+                              className={ "form-control"}
+                              id="formrow-email-Input"
+                              name="fromDate"
+                              placeholder="Enter From Date"
+                              onChange={(date,string)=>setFromDate(string)}
+                              // value={fromDate}
+                                disabledDate={weekEnd}
+                                format='YYYY-MM-DD' />)
+                        }  
+                            
                      </div>
                      
                     </Col>

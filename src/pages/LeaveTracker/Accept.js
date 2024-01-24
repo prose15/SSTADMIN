@@ -88,13 +88,9 @@ export const Accept = async(id,users,admin) =>{
             detail.status=status[index1]
             detail.timestamp=Timestamp.now()
         }
-      } 
-        
+      }   
       }
- 
-
     const userDoc = doc(collection(db,'leave submssion'), id)
-
     updateDoc(userDoc, detail).then(() => {
       users.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
@@ -102,30 +98,17 @@ export const Accept = async(id,users,admin) =>{
           let subLeave=detail.subLeave
           console.log(subLeave)
           let leave = str.substring(0,str.length-5).toLocaleLowerCase()
-          if(detail.leaveType!=='Paternityleave'){
-          user[leave+'Available']-=detail.noofdays
-          user[leave+'Available']<=0 &&(user[leave+'Available']=0)
-          if(subLeave==='lop'){
-           user.lopAvailable=user.lopAvailable+detail.lopBooked
-          }else if(subLeave==='earned'){
-            user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
-          } 
-          }else{
             user[leave+'Available']+=detail.noofdays 
             if(subLeave==='lop'){
               user.lopAvailable=user.lopAvailable+detail.lopBooked
              }else if(subLeave==='earned'){
                user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
              } 
-          }
-          console.log(user)
           updateDoc(doc(db,'users', user.id), user).then(() => {
             console.log('profile update');
-
           }).catch((err) => {
             console.log(err);
           })
-
         }
       })
       admin.map((user) => {
@@ -134,33 +117,20 @@ export const Accept = async(id,users,admin) =>{
           let subLeave=detail.subLeave
           console.log(subLeave)
           let leave = str.substring(0,str.length-5).toLocaleLowerCase()
-          if(detail.leaveType!=='Paternityleave'){
-          user[leave+'Available']-=detail.noofdays
-          user[leave+'Available']<=0 &&(user[leave+'Available']=0)
-          if(subLeave==='lop'){
-           user.lopAvailable=user.lopAvailable+detail.lopBooked
-          }else if(subLeave==='earned'){
-            user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
-          } 
-          }else{
             user[leave+'Available']+=detail.noofdays 
             if(subLeave==='lop'){
               user.lopAvailable=user.lopAvailable+detail.lopBooked
              }else if(subLeave==='earned'){
                user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
              } 
-          }
-          console.log(user)
           updateDoc(doc(db,'admin', user.id), user).then(() => {
             console.log('profile update');
 
           }).catch((err) => {
             console.log(err);
           })
-
         }
       })
-
       console.log('added successfully');
     }).catch((err) => {
       console.log(err);
