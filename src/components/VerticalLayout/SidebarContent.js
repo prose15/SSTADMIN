@@ -235,7 +235,7 @@ const SidebarContent = props => {
               <Link to="/#" className="has-arrow">
                 <i className="mdi mdi-ticket-outline" />
 
-                <span>{props.t("Rise a Ticket")}</span>
+                <span>{props.t("Raise a Ticket")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
