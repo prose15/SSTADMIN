@@ -181,6 +181,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           let totalDays=daysInSameMonth[i]
           const currentMonth=totalMonth[i]
         const cummulative=available[currentMonth]-leave[currentMonth]
+        if(values.leaveType!=='Flexileave'){
         if(cummulative>0 ){
           const remaining=cummulative-totalDays
           if(Math.abs(remaining) <=earnedLeave && remaining<0){
@@ -209,6 +210,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           lopBooked=totalDays
           setmodal_backdrop(true)
         }
+      }
         console.log(cummulative,subLeave,noOfDays,earnedBooked,totalDays,lopBooked)
         }
         const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, subLeave:subLeave,earnedBooked:earnedBooked,lopBooked:lopBooked,reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:noOfDays,totalDays:datesWithoutHolidays.length,timestamp:Timestamp.now(),

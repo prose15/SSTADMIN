@@ -110,7 +110,7 @@ const getBalance=()=>{
                 <p className="mb-0 flex-grow-1 text-success me-5">
                     Available {getBalance()}</p>
                     
-                <p className="mb-0 text-danger">Booked  {casual+sick+paternity}</p>
+                <p className="mb-0 text-danger">Booked  {casual+sick+paternity+lop+flexi}</p>
             </div>
         </CardBody>
     </Card>
