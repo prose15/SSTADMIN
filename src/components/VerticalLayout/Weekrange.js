@@ -22,8 +22,6 @@ const Weekrange = () => {
   new Date(enddate).setMinutes(59);
   new Date(enddate).setSeconds(59);
   new Date(enddate).setMilliseconds(59);
-  // temp=details.filter((detail)=>new Date(detail.timesheetDate)>=new Date(startdate) && new Date(detail.timesheetDate)<=new Date(enddate))
-  // newDetails=temp
   const forward = (sDate,eDate) => {
       sDate.setDate(sDate.getDate() + 7)
       eDate.setDate(eDate.getDate() + 7)
@@ -33,9 +31,6 @@ const Weekrange = () => {
       new Date(startdate).setMinutes(0);
       new Date(enddate).setHours(23);
       new Date(enddate).setMinutes(59);
-    //   temp=details.filter((detail)=>new Date(detail.timesheetDate)>=new Date(startdate) && new Date(detail.timesheetDate)<=new Date(enddate))
-    //  newDetails=temp
-    //   localStorage.setItem('newDetails',JSON.stringify(newDetails))
     }
     const backward = (sDate, eDate) => {
       sDate.setDate(sDate.getDate() - 7)
@@ -47,7 +42,6 @@ const Weekrange = () => {
       enddate.setHours(23);
       enddate.setMinutes(59);
     }
-  // const [count,setCount]=useState(0)
   return (
     <div className=" form-control d-inline-sm text-center  text-secondary pt-2">
         <i className='bx bx-chevron-left ' style={{cursor:'pointer',position:'static'}}  onClick={() => {

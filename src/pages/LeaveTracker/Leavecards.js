@@ -5,13 +5,6 @@ import {doc,getDoc,getDocs,collection, updateDoc} from 'firebase/firestore'
 import {db,auth} from 'firebase-config'
 import Cookies from 'js-cookie'
 const Leavecards = () => {
-//     let dispatch=useDispatch();
-//     useEffect(()=>{
-// dispatch(getContactStart());
-//     },[])
-//     const {contacts:data}=useSelector(state=>state.data)
-//     console.log(data,state);
-const [spinner,setSpinner]=useState(true)
 const [name,setName]=useState('')
 const [email,setEmail]=useState('')
 const [casual,setCasual]=useState(0);
@@ -104,7 +97,7 @@ else{
             <div className="text-center mb-3 text-primary">
           
                 <i className="fas fa-umbrella-beach fa-2x "></i>
-                    <h5 className="mt-4 mb-2 font-size-15"><b>Casual Leave</b></h5>
+                    <h5 className="mt-4 mb-2 font-size-15"><b>Total Leave</b></h5>
             </div>
 
             <div className="d-flex">

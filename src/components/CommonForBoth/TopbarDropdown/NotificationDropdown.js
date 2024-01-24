@@ -21,7 +21,6 @@ const NotificationDropdown = props => {
   const new_arr3 = arr3.reverse().filter((data,index)=>index<1)
   const new_arr4=holidays.filter((data,index)=>index<1)
   const final_arr = [...new_arr1, ... new_arr2, ...new_arr3]
-  console.log(final_arr);
  
   const findMin=(data)=>{
     const seconds   = data.timestamp?.seconds

@@ -120,32 +120,9 @@ const LatestTranaction = props => {
         },
       }
 
-     
-
-
-
     ],
     [users, admin]
   );
-  // if(Cookies.get('level') != 'L1')  {
-  //  columns.push(
-  //   {
-  //     Header: "Actions",
-  //     accessor: "id",
-  //     disableFilters: true,
-  //     Cell: cellProps => {
-  //       return <Actions {...cellProps} users={users} admin={admin} />;
-  //     },
-  //   })
-    
-  // }else{
-  //   columns.push(
-     
-  //   )
-  // }
-
-
-
   return (
     <React.Fragment>
       <div className="page-content">
@@ -158,15 +135,10 @@ const LatestTranaction = props => {
                         <Breadcrumbs title='Leave Tracker' breadcrumbItem="Team Request" />
                     )
                 }
-                
-       
         <Card>
-        
-       
           <CardBody>
         <Row>
             <div className="mb-4 h4 card-title">Latest Requests</div>
-            
                     </Row>
             <TableContainer
               columns={columns}
@@ -184,7 +156,6 @@ const LatestTranaction = props => {
     </React.Fragment>
   );
 };
-
 LatestTranaction.propTypes = {
   orders: PropTypes.array,
   onGetOrders: PropTypes.func,
