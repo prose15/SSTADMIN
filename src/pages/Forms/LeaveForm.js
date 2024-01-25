@@ -235,7 +235,8 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         for(let i=0;i<strArr.length-5;i++){
             str1+=strArr[i]
         }
-        str1=str1.toLocaleLowerCase()
+        str1=str1.toLocaleLow
+        erCase()
         console.log(str1)
         console.log(newData[str1])
                   newData[str1]+=noOfDays;
@@ -336,11 +337,13 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     <React.Fragment>
       <div className="page-content">
         <Container>
-        <Alert color='danger mt-4' id='timeLimit' className={alertErr}>{alertMsg}</Alert>
           <Row>
+          <Alert color="danger"  id='timeLimit' className={alertErr+" position-fixed bg-danger w-75 mx-auto"} style={{zIndex:2}}>{alertMsg}</Alert>
             <Col>
+            
+         
             { condition && (
-            <Alert color='success' id="" className={alert}>{'Form forwarded to L1 Manager'}</Alert>)}
+            <Alert color='success' id="" className={`${alert} position-fixed`}>{'Form forwarded to L1 Manager'}</Alert>)}
             {
               dataToModal!=null &&  <AlertModal  data={dataToModal} file={file} newData={newData} />
             }
