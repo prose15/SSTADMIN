@@ -296,7 +296,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     return dates.length-holidays.length  
                 } 
                 const disabledDate = current => {
-                  // Disable dates that are not in the enabledDates array
                   return !flexidays.includes(current.format('YYYY-MM-DD'));
                 };  
                 
