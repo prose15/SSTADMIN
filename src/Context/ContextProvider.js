@@ -19,6 +19,9 @@ export const ContextProvider=({children})=>{
   const [id,setId]=useState('')
   const [revokeDetail,setRevokeDetail] = useState([])
   const [holidays,setHolidays]=useState([])
+  const [project,setProject]=useState([])
+  const [performanceArray,setPerformanceArray]=useState([])
+  const [format,setFormat]=useState('')
   //Cookies
   const level = Cookies.get('level')
   
@@ -80,6 +83,11 @@ export const ContextProvider=({children})=>{
     })
     setHolidays(data1.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }
+        await getDocs(collection(db,'projectName')).then((data)=>{
+          setProject(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        }).catch((err)=>{
+          console.log(err)
+        })
         const fileRef=ref(storage,'users/'+user+'.jpg');
         await getDownloadURL(fileRef).then((url) => {
           setUrl(url)
@@ -155,7 +163,8 @@ if(i!==11){
 available[i+1]+=1.5
 }
 }
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays}}>
+
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat}}>
         {children}
     </StateContext.Provider>)
 }

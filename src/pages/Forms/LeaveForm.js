@@ -54,7 +54,7 @@ const LeaveForm = props => {
   const yesterday = new Date()
   yesterday.setDate(today.getDate()-1)
   const [selectedGroup, setselectedGroup] = useState(null);
-  const [leaveId,setLeaveID]=useState('')
+  const [casualType,SetCasualType]=useState('')
   const [file,setFile]=useState(null);
   const [alertMsg,setAlertMsg] = useState('')
   const [addDetails, setNewDetails] = useState([])
@@ -132,7 +132,7 @@ function getDatesBetweenDates(startDate, endDate) {
 const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
   initialValues:initialValues,
   validationSchema: schema,
-  onSubmit:(values) =>{ 
+  onSubmit:(values,leaveId) =>{ 
               
     const startDate = new Date(values.fromDate)
     const endDate = new Date(values.toDate)
@@ -181,12 +181,14 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           let totalDays=daysInSameMonth[i]
           const currentMonth=totalMonth[i]
         const cummulative=available[currentMonth]-leave[currentMonth]
+        if(values.leaveType!=='Flexileave'){
         if(cummulative>0 ){
           const remaining=cummulative-totalDays
           if(Math.abs(remaining) <=earnedLeave && remaining<0){
             subLeave='earned'
             earnedBooked=Math.abs(remaining)
             noOfDays+=totalDays-Math.abs(remaining)
+            setmodal_backdrop(true)
           }
           else if(remaining>=0){
             noOfDays+=totalDays
@@ -201,22 +203,24 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         else if(totalDays<=earnedLeave && earnedLeave>0){
           subLeave='earned'
           earnedBooked=totalDays
+          setmodal_backdrop(true)
         }
         else{
           subLeave='lop'
           lopBooked=totalDays
           setmodal_backdrop(true)
         }
+      }
         console.log(cummulative,subLeave,noOfDays,earnedBooked,totalDays,lopBooked)
         }
         const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, subLeave:subLeave,earnedBooked:earnedBooked,lopBooked:lopBooked,reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:noOfDays,totalDays:datesWithoutHolidays.length,timestamp:Timestamp.now(),
         fromYear:fromYear[0],
-        toYear:toYear[0]}
+        toYear:toYear[0],casualType}
         setDataToModal(newDetails)
         if(subLeave.includes('lop') ){
           setmodal_backdrop(true)
         }
-        if(!subLeave.includes('lop')){
+        if(!subLeave.includes('lop') && !subLeave.includes('earned')){
       addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
         if(file){
           upload(file)
@@ -256,7 +260,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     }
       }
      
-       if(values.leaveType === 'Casualleave' && datesWithoutHolidays.length<=5 && leaveId===1){
+       if(values.leaveType === 'Casualleave' && datesWithoutHolidays.length<5 && leaveId===1){
         setAlertMsg("You ought to reserve a maximum of 5 days, ensuring it is fewer than 5 days!")
       document.getElementById('timeLimit')
       setAlertErr('d-block')
@@ -273,7 +277,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           setAlertErr('d-none')},5000);
           setCondition(false)
         }
-        else if(values.leaveType.includes('Flexileave') && datesWithoutHolidays.length<=5){
+        else if(values.leaveType.includes('Flexileave') && datesWithoutHolidays.length<5){
           setAlertMsg("You ought to reserve a maximum of 5 days, ensuring it is fewer than 5 days!")
         document.getElementById('timeLimit')
         setAlertErr('d-block')
@@ -310,18 +314,22 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                       { label: "Planned Leave", value: "Casualleave",id:1 },
                       { label: "Emergency Leave", value: "Casualleave",id:2 },
                       { label: "Sick Leave", value: "Sickleave",id:3 },
-                      { label: "Earned Leave", value: "Earnedleave",id:4 },
-                      { label: "Flexi Leave", value: "Flexileave",id:5 },
+                      { label: "Flexi Leave", value: "Flexileave",id:4 },
                       Cookies.get('gender')==='Male'?{ label: "Paternityleave", value: "Paternityleave",id:5 }:{ label: "Maternity Leave", value: "Maternityleave",id:5 },
                     ]
                   }
                 ];
+                let leaveId = 1;
+                const[value,setValue] = useState(leaveId)
                 const handleSelectGroup=(selectedGroup)=> {
                   setselectedGroup(selectedGroup);
                   values.leaveType=selectedGroup.value
-                  setLeaveID(selectedGroup.id)
-                  console.log(values.leaveType)
+                  leaveId=selectedGroup.id
+                  leaveId === 1 ? SetCasualType("Plannedleave") : leaveId === 2 ? SetCasualType("Emergencyleave"):SetCasualType(values.leaveType)
+                  console.log(leaveId)
+                  setValue(leaveId)
                 }
+                console.log(value);
 
   return (
     <React.Fragment>

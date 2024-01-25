@@ -29,6 +29,7 @@ import WFH from "pages/WFH/index";
 import WFHRecord from "pages/WFH/WFHRecord";
 import WFHTeamRequests from "pages/WFH/WFHTeamRequests";
 import FestiveLeave from "pages/Forms/FestiveLeave";
+import TeamEfficiency from "pages/timesheet/Dashboard-saas/pages/TeamEfficiency";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -51,6 +52,7 @@ const authProtectedRoutes = [
   // { path: "/timesheet/myapprovals", component: <Myapprovals /> },
   { path: "/timesheet/logtime", component: <Logtime /> },
   { path: "/timesheet/requests", component: <TimesheetTeamRequests/>},
+  { path: "/timesheet/efficiency", component: <TeamEfficiency/>},
   { path: "/timesheet/mytimesheet/createtimesheet", component: <CreateTImeSheet /> },
   //ticket 
   { path: "/ticket/dashboard", component: <TicketDashboard /> },

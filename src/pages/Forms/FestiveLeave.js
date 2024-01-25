@@ -43,18 +43,10 @@ const data={leaveType,fromDate,subject,reason,fromTimeStamp,timestamp:Timestamp.
 await addDoc(collection(db,'Holidays'),data)
 if(leaveType==='Flexileave'){
   users.map((user)=>{
-    updateDoc(doc(db,'users',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-      console.log('profile updated')
-    }).catch((err)=>{
-      console.log(err)
-    })
+    updateDoc(doc(db,'users',user.id),{flexiAvailable:user.flexiAvailable-1})
 })
 filteredAdmins.map((user)=>{
-updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1}).then(()=>{
-    console.log('admin updated')
-}).catch((err)=>{
-  console.log(err)
-})
+updateDoc(doc(db,'admin',user.id),{flexiAvailable:user.flexiAvailable-1})
 })
 }
     
@@ -79,6 +71,7 @@ setTimeout(()=>setDisplay('d-none'),3000)
                       <div className="mb-3">
                         <Label htmlFor="formrow-email-Input">Leave Type</Label>
                         <select className='form-select' onChange={(e)=>setLeaveType(e.target.value)}>
+                          <option value='#'>Choose Leave Type</option>
                           <option value='Flexileave'>Flexi Leave</option>
                           <option value='WFH'>Work From Home</option>
                         </select>

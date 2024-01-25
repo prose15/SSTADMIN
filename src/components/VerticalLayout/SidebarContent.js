@@ -223,14 +223,10 @@ const SidebarContent = props => {
   <li>
     <Link to="/timesheet/requests">{props.t("Team Request")}</Link>
   </li>
+  <li><Link to="/timesheet/efficiency">{props.t("Team Efficiency")}</Link></li>
 </ul>
 </li>
-        ):(<li>
-                <Link to="/dashboard" className="has-arrow  " >
-                  <i className="bx bx-calendar"></i>
-                  <span>{props.t("Time Sheet")}</span>
-                </Link>
-                </li>)
+        ):(<li></li>)
                 }
             
            
@@ -239,7 +235,7 @@ const SidebarContent = props => {
               <Link to="/#" className="has-arrow">
                 <i className="mdi mdi-ticket-outline" />
 
-                <span>{props.t("Rise a Ticket")}</span>
+                <span>{props.t("Raise a Ticket")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>

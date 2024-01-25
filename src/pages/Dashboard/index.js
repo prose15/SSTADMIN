@@ -31,7 +31,6 @@ import TeamMates from "./TeamMates";
 import { Toast,ToastBody, ToastHeader } from 'reactstrap';
 
 const Dashboard = props => {
-  const [toast,setToast]=useState(false)
   const [name,setName]=useState('')
   const [team,setTeam]=useState([])
   const [role,setRole]=useState('')
@@ -40,7 +39,6 @@ const Dashboard = props => {
   todayTimeStamp.setMinutes(59)
   todayTimeStamp.setSeconds(59)
    useEffect(()=>{
-
        const handleGet=async()=>{
       const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
    const docSnap = await getDoc(docRef)
@@ -121,14 +119,10 @@ const Dashboard = props => {
       const today=new Date();
       const year=today.getFullYear().toString();
       const month=(today.getMonth()+1).toString();
-      console.log("year:",year,"month:",month)
-
-    const filteredUsersQuery =query(collection(db,'Timesheet'),where('month','==',month),where('email','==',email),where('year','==',year));
-
+      const filteredUsersQuery =query(collection(db,'Timesheet'),where('month','==',month),where('email','==',email),where('year','==',year));
       onSnapshot(filteredUsersQuery,(data)=>{
         setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-      })
-       
+      })  
     }
     handleGet()
 },[])

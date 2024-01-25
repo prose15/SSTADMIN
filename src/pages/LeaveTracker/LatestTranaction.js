@@ -120,10 +120,6 @@ const LatestTranaction = props => {
         },
       }
 
-     
-
-
-
     ],
     [users, admin]
   );
@@ -146,7 +142,6 @@ const LatestTranaction = props => {
           <CardBody>
         <Row>
             <div className="mb-4 h4 card-title">Latest Requests</div>
-            
                     </Row>
             <TableContainer
               columns={columns}
@@ -164,7 +159,6 @@ const LatestTranaction = props => {
     </React.Fragment>
   );
 };
-
 LatestTranaction.propTypes = {
   orders: PropTypes.array,
   onGetOrders: PropTypes.func,
