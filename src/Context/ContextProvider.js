@@ -14,7 +14,8 @@ export const ContextProvider=({children})=>{
   const [detail,setDetail]=useState([])
   const [WFHDetail,setWFHDetail] = useState([])
   const [request,setRequest]=useState([])
-  const [subscribemodal,setSubscribemodal]=useState(false)
+  const [subscribemodal,setSubscribemodal]=useState(false);
+  const [acceptModel,setAcceptModel]=useState(false)
   const [modal_backdrop, setmodal_backdrop] = useState(false);
   const [id,setId]=useState('')
   const [revokeDetail,setRevokeDetail] = useState([])
@@ -164,7 +165,7 @@ available[i+1]+=1.5
 }
 }
 
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel}}>
         {children}
     </StateContext.Provider>)
 }

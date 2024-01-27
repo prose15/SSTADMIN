@@ -25,16 +25,15 @@ import Breadcrumbs from '../../components/Common/Breadcrumb';
 import TableContainer from "../../components/Common/TableContainer";
 import Cookies from "js-cookie";
 import { useStateContext } from "Context/ContextProvider";
+import WFHAcceptModal from "./WFHAcceptModel";
 const WFHLatestTranaction = props => {
   const {WFHDetail} = useStateContext()
   const [admin, setAdmin] = useState([]);
-  // const collectionRef = collection(db, 'leave submssion')
   const userRef = collection(db, 'users');
   const adminRef = collection(db, 'admin');
   const [users, setUsers] = useState([])
   const name = Cookies.get('name');
   let level = Cookies.get('level') + 'status'
-  console.log(level)
   useEffect(() => {
     const getData = async () => {
         const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
@@ -47,7 +46,6 @@ const WFHLatestTranaction = props => {
     getData();
   }, [])
   const [modal1, setModal1] = useState(false);
-  console.log(users,admin);
   const toggleViewModal = () => setModal1(!modal1);
   const WFHcolumns = useMemo(
     () => [
@@ -115,6 +113,7 @@ const WFHLatestTranaction = props => {
   return (
     <React.Fragment>
       <div className="page-content">
+        <WFHAcceptModal />
         <WFHRejectModal />   
           {
                     (Cookies.get('name')==='Keerthana')?(
@@ -129,7 +128,6 @@ const WFHLatestTranaction = props => {
           <CardBody>
         <Row>
             <div className="mb-4 h4 card-title">Latest Requests</div>
-            
                     </Row>
             <TableContainer
               columns={WFHcolumns}
@@ -148,10 +146,7 @@ const WFHLatestTranaction = props => {
   );
 };
 
-// LatestTranaction.propTypes = {
-//   orders: PropTypes.array,
-//   onGetOrders: PropTypes.func,
-// };
+
 
 
 export default withRouter(WFHLatestTranaction);
