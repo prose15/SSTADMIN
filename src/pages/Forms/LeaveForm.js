@@ -132,7 +132,7 @@ function getDatesBetweenDates(startDate, endDate) {
 const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
   initialValues:initialValues,
   validationSchema: schema,
-  onSubmit:(values,leaveId) =>{ 
+  onSubmit:(values) =>{ 
               
     const startDate = new Date(values.fromDate)
     const endDate = new Date(values.toDate)
@@ -145,6 +145,8 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         dates.push(new Date(date));
       }
       const datesWithoutHolidays = dates.filter(date => (date.getDay()!=5 && date.getDay()!=6) )
+      console.log(datesWithoutHolidays.length)
+      console.log(leaveId)
       function CorrectPath () {
         const fromYear=values.fromDate.split('-')
         const toYear=values.toDate.split('-')
@@ -235,8 +237,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         for(let i=0;i<strArr.length-5;i++){
             str1+=strArr[i]
         }
-        str1=str1.toLocaleLow
-        erCase()
+        str1=str1.toLocaleLowerCase()
         console.log(str1)
         console.log(newData[str1])
                   newData[str1]+=noOfDays;
@@ -269,6 +270,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         setAlertErr('d-none')},5000);
         setCondition(false)
        }
+       
        else{
         if(values.leaveType.includes('Flexileave') && !isFlexi(values.fromDate)){
           setAlertMsg("Sorry it's not a flexi day!")
@@ -278,6 +280,15 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           setAlertErr('d-none')},5000);
           setCondition(false)
         }
+        else if(datesWithoutHolidays.length>=5 && leaveId===2){
+          console.log("Emergency leave must be less than 5 days!")
+          setAlertMsg("Emergency leave must be less than 5 days!")
+          document.getElementById('timeLimit')
+          setAlertErr('d-block')
+          setTimeout(()=>{
+            setAlertErr('d-none')},5000);
+            setCondition(false)
+         }
         else if(values.leaveType.includes('Flexileave') && datesWithoutHolidays.length<5){
           setAlertMsg("You ought to reserve a maximum of 5 days, ensuring it is fewer than 5 days!")
         document.getElementById('timeLimit')
@@ -288,12 +299,13 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         }
          
         else{
-          CorrectPath()
+          console.log('skipped if block')
+          // CorrectPath()
         }
       
-      }
-        
-        }})
+      } 
+    }
+  })
   
   const countDays=(fromDate,toDate)=>{
     const dates = getDatesBetweenDates(fromDate,toDate)
@@ -321,31 +333,28 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                   }
                 ];
                 let leaveId = 1;
-                const[value,setValue] = useState(leaveId)
                 const handleSelectGroup=(selectedGroup)=> {
                   setselectedGroup(selectedGroup);
                   values.leaveType=selectedGroup.value
                   leaveId=selectedGroup.id
                   leaveId === 1 ? SetCasualType("Plannedleave") : leaveId === 2 ? SetCasualType("Emergencyleave"):SetCasualType(values.leaveType)
                   console.log(leaveId)
-                  setValue(leaveId)
+                 
                 }
-                console.log(value);
+                
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container>
           <Row>
-          <Alert color="danger"  id='timeLimit' className={alertErr+" position-fixed bg-danger w-75 mx-auto"} style={{zIndex:2}}>{alertMsg}</Alert>
-            <Col>
-            
-         
-            { condition && (
+          <Alert color="danger"  id='timeLimit' className={alertErr} style={{zIndex:2}}>{alertMsg}</Alert>
+          { condition && (
             <Alert color='success' id="" className={`${alert} position-fixed`}>{'Form forwarded to L1 Manager'}</Alert>)}
             {
               dataToModal!=null &&  <AlertModal  data={dataToModal} file={file} newData={newData} />
             }
+            <Col>
               <Card className='mt-5 w-100  mx-auto'>
                 <CardBody >
                   <CardTitle className="mb-4">Submit Your Application!</CardTitle>

@@ -110,7 +110,7 @@ if(docSnap.exists()){
                     <Card className="leave-cards ">
                     <CardBody className="p-4">
                     <div className="text-center mb-3 text-primary">
-                    <i className="fas fa-umbrella-beach fa-2x "></i>
+                    <i className="mdi mdi-laptop-windows fa-2x "></i>
                     <h5 className="mt-4 mb-2 font-size-15"><b>Work Form Home</b></h5>
                     </div>
                     <div className="d-flex">

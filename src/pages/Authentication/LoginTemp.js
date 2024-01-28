@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 // Redux
 import { Link } from "react-router-dom";
 
+//Content Provider
+import { useStateContext } from "Context/ContextProvider";
+
 import { Row, Col, CardBody, Card, Container, Form, Input, Label, FormFeedback } from "reactstrap";
 
 // Formik validation
@@ -26,6 +29,7 @@ const initialValues = {
 }
 
 const Login = () => {
+  const {usersArr}=useStateContext()
   const signupValidation = Yup.object({
     email: Yup.string().min(3).email("Please Enter Valid Email").required("Please Enter Your username"),
     password: Yup.string().min(3).required("Please Enter Your Password"),
@@ -35,26 +39,38 @@ const Login = () => {
 
   const [show, setShow] = useState(false);
   const[error,seterror] = useState('');
+  let flag=false
 // const error = error;
   // Form validation 
  const {values,handleBlur,handleChange,handleSubmit,errors}= useFormik({
     initialValues: initialValues,
     validationSchema: signupValidation,
     onSubmit:(values) =>{
-      signInWithEmailAndPassword(auth,values.email, values.password)
-      .then(function (userCredential) {
-        // Login successful, access the user object
-        var user = userCredential.user;
-        sessionStorage.setItem("uid",JSON.stringify(user.uid));
-        nav('/dashboard');
-      })
-      .catch((error) => {
-        // Handle errors
-        error.code === "auth/invalid-credential" ? (
-          seterror(" wrong password or invalid email")) : (seterror("Invalid password."))
-      }) 
+      
+      if(flag){
+        signInWithEmailAndPassword(auth,values.email, values.password)
+        .then(function (userCredential) {
+          // Login successful, access the user object
+          var user = userCredential.user;
+          sessionStorage.setItem("uid",JSON.stringify(user.uid));
+          nav('/dashboard');
+        })
+        .catch((error) => {
+          // Handle errors
+          error.code === "auth/invalid-credential" ? (
+            seterror(" wrong password or invalid email")) : (seterror("Invalid password."))
+        }) 
+      }else{
+        seterror('Invalid portal access!')
+      }
     }   
   });
+
+      usersArr.map((user)=>{
+        if(user.email.includes(values.email)){
+          flag=true
+        }
+      })
 
   return (
     <React.Fragment>      

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useState } from "react"
 import PropTypes from "prop-types"
 import {
   useTable,
@@ -21,6 +21,7 @@ function GlobalFilter({
 }) {
   const count = preGlobalFilteredRows.length
   const [value, setValue] = React.useState(globalFilter)
+  const [display,setDisplay]=useState('d-block')
   const onChange = useAsyncDebounce(value => {
     setGlobalFilter(value || undefined)
   }, 200)
@@ -28,7 +29,10 @@ function GlobalFilter({
   return (
     <React.Fragment>
       <Col xxl={3} lg={6}>
-        <input type="search" className="form-control" id="search-bar-0" value={value || ""} placeholder={`${count} records...`} onChange={e => { setValue(e.target.value); onChange(e.target.value) }} />
+       <div className="d-flex">
+        <input type="search" className="form-control" id="search-bar-0" value={value || ""} placeholder={` ${count} records...`} onChange={e => {setDisplay('d-none'); setValue(e.target.value); onChange(e.target.value) }} />
+        <i className={display+" bx bx-search-alt-2"} style={{marginLeft:-22,marginTop:14}} />
+        </div> 
       </Col>
       {isJobListGlobalFilter && <JobListGlobalFilter setGlobalFilter={setGlobalFilter} />}
     </React.Fragment>

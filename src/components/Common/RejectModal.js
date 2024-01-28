@@ -52,6 +52,7 @@ const RejectModal = () => {
                   />
                   <Button color="danger" type="button" id="button-addon2" onClick={()=>{
                     Reject(id,reason)
+                    setReason('')
                     setSubscribemodal(!subscribemodal)
                   }}>
                     <i className="bx bxs-paper-plane"></i>

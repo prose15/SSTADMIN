@@ -22,8 +22,16 @@ export const ContextProvider=({children})=>{
   const [project,setProject]=useState([])
   const [performanceArray,setPerformanceArray]=useState([])
   const [format,setFormat]=useState('')
+  const [usersArr,setUsersArr]=useState([])
   //Cookies
   const level = Cookies.get('level')
+  useEffect(()=>{
+    const getUsersArr=async()=>{
+      const data=await getDocs(collection(db,'admin'))
+      setUsersArr(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
+    getUsersArr()
+  })
   
   useEffect(()=>{
     onAuthStateChanged(auth,(user)=>{
@@ -164,7 +172,7 @@ available[i+1]+=1.5
 }
 }
 
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,usersArr}}>
         {children}
     </StateContext.Provider>)
 }
