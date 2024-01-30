@@ -29,6 +29,7 @@ import { useParams } from "react-router-dom";
 import { useStateContext } from "Context/ContextProvider";
 const ApplyAgain = props => {
     const id=useParams()
+    const WFH = "Work From Home"
     const [data,setData]=useState();
     const [addDetails, setNewDetails] = useState([])
     const [fromDate,setFromDate] = useState('')
@@ -75,9 +76,7 @@ const ApplyAgain = props => {
     // const earnedLeave=Cookies.get('earnedLeave')
     const [file,setFile]=useState(null);
     const [alertMsg,setAlertMsg] = useState('')
-    let subLeave=''
-    let earnedBooked=0;
-    let lopBooked=0;
+
     let details=[]
     const today = new Date();
     let reportingManager=''
@@ -124,7 +123,7 @@ const ApplyAgain = props => {
             const dates = getDatesBetweenDates(startDate,endDate)
             const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) )
             const newDetails={name:name,email:email,team:team,reason:reason,subject:subject, 
-            WFH:'WFH', reportManager:reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: fromDate, to: toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'re-apply',L1status:'',L2status:'',L3status:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
+            WFH:WFH, reportManager:reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: fromDate, to: toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'re-apply',L1status:'',L2status:'',L3status:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
             fromYear:fromYear[0],
             toYear:toYear[0]}
           addDoc(collection(db,'WFH'),newDetails).then(()=>{
@@ -167,7 +166,7 @@ const ApplyAgain = props => {
                         <div className="mb-3">
                           <Label htmlFor="formrow-email-Input">Work Type</Label>
                           <Input
-                            value={'WFH'}
+                            value={WFH}
                           />
                         </div>
                       </Col>

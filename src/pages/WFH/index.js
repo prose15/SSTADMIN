@@ -22,8 +22,9 @@ import { Field, Formik, useFormik } from "formik";
 import { db,storage} from "firebase-config";
 import { collection,addDoc, Timestamp, updateDoc,doc,getDoc} from "firebase/firestore";
 import Cookies from 'js-cookie'
-import {ref,uploadBytes} from 'firebase/storage'
+import { useStateContext } from 'Context/ContextProvider';
 const WFH = props => {
+  const {myRecords}=useStateContext()
   const team = Cookies.get('team');
     const name = Cookies.get('name')
     const email=Cookies.get('email');
@@ -89,11 +90,20 @@ const WFH = props => {
     }
     return dates;
   }
+  let checkBookedValues=0;
   const {values,setFieldValue,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     initialValues:initialValues,
     validationSchema: schema,
     onSubmit:(values) =>{ 
-              console.log(values);
+      if(checkBookedValues===1){
+        setAlertMsg("You booked a holiday!")
+        document.getElementById('timeLimit')
+        setAlertErr('d-block')
+        setTimeout(()=>{
+          setAlertErr('d-none')},10000);
+          setCondition(false)
+       }
+       else{
               const startDate = new Date(values.fromDate)
               const endDate = new Date(values.toDate)
                 const fromTimeStamp=Timestamp.fromMillis(startDate.getTime())
@@ -121,8 +131,13 @@ const WFH = props => {
             .catch((err) => {
                 console.log(err.message);
                 })
-                
-                  }})
+                  }}
+                })
+                  myRecords.map((data)=>{
+                    if(data.from===values.fromDate || data.to===values.toDate){
+                      checkBookedValues=1
+                    }
+                  })
                   const WeekEnds = current => {
                     const dayOfWeek = current.day();
                     return dayOfWeek === 5 || dayOfWeek === 6;

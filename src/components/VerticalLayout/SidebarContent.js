@@ -201,7 +201,7 @@ const SidebarContent = props => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/WFH">Add Work From Home</Link>
+                  <Link to="/WFH">Apply WFH</Link>
                 </li>
                 <li>
                   <Link to="/WFH/records">My Records</Link>
