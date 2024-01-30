@@ -108,7 +108,7 @@ const validation = useFormik({
                          
                     <div className="ms-3 flex-grow-1 align-self-center">
                       <div className="text-muted">
-                        <h5 className="text-dark"><b>{name}</b></h5>
+                        <h5 className="text-dark"><b>{Cookies.get('name')}</b></h5>
                         <p className="mb-1">{Cookies.get('team')}</p>
                         <p className="mb-0">{(Cookies.get('level')==='k')?('L4'):(Cookies.get('level'))}</p>
                       </div>
