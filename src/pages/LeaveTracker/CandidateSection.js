@@ -46,10 +46,6 @@ const CandidateSection = ({upcomingLeaves}) => {
 
 const swiper1=details.filter((detail)=>(detail.id)%2===1)
 const swiper2=details.filter((detail)=>(detail.id)%2===0)
-console.log(swiper1)
-console.log(swiper2)
-// const swiper1length=swiper1.length
-console.log(swiper1.length)
 
 
     return (

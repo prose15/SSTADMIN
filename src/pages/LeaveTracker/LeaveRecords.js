@@ -10,9 +10,9 @@ import {Modal} from "reactstrap";
 import {Button} from "reactstrap";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useStateContext } from "Context/ContextProvider";
 
-
-function LeaveRecords() {
+const  LeaveRecords=()=> {
 const [year,setYear]=useState(0);
 const [modal_1, setModal_1] = useState("varying");
 const [varyingModal, setVaryingModal] = useState(false);
@@ -21,10 +21,10 @@ const [varyingModal, setVaryingModal] = useState(false);
         setVaryingModal(!varyingModal);
       }
 
-
-const [details,setDetails]=useState([])
-const name=Cookies.get('name')
-const email=Cookies.get('email')
+const {myRecords}=useStateContext()
+// const [details,setDetails]=useState([])
+// const name=Cookies.get('name')
+// const email=Cookies.get('email')
 
 const downloadHelloWorldAsPDF = (leaverecords) => {   
    
@@ -66,15 +66,15 @@ const downloadHelloWorldAsPDF = (leaverecords) => {
     pdf.save('Leave Records.pdf');
 }
 
-useEffect(()=>{
-    const handleGet=async()=>{
-        const filteredUsersQuery =query(collection(db,'leave submssion'),where('email','==',email),orderBy('timestamp','asc'));
-        onSnapshot(filteredUsersQuery,(data)=>{
-          setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
-    }
-    handleGet()
-},[])
+// useEffect(()=>{
+//     const handleGet=async()=>{
+//         const filteredUsersQuery =query(collection(db,'leave submssion'),where('email','==',email),orderBy('timestamp','asc'));
+//         onSnapshot(filteredUsersQuery,(data)=>{
+//           setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+//         })
+//     }
+//     handleGet()
+// },[])
 
 const today=new Date()
 let thisYear=today.getFullYear()
@@ -228,7 +228,7 @@ setYear(0)
                     <Col >
                     <TableContainer 
                         columns={columns}
-                        data={details}
+                        data={myRecords}
                         isGlobalFilter={true}
                         isAddOptions={false}
                         customPageSize={10}

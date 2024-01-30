@@ -30,6 +30,8 @@ import WFHRecord from "pages/WFH/WFHRecord";
 import WFHTeamRequests from "pages/WFH/WFHTeamRequests";
 import FestiveLeave from "pages/Forms/FestiveLeave";
 import TeamEfficiency from "pages/timesheet/Dashboard-saas/pages/TeamEfficiency";
+import ResetPassword from "pages/Authentication/ResetPassword";
+import WFHApplyAgain from "pages/WFH/ApplyAgain";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -46,6 +48,7 @@ const authProtectedRoutes = [
   {path: '/WFH', component: <WFH/>},
   {path: "/WFH/records", component: <WFHRecord/>},
   { path:"/WFH/requests",component: <WFHTeamRequests />},
+  { path:"/WFH/apply-again/:id",component: <WFHApplyAgain />},
   //timesheet
   // { path: "/timesheet/dashboard", component: <DashboardSaas /> },
   // { path: "/timesheet/mytimesheet", component: <Mytimesheet /> },
@@ -75,6 +78,7 @@ const authProtectedRoutes = [
 const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPwd /> },
+  { path: "/reset-password", component: <ResetPassword /> },
   { path: "/register", component: <Register /> },
 ];
 

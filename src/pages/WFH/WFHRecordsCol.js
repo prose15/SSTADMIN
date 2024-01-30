@@ -121,6 +121,16 @@ const Actions=(cell)=>{
                     </Tooltip>
                     ):(<></>)
                     }
+                    {
+                      (data && data.status.includes('denied') && data && new Date(data.from)>=today)?(
+                        <>
+                         <Button className='btn dropdown-item' onClick={()=>{nav(`/WFH/apply-again/${cell.value}`)}}> 
+                         Apply Again
+                         <i className="ms-2 far fa-hand-pointer font-size-17"/>
+                       </Button> 
+                       </>
+                    ):(<></>)
+                    }
                   {
                     (data && data.status.includes('L1 approved')||data && data.status.includes('pending'))?(
                       <Button className='btn dropdown-item' onClick={()=>composeEmail(cell.value)}> 

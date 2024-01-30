@@ -40,7 +40,8 @@ const LeaveForm = props => {
     }
     getData()
   },[])
-  const {available,leave,modal_backdrop,setmodal_backdrop}= useStateContext()
+  const {available,leave,modal_backdrop,setmodal_backdrop,myRecords}= useStateContext()
+  
   let details=[]
   let reportingManager=''
   const team = Cookies.get('team');
@@ -53,6 +54,7 @@ const LeaveForm = props => {
   const date=new Date().getDate()+'-'+(new Date().getMonth()+1)+'-'+new Date().getFullYear()
   const yesterday = new Date()
   yesterday.setDate(today.getDate()-1)
+  let leaveId=0;
   const [selectedGroup, setselectedGroup] = useState(null);
   const [casualType,SetCasualType]=useState('')
   const [file,setFile]=useState(null);
@@ -129,13 +131,13 @@ function getDatesBetweenDates(startDate, endDate) {
   }
   return dates;
 }
+let checkBookedValues=0; 
 const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
   initialValues:initialValues,
   validationSchema: schema,
-  onSubmit:(values) =>{ 
-              
-    const startDate = new Date(values.fromDate)
-    const endDate = new Date(values.toDate)
+  onSubmit:(values) =>{       
+      const startDate = new Date(values.fromDate)
+      const endDate = new Date(values.toDate)
       const fromTimeStamp=Timestamp.fromMillis(startDate.getTime())
       const toTimeStamp=Timestamp.fromMillis(endDate.getTime())
       let dates = [];
@@ -147,6 +149,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
       const datesWithoutHolidays = dates.filter(date => (date.getDay()!=5 && date.getDay()!=6) )
       console.log(datesWithoutHolidays.length)
       console.log(leaveId)
+      console.log(casualType)
       function CorrectPath () {
         const fromYear=values.fromDate.split('-')
         const toYear=values.toDate.split('-')
@@ -261,13 +264,20 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
       })
     }
       }
-     
-       if(values.leaveType === 'Casualleave' && datesWithoutHolidays.length<5 && leaveId===1){
+     if(checkBookedValues===1){
+      setAlertMsg("You booked a holiday!")
+      document.getElementById('timeLimit')
+      setAlertErr('d-block')
+      setTimeout(()=>{
+        setAlertErr('d-none')},10000);
+        setCondition(false)
+     }
+      else if(casualType === 'Plannedleave' && datesWithoutHolidays.length<5){
         setAlertMsg("You ought to reserve a maximum of 5 days, ensuring it is fewer than 5 days!")
       document.getElementById('timeLimit')
       setAlertErr('d-block')
       setTimeout(()=>{
-        setAlertErr('d-none')},5000);
+        setAlertErr('d-none')},10000);
         setCondition(false)
        }
        
@@ -277,16 +287,15 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         document.getElementById('timeLimit')
         setAlertErr('d-block')
         setTimeout(()=>{
-          setAlertErr('d-none')},5000);
+          setAlertErr('d-none')},10000);
           setCondition(false)
         }
-        else if(datesWithoutHolidays.length>=5 && leaveId===2){
-          console.log("Emergency leave must be less than 5 days!")
+        else if(casualType === 'Emergencyleave' && datesWithoutHolidays.length>5){
           setAlertMsg("Emergency leave must be less than 5 days!")
           document.getElementById('timeLimit')
           setAlertErr('d-block')
           setTimeout(()=>{
-            setAlertErr('d-none')},5000);
+            setAlertErr('d-none')},10000);
             setCondition(false)
          }
         else if(values.leaveType.includes('Flexileave') && datesWithoutHolidays.length<5){
@@ -294,16 +303,20 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         document.getElementById('timeLimit')
         setAlertErr('d-block')
         setTimeout(()=>{
-          setAlertErr('d-none')},5000);
+          setAlertErr('d-none')},10000);
           setCondition(false)
         }
          
         else{
-          console.log('skipped if block')
-          // CorrectPath()
+          CorrectPath()
         }
       
       } 
+    }
+  })
+  myRecords.map((data)=>{
+    if(data.from===values.fromDate || data.to===values.toDate){
+      checkBookedValues=1
     }
   })
   
@@ -332,15 +345,14 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                     ]
                   }
                 ];
-                let leaveId = 1;
-                const handleSelectGroup=(selectedGroup)=> {
-                  setselectedGroup(selectedGroup);
-                  values.leaveType=selectedGroup.value
-                  leaveId=selectedGroup.id
-                  leaveId === 1 ? SetCasualType("Plannedleave") : leaveId === 2 ? SetCasualType("Emergencyleave"):SetCasualType(values.leaveType)
-                  console.log(leaveId)
-                 
-                }
+                
+  const handleSelectGroup=(selectedGroup)=> {
+    setselectedGroup(selectedGroup);
+    values.leaveType=selectedGroup.value
+    leaveId=selectedGroup.id
+    leaveId === 1 ? (SetCasualType("Plannedleave")) :leaveId === 2 ? SetCasualType("Emergencyleave"):
+    leaveId === 3 ? SetCasualType("Sickleave") : leaveId === 4 ? (SetCasualType("Flexileave")) : leaveId === 5 && Cookies.get('gender')==='Male'? SetCasualType("Paternityleave") :SetCasualType("Maternityleave")
+  }
                 
 
   return (
@@ -348,14 +360,14 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
       <div className="page-content">
         <Container>
           <Row>
-          <Alert color="danger"  id='timeLimit' className={alertErr} style={{zIndex:2}}>{alertMsg}</Alert>
+            <Col>
+            <Alert color="danger"  id='timeLimit' className={alertErr} style={{zIndex:2}}>{alertMsg}</Alert>
           { condition && (
             <Alert color='success' id="" className={`${alert} position-fixed`}>{'Form forwarded to L1 Manager'}</Alert>)}
             {
               dataToModal!=null &&  <AlertModal  data={dataToModal} file={file} newData={newData} />
             }
-            <Col>
-              <Card className='mt-5 w-100  mx-auto'>
+              <Card className=' w-100  mx-auto'>
                 <CardBody >
                   <CardTitle className="mb-4">Submit Your Application!</CardTitle>
                   <Form onSubmit={handleSubmit}>
@@ -530,7 +542,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                       name="reason"
                       maxLength="225"
                       rows="3"
-                      placeholder="Don't exists 250 words..."
+                      placeholder="Don't exceed 250 words..."
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.reason}

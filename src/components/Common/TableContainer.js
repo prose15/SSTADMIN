@@ -64,6 +64,7 @@ const TableContainer = ({
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    
     page,
     prepareRow,
     canPreviousPage,
@@ -185,17 +186,14 @@ const TableContainer = ({
         <Table {...getTableProps()} className={tableClass}>
           <thead className={theadClass}>
             {headerGroups.map(headerGroup => (
-              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
-               
+              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>     
                 {headerGroup.headers.map(column => (
                   <th key={column.id} className={column.isSort ? "sorting" : ''}  style={{
                     width: column.width,
-                  }}>
-                    
+                  }}>    
                     <div className="m-0" {...column.getSortByToggleProps()}>
                       {column.render("Header")}
                     </div>
-                    {/* <Filter column={column} /> */}
                   </th>
                 ))}
               </tr>
@@ -256,9 +254,5 @@ const TableContainer = ({
     </Fragment>
   )
 }
-
-// TableContainer.propTypes = {
-//   preGlobalFilteredRows: PropTypes.any,
-// }
 
 export default TableContainer

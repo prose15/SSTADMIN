@@ -8,7 +8,6 @@ import {
   } from "reactstrap";
 const ApprovalCard = (props) => {
     const data = props.data
-    console.log(data)
   return (
     <React.Fragment>
             {

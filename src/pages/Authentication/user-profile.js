@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   Row,
@@ -26,63 +26,41 @@ import withRouter from "components/Common/withRouter";
 import { editProfile, resetProfileFlag } from "../../store/actions";
 import Cookies from "js-cookie";
 import { storage } from "firebase-config";
-import {getDownloadURL,ref,uploadBytes} from 'firebase/storage'
+import {getDownloadURL,ref,uploadBytes,deleteObject} from 'firebase/storage'
+import ImageCropper from "pages/Modal/ImageCropper";
 const UserProfile = () => {
-  const {url} = useStateContext()
-  // const [url,setUrl]=useState('')
+  const {url,setProfileModal} = useStateContext()
 const [photo,setPhoto]=useState(null)
+const [img,setImg]=useState(null)
+const [success,setSuccess]=useState(null)
+const [alertBox,setAlertBox]=useState('d-none')
   async function upload(file,user){
     const fileRef=ref(storage,'users/'+user+'.jpg');
      await uploadBytes(fileRef,file).then(()=>{
       setDisplay('d-none')
-      console.log('uploaded');
+      setSuccess('Profile updated successfully! Please refresh to view the update')
+      setAlertBox('d-block')
+      setTimeout(()=>setAlertBox('d-none'),5000)
     }).catch((err)=>{
       console.log(err);
     })
   }
+const deleteProfile=()=>{
+const desertRef = ref(storage, `users/${JSON.parse(sessionStorage.getItem('uid'))}.jpg`);
+deleteObject(desertRef).then(() => {
+  setSuccess('Profile updated successfully! Please refresh to view the update')
+  setAlertBox('d-block')
+  setTimeout(()=>setAlertBox('d-none'),5000)
+}).catch((error) => {
+  console.log(error)
+});
+}
+const previewCanvasRef=useRef()
   const dispatch = useDispatch();
-  const [email, setemail] = useState();
   const [display,setDisplay]=useState('d-none')
   const [name, setname] = useState();
   const [idx, setidx] = useState(1);
-  const selectProfileState = (state) => state.Profile;
-    const ProfileProperties = createSelector(
-      selectProfileState,
-        (profile) => ({
-          error: profile.error,
-          success: profile.success,
-        })
-    );
-
-    const {
-      error,
-      success
-  } = useSelector(ProfileProperties);
-
-  useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"));
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        // setname(obj.displayName);
-        setname(Cookies.get('name'))
-        setemail(obj.email);
-        setidx(obj.uid);
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        // setname(obj.username);
-        setname(Cookies.get('name'))
-        setemail(obj.email);
-        setidx(obj.uid);
-      }
-      setTimeout(() => {
-        dispatch(resetProfileFlag());
-      }, 3000);
-    }
-  }, [dispatch, success]);
-
-
+    
 const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -99,30 +77,32 @@ const validation = useFormik({
     }
   });
 
-
-// console.log(url);
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           <Row>
             <Col lg="12">
-              {error && error ? <Alert color="danger">{error}</Alert> : null}
-              {success ? <Alert color="success">{success}</Alert> : null}
-              
+              {
+                success && (<Alert className={alertBox} color="success">{success}</Alert>)
+              }
+              <ImageCropper url={img} previewCanvasRef={previewCanvasRef} setPhoto={setPhoto} />
               <Card>
                 <CardBody>
                   <div className="d-flex">
 
                     <div className="ms-3">
-                  
-                      {url?(<img className="rounded-circle " src={url}  height={100} width={100}/>):(<NoProfile />)}
+                      {url?(<img className="rounded-circle " src={url}  height={100} width={100} />):(<NoProfile />)}
                     </div>
-                    <Label htmlFor="formFile" for="file" className="form-label" ><i className="bx bx-pencil" onClick={()=>setDisplay('d-block')}></i></Label>
-                          <Input className="form-control d-none" type="file" id="formFile" onChange={(e)=>{
-                            if(e.target.files[0]){
+                    <Label htmlFor="formFile" for="file" className="form-label" ><i className="bx bx-pencil" onClick={()=>{
+                      setProfileModal(true)
+                      setDisplay('d-block')
+                      }}></i></Label>
+                          <Input className="form-control d-none" type="file" id="formFile" accept="image/*" onChange={(e)=>{
+                            if(e.target.files &&  e.target.files[0]){
+                              console.log(e.target.files[0])
                               setPhoto(e.target.files[0])
-                             
+                              setImg(URL.createObjectURL(e.target.files[0]))
                             }
                           }} />
                          
@@ -135,7 +115,10 @@ const validation = useFormik({
                     </div>
                     <div className={"d-flex align-items-center"}>
                       <div className={display}>
-                      <Button className="btn bg-primary"  onClick={()=>upload(photo,JSON.parse(sessionStorage.getItem('uid')))}>Upload</Button>
+                      <Button className="btn bg-primary"  onClick={()=>upload(photo,JSON.parse(sessionStorage.getItem('uid')))}><i className=" dripicons-upload " /></Button>
+                      </div>
+                      <div >
+                      <Button className="btn bg-primary" onClick={()=>deleteProfile()} ><i className=" dripicons-trash "  /></Button>
                       </div>
                     
                     </div>

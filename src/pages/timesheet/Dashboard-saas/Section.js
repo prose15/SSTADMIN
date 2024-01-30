@@ -4,9 +4,6 @@ import { Col, Row } from 'reactstrap';
 import Cookies from 'js-cookie';
 
 const Section = (props) => {
-    const btn = "add project";
-    // console.log(props.name);
-    console.log(btn)
     return (
         <React.Fragment>
             <Row className="mb-4">

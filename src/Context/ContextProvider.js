@@ -2,7 +2,7 @@ import React , {useContext,createContext,useState,useEffect} from "react";
 import { auth, storage } from "firebase-config";
 import {getDownloadURL,ref,uploadBytes} from 'firebase/storage'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {collection,getDoc,query,where,orderBy,onSnapshot,doc,getDocs} from 'firebase/firestore'
+import {collection,getDoc,query,where,orderBy,onSnapshot,doc,getDocs,} from 'firebase/firestore'
 import Cookies from "js-cookie";
 import { db } from "firebase-config";
 const StateContext=createContext();
@@ -14,7 +14,8 @@ export const ContextProvider=({children})=>{
   const [detail,setDetail]=useState([])
   const [WFHDetail,setWFHDetail] = useState([])
   const [request,setRequest]=useState([])
-  const [subscribemodal,setSubscribemodal]=useState(false)
+  const [subscribemodal,setSubscribemodal]=useState(false);
+  const [acceptModel,setAcceptModel]=useState(false)
   const [modal_backdrop, setmodal_backdrop] = useState(false);
   const [id,setId]=useState('')
   const [revokeDetail,setRevokeDetail] = useState([])
@@ -23,6 +24,8 @@ export const ContextProvider=({children})=>{
   const [performanceArray,setPerformanceArray]=useState([])
   const [format,setFormat]=useState('')
   const [usersArr,setUsersArr]=useState([])
+  const [myRecords,setMyRecords]=useState([])
+  const [profileModal,setProfileModal]=useState(false)
   //Cookies
   const level = Cookies.get('level')
   useEffect(()=>{
@@ -31,7 +34,7 @@ export const ContextProvider=({children})=>{
       setUsersArr(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
     }
     getUsersArr()
-  })
+  },[])
   
   useEffect(()=>{
     onAuthStateChanged(auth,(user)=>{
@@ -45,46 +48,50 @@ export const ContextProvider=({children})=>{
         const docSnap = await getDoc(docRef)
         if(docSnap.exists()){ 
         const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', docSnap.data().name), orderBy('timestamp','asc'));
-        onSnapshot(filteredUsersQuery, (data) => {
+      onSnapshot(filteredUsersQuery,((data) => {
           setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
+        }))
+      
         const filteredApprovalQuery=query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','desc'));
           onSnapshot(
-            filteredApprovalQuery,(data)=>{
+            filteredApprovalQuery,((data)=>{
               setDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-          },(error)=>{
+          }),(error)=>{
             console.log(error)
           })
+        
+                const filteredRecordsQuery =query(collection(db,'leave submssion'),where('email','==',docSnap.data().email),orderBy('timestamp','asc'));
+              onSnapshot(filteredRecordsQuery,((data)=>{
+                  setMyRecords(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+                }))
+               
+              
           const todayTimeStamp=new Date()
           todayTimeStamp.setHours(23)
           todayTimeStamp.setMinutes(59)
           todayTimeStamp.setSeconds(59)
           if(level === 'L2'){
           const filteredRevokeQuery = query(collection(db,'leave submssion'), where('status', '==','revoke'),where('fromTimeStamp','>',todayTimeStamp));
-          onSnapshot(
-            filteredRevokeQuery,(data)=>{
+         onSnapshot(
+            filteredRevokeQuery,((data)=>{
               setRevokeDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
           },(error)=>{
             console.log(error)
-          })
+          }))
         }
         else if(level==='L1'){
           const filteredRevokeQuery = query(collection(db,'leave submssion'), where('status', '==','revoke'),where('team','==',docSnap.data().team),where('fromTimeStamp','>',todayTimeStamp));
-          onSnapshot(
-            filteredRevokeQuery,(data)=>{
-              setRevokeDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-          },(error)=>{
-            console.log(error)
-          })
+         onSnapshot(filteredRevokeQuery,((data)=>{
+          setRevokeDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        }))
         }
+      
           const filteredWFHQuery = query(collection(db,'WFH'),where('reportManager','==',docSnap.data().name),orderBy('timestamp','asc'));
           
-          onSnapshot(
-            filteredWFHQuery,(data)=>{
-              setWFHDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-          },(error)=>{
-            console.log(error)
-          })
+        onSnapshot(filteredWFHQuery,((data)=>{
+          setWFHDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        }))
+      
           const filteredLeaveQuery =query(collection(db,'Holidays'),where('fromTimeStamp','>',todayTimeStamp));
     const data1=await getDocs(filteredLeaveQuery).catch((err)=>{
       console.log(err);
@@ -103,6 +110,7 @@ export const ContextProvider=({children})=>{
           console.log(err);
         })
       }
+      
     }
     getURL(user)
   },[user])
@@ -172,7 +180,7 @@ available[i+1]+=1.5
 }
 }
 
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,usersArr}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal}}>
         {children}
     </StateContext.Provider>)
 }

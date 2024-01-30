@@ -134,7 +134,7 @@ const WFH = props => {
           <Row>
             <Col>
             <Alert color='success' id="" className={alert}>{'Form forwarded to L1 Manager'}</Alert>
-              <Card className='mt-5 w-100  mx-auto'>
+              <Card className=' w-100  mx-auto'>
                 <CardBody >
                   <CardTitle className="mb-4">Submit Your Application!</CardTitle>
                   <Form onSubmit={handleSubmit}>
@@ -227,7 +227,7 @@ const WFH = props => {
                       name="reason"
                       maxLength="250"
                       rows="3"
-                      placeholder="Don't exists 250 words..."
+                      placeholder="Don't exceed 250 words..."
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.reason}

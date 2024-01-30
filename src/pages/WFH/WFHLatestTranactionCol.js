@@ -21,7 +21,7 @@ const deleteData=async(id)=>{
         if(Cookies.get('level')==='L2'){
             obj.L2status='dislpay'
             await updateDoc(doc(db, "leave submssion", id),obj).then(()=>{
-                console.log('updated successfully');
+         
             }).catch((err)=>{
                 console.log(err);
             })
@@ -29,7 +29,7 @@ const deleteData=async(id)=>{
         else  if(Cookies.get('level')==='L3'){
             obj.L3status='display'
             await updateDoc(doc(db, "leave submssion", id),obj).then(()=>{
-                console.log('updated successfully');
+          
             }).catch((err)=>{
                 console.log(err);
             })
@@ -37,7 +37,7 @@ const deleteData=async(id)=>{
         else  if(Cookies.get('level')==='k'){
             obj.kstatus='display'
             await updateDoc(doc(db, "leave submssion", id),obj).then(()=>{
-                console.log('updated successfully');
+         
             }).catch((err)=>{
                 console.log(err);
             })
@@ -78,7 +78,7 @@ const Status = (cell) => {
     return (
         <Badge
         className={"font-size-11 badge-soft-" + 
-        ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('info'):((cell.value==='revoke'|| cell.value==='escalate')?('warning'):(cell.value==='re-apply')?('secondary'):('danger'))))}         
+        (( cell.value==='approved')?('success'):(cell.value==='L1 approved' || cell.value==='pending'?('warning'):((cell.value==='revoke'|| cell.value==='escalate')?('info'):(cell.value==='re-apply')?('secondary'):('danger'))))}          
       >
         {cell.value}
       </Badge>
@@ -90,13 +90,22 @@ const Reason = (cell) => {
 };
 
 const Actions = ({cell,users,admin}) => {
-const {setSubscribemodal,setId}=useStateContext()
+const {setSubscribemodal,setId,acceptModel,setAcceptModel}=useStateContext()
+
     return (
 
         <span>
            
                 <>
-                <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>Accept(cell.value,users,admin)} />
+                <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>{
+                   if(Cookies.get('level')==='L1'||Cookies.get('level')==='L3'){
+                    setId(cell.value)
+                    setAcceptModel(true)
+                   } 
+                   else{
+                    Accept(cell.value,users,admin)
+                   }
+                    }}/>
                 <i style={{cursor:"pointer"}} onClick={()=>{
             setSubscribemodal(true) 
             setId(cell.value)
