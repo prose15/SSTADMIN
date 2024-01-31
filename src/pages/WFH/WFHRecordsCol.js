@@ -91,17 +91,32 @@ const deleteData=async(id)=>{
       }
 const Actions=(cell)=>{
     const [data,setData]=useState(null)
+    const [arr,setArr]=useState([])
+    const dates=[]
     useEffect(()=>{
         const getData=async()=>{
             const docRef = doc(db, 'WFH',cell.value)
             const docSnap = await getDoc(docRef);
             if(docSnap.exists()){
-               setData(docSnap.data()) 
+               setData(docSnap.data())
+               if(docSnap.data().status==='approved'){
+                setArr(docSnap.data().approvedDates)
+               } 
             }
         }
         getData()
     },[])
-   
+    const timeStampToDate=(timestamp)=>{
+      const date= new Date(timestamp.seconds*1000)
+      return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear()
+     }
+    if(data &&  data.status==='approved'){
+      arr.map((date)=>{
+      dates.push(timeStampToDate(date))  
+      })
+    }
+ 
+  
   const today=new Date()  
   const nav= useNavigate()
     return(  
@@ -119,6 +134,24 @@ const Actions=(cell)=>{
                         <Tooltip className="dropdown-item" title={data.reasonOfReject} placement='top' arrow>
                         Reason of Reject
                     </Tooltip>
+                    ):(<></>)
+                    }
+                    {
+                       (data && data.status.includes('approved'))?(
+                        <UncontrolledDropdown >
+                            <DropdownToggle className="dropdown-item"
+                  tag="a"
+                  color="white">
+                              Approved Dates
+                            </DropdownToggle>
+                            <DropdownMenu className="dropdown-menu-end">
+                              {
+                                  dates.map((date)=>(
+                                    <div className="dropdown-item"  key={date}>{date}</div>
+                                  ))
+                              }
+                            </DropdownMenu>
+                          </UncontrolledDropdown>
                     ):(<></>)
                     }
                     {
@@ -142,7 +175,7 @@ const Actions=(cell)=>{
                     ):(<></>)
                   }
 
-{
+                    {
                     (data && data.status.includes('approved')&& data && new Date(data.from)>=today)?(
                       <Button className='btn dropdown-item' onClick={()=>revokeEmail(cell.value)}> 
                        <span className='me-2'>Revoke</span> 

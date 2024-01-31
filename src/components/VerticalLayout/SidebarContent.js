@@ -174,9 +174,9 @@ const SidebarContent = props => {
                   <li>
                     <Link to="/leave/records">My Records</Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link to="/leave/approvals">My Approvals</Link>
-                  </li>
+                  </li> */}
                   <li>
                   <Link to="/leave/requests">Team Requests</Link>
                 </li>

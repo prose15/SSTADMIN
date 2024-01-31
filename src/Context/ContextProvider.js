@@ -52,7 +52,7 @@ export const ContextProvider=({children})=>{
           setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }))
       
-        const filteredApprovalQuery=query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','desc'));
+        const filteredApprovalQuery=query(collection(db,'leave submssion'),where('email','==',docSnap.data().email), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','asc'));
           onSnapshot(
             filteredApprovalQuery,((data)=>{
               setDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))

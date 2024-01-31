@@ -30,6 +30,7 @@ const WFH = props => {
     const email=Cookies.get('email');
     const level= Cookies.get('level');
     const [newData,setNewData]=useState(null)
+    const [alertMsg,setAlertMsg] = useState('')
   let details=[]
   const today = new Date();
   let reportingManager=''
@@ -55,6 +56,7 @@ const WFH = props => {
   const [fromDate,setFromDate] = useState('')
   const [toDate,setToDate] = useState()
   const [subject,setSubject] = useState()
+  const [alertErr,setAlertErr]=useState('d-none')
   const WFH = "Work From Home"
   useEffect(()=>{
     const getData=async()=>{
@@ -147,6 +149,7 @@ const WFH = props => {
       <div className="page-content">
         <Container>
           <Row>
+          <Alert color='danger ' id='timeLimit' className={alertErr}>{alertMsg}</Alert>
             <Col>
             <Alert color='success' id="" className={alert}>{'Form forwarded to L1 Manager'}</Alert>
               <Card className=' w-100  mx-auto'>

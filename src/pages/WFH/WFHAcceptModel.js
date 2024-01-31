@@ -5,14 +5,29 @@ import { DatePicker } from 'antd'
 import { Accept } from './Accept'
 //Import Flatepicker
 import Flatpickr from 'react-flatpickr'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from 'firebase-config'
 const WFHAcceptModal = ({users,admin}) => {
     const {acceptModel,setAcceptModel,id,WFHDetail}= useStateContext()
     const [reason,setReason]=useState('')
     const [date,setDate] = useState('')
     const datePickerRef = useRef(null);
     const [dates,setDates]=useState([])
-  
-
+    const [from,setFrom]=useState('')
+    const [to,setTo]=useState('')
+    useEffect(()=>{
+      const getData=async()=>{
+        if(id){
+          const docRef=doc(db,'WFH',id)
+          const docSnap=await getDoc(docRef)
+          if(docSnap.exists()){
+            setFrom(docSnap.data().from)
+          setTo(docSnap.data().to)
+          }
+        }
+      }
+      getData()
+    },[id])
      return (
        <>
 
@@ -57,13 +72,13 @@ const WFHAcceptModal = ({users,admin}) => {
             <Col className='text-start'>
             <Label htmlFor="formrow-email-Input text-start">From Date</Label>
                           <Input
-                            value={'02-02-2024'}
+                            value={from}
                           />
             </Col>
             <Col className='text-start'>
             <Label htmlFor="formrow-email-Input text-start">To Date</Label>
                           <Input
-                            value={'02-02-2024'}
+                            value={to}
                           />
             </Col>
            </Row>
@@ -77,7 +92,7 @@ const WFHAcceptModal = ({users,admin}) => {
                           options={{
                             mode: "multiple",
                             dateFormat: "Y-m-d",
-                            defaultDate:['2024-02-02','2024-02-07'],
+                            defaultDate:from,
                             onChange: function(selectedDates, dateStr, instance) {
                               setDates(selectedDates)
                           }
@@ -89,7 +104,7 @@ const WFHAcceptModal = ({users,admin}) => {
          </div>
         </div>
         <div>
-        <Button className='btn-success' type="button" id="button-addon2" onClick={()=>Accept(id,users,admin,dates,setAcceptModel,acceptModel)}>
+        <Button className='btn-success' type="button" id="button-addon2" onClick={()=>Accept(id,users,admin,dates,setAcceptModel,)}>
             Approve
           </Button>
         </div>
