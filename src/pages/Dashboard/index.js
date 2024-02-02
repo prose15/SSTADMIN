@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import React ,{useState,useEffect, useMemo} from "react";
+import {  storage } from "firebase-config";
+import {getDownloadURL,ref,uploadBytes} from 'firebase/storage'
 import {
   Container,
   Row,
@@ -38,6 +40,12 @@ const Dashboard = props => {
   todayTimeStamp.setHours(23)
   todayTimeStamp.setMinutes(59)
   todayTimeStamp.setSeconds(59)
+  const [newTeam,setNewTeam]=useState([])
+  const loadProfile=async(user)=>{
+    const fileRef=ref(storage,'users/'+user+'.jpg');
+   const url= await getDownloadURL(fileRef).catch((err)=>console.log(err))
+    return url
+  }
    useEffect(()=>{
        const handleGet=async()=>{
       const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
@@ -57,8 +65,14 @@ const Dashboard = props => {
         const data=await getDocs(filteredUsersQuery).catch((err)=>{
           console.log(err);
         })
-        setTeam(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        
+        const team=data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        const usersWithPhoto = await Promise.all(
+          team.map(async(data)=>({
+            ...data,
+            photoUrl:await loadProfile(data.id)
+          }))
+        )
+        setNewTeam(usersWithPhoto)
         
        
    }
@@ -67,6 +81,7 @@ const Dashboard = props => {
       
        },[]
      )
+     console.log(newTeam)
   const reports = [
     { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: "12" },
     { title: "Worked Hours", iconClass: "bx bxs-time", description: "128" },
@@ -156,7 +171,7 @@ const findMin=(data)=>{
             <Col xl="4">
               <WelcomeComp name={name} role={role} />
               {/* <Col xl="6"> */}
-              <TeamMates team={team} />
+              <TeamMates team={newTeam} />
               {/* </Col> */}
             </Col>
             <Col xl="8">
