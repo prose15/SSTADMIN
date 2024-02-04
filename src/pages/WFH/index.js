@@ -98,7 +98,7 @@ const WFH = props => {
     validationSchema: schema,
     onSubmit:(values) =>{ 
       if(checkBookedValues===1){
-        setAlertMsg("You booked a holiday!")
+        setAlertMsg("You already booked a holiday!")
         document.getElementById('timeLimit')
         setAlertErr('d-block')
         setTimeout(()=>{

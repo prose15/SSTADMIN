@@ -115,10 +115,15 @@ const validation = useFormik({
                     </div>
                     <div className={"d-flex align-items-center"}>
                       <div className={display}>
-                      <Button className="btn bg-primary"  onClick={()=>upload(photo,JSON.parse(sessionStorage.getItem('uid')))}><i className=" dripicons-upload " /></Button>
+                        {
+                          photo && (<Button color="primary" className="me-2" onClick={()=>upload(photo,JSON.parse(sessionStorage.getItem('uid')))}><i className=" dripicons-upload " /></Button>)
+                        }
+                      
                       </div>
                       <div >
-                      <Button className="btn bg-primary" onClick={()=>deleteProfile()} ><i className=" dripicons-trash "  /></Button>
+                        {
+                          url && ( <Button color="primary" onClick={()=>deleteProfile()} ><i className=" dripicons-trash "  /></Button>)
+                        }
                       </div>
                     
                     </div>

@@ -265,7 +265,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     }
       }
      if(checkBookedValues===1){
-      setAlertMsg("You booked a holiday!")
+      setAlertMsg("You already booked a holiday!")
       document.getElementById('timeLimit')
       setAlertErr('d-block')
       setTimeout(()=>{
