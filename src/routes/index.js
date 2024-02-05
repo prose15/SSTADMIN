@@ -50,9 +50,6 @@ const authProtectedRoutes = [
   { path:"/WFH/requests",component: <WFHTeamRequests />},
   { path:"/WFH/apply-again/:id",component: <WFHApplyAgain />},
   //timesheet
-  // { path: "/timesheet/dashboard", component: <DashboardSaas /> },
-  // { path: "/timesheet/mytimesheet", component: <Mytimesheet /> },
-  // { path: "/timesheet/myapprovals", component: <Myapprovals /> },
   { path: "/timesheet/logtime", component: <Logtime /> },
   { path: "/timesheet/requests", component: <TimesheetTeamRequests/>},
   { path: "/timesheet/efficiency", component: <TeamEfficiency/>},
@@ -66,8 +63,6 @@ const authProtectedRoutes = [
   //profile 
 
   { path: "/profile", component: <UserProfile /> },
-    // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
   {
     path: "/",
     exact: true,

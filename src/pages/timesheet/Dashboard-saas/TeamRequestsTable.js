@@ -40,8 +40,8 @@ const TeamRequestsTable = () => {
   console.log(level);
   useEffect(() => {
       const getData = async () => {
-         if(name==="Keerthana" || name==='Krishna kumar'){
-          const filteredUsersQuery =query(collection(db,'timesheet'),where('status','==','accept'),orderBy('timestamp','asc'));
+         if(name==='Krishna kumar'){
+          const filteredUsersQuery =query(collection(db,'timesheet'),where('L3status','==',''),orderBy('timestamp','asc'));
           onSnapshot(filteredUsersQuery,(data)=>{
             setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
           })
@@ -116,7 +116,7 @@ const TeamRequestsTable = () => {
     ,
     []
   );
-  if(name==='Keerthana' || name==='Krishna kumar'){
+  if(name==='Krishna kumar'){
    columns = [
     {
       Header: "Employee Name",
@@ -166,6 +166,14 @@ const TeamRequestsTable = () => {
         return <Status {...cellProps} />;
       },
     },
+    {
+      Header: "Actions",
+      accessor: "id",
+      disableFilters: true,
+      Cell: cellProps => {
+        return <Actions {...cellProps} />;
+      },
+    },
 
   ]
   
@@ -190,14 +198,8 @@ const TeamRequestsTable = () => {
           />
         </CardBody>
       </Card>
-      {/* </div> */}
     </React.Fragment>
   );
 };
-
-// LatestTranaction.propTypes = {
-//   orders: PropTypes.array,
-//   onGetOrders: PropTypes.func,
-// };
 
 export default withRouter(TeamRequestsTable);

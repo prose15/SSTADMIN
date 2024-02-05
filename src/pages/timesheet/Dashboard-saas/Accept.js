@@ -36,10 +36,8 @@ export const Accept=async(id)=>{
     }).catch((err)=>{
         console.log(err);
     })
-    }
-    
+    } 
   }
-
 if(docSnap.data().team==='Product'){
 if(Cookies.get('team')=='Product'){
   if(level=='L2'){

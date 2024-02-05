@@ -1,19 +1,9 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
-import PropTypes from "prop-types";
-
-//Icons
-import { MdCardTravel } from "react-icons/md";
-
-// //Import Scrollbar
 import SimpleBar from "simplebar-react";
-
-// MetisMenu
 import MetisMenu from "metismenujs";
 import withRouter from "components/Common/withRouter";
 import { Link } from "react-router-dom";
-
-//i18n
 import { withTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 
@@ -33,16 +23,16 @@ const SidebarContent = props => {
       const parent2 = parent.parentElement;
 
       if (parent2) {
-        parent2.classList.add("mm-show"); // ul tag
+        parent2.classList.add("mm-show");
 
-        const parent3 = parent2.parentElement; // li tag
+        const parent3 = parent2.parentElement;
 
         if (parent3) {
-          parent3.classList.add("mm-active"); // li
-          parent3.childNodes[0].classList.add("mm-active"); //a
-          const parent4 = parent3.parentElement; // ul
+          parent3.classList.add("mm-active");
+          parent3.childNodes[0].classList.add("mm-active"); 
+          const parent4 = parent3.parentElement;
           if (parent4) {
-            parent4.classList.add("mm-show"); // ul
+            parent4.classList.add("mm-show");
             const parent5 = parent4.parentElement;
             if (parent5) {
               parent5.classList.add("mm-show"); // li
@@ -174,9 +164,6 @@ const SidebarContent = props => {
                   <li>
                     <Link to="/leave/records">My Records</Link>
                   </li>
-                  {/* <li>
-                    <Link to="/leave/approvals">My Approvals</Link>
-                  </li> */}
                   <li>
                   <Link to="/leave/requests">Team Requests</Link>
                 </li>
@@ -190,7 +177,6 @@ const SidebarContent = props => {
                   <Link to="/leave/festiveleave">Declare Holiday</Link>
                 </li>
                 }
-             
                
               </ul>
             </li>
@@ -208,28 +194,26 @@ const SidebarContent = props => {
                 </li>
                 <li>
                   <Link to="/WFH/requests">Team's Request</Link>
-                </li>
-                
+                </li>   
               </ul>
             </li>
-            
-              {(Cookies.get('team')!='Sales')?(
+            {(Cookies.get('team')!='Sales')}
+              {((Cookies.get('level')==='L2') &&(Cookies.get('name')==='Keerthana')) || (Cookies.get('name')==='Balaji') ?(
                 <li>
-                <Link to="/#" className="has-arrow  " >
-                  <i className="bx bx-calendar"></i>
-                  <span>{props.t("Time Sheet")}</span>
-                </Link>
-  <ul className="sub-menu">
-  <li>
-    <Link to="/timesheet/requests">{props.t("Team Request")}</Link>
-  </li>
-  <li><Link to="/timesheet/efficiency">{props.t("Team Efficiency")}</Link></li>
-</ul>
+                </li>):(
+                <li>
+          <Link to="/#" className="has-arrow" >
+            <i className="bx bx-calendar"></i>
+            <span>{props.t("Time Sheet")}</span>
+          </Link>
+<ul className="sub-menu">
+<li>
+<Link to="/timesheet/requests">{props.t("Team Request")}</Link>
 </li>
-        ):(<li></li>)
-                }
-            
-           
+<li><Link to="/timesheet/efficiency">{props.t("Team Efficiency")}</Link></li>
+</ul>
+</li>)
+                }           
 
             <li>
               <Link to="/#" className="has-arrow">

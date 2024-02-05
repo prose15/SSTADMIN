@@ -20,17 +20,18 @@ const TeamMates = (props) => {
                     <div className="bg-light p-3 d-flex mb-3 rounded" key={data}>
                         {
                             data.photoUrl?(<img
-                                className='rounded-circle  d-flex align-items-center justify-content-center  me-4  text-primary  ' style={{width:'55px'}}
+                                className='rounded-circle d-flex
+                                align-items-center justify-content-center  me-4  text-primary  ' style={{width:'55px'}}
                                 src={data.photoUrl}
                                 alt="Avatar"
-                              />):(<span  className='rounded-circle  d-flex align-items-center justify-content-center  pt-1 me-4 bg-primary-subtle text-primary  ' style={{width:'55px'}}>
-                            <h3>{getFirstLetter(data.name)}</h3>
+                              />):(<span  className='rounded-circle d-flex align-items-center justify-content-center  pt-1 me-4 bg-primary-subtle text-primary  ' style={{width:'55px'}}>
+                            <h3 className=''>{getFirstLetter(data.name)}</h3>
                           </span>)
                         }
                     
                     <div className="flex-grow-1 mt-2">
                         <h5 className="font-size-15 mb-2"><a href="candidate-overview" className="text-body" key={data.name}>{data.name}</a></h5>
-                        <div className="mb-0  text-muted "><i className="me-2 bx bx-briefcase text-body align-middle"></i>{data.designation}</div>
+                        <div className="mb-0  text-muted"><i className="me-2 bx bx-briefcase text-body align-middle"></i>{data.designation}</div>
                     </div>
                 </div>
                    )) 

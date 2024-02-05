@@ -171,7 +171,7 @@ const findMin=(data)=>{
             <Col xl="4">
               <WelcomeComp name={name} role={role} />
               {/* <Col xl="6"> */}
-              <TeamMates team={newTeam} />
+            <TeamMates team={newTeam} />  
               {/* </Col> */}
             </Col>
             <Col xl="8">
@@ -206,13 +206,8 @@ const findMin=(data)=>{
               <Row>
             <Calender/>
             </Row>
-            </Col>
-            
+            </Col>    
           </Row>
-          {/* <Row>
-            <DatatableTables/>
-          </Row> */}
-
           <Row>
           <Col sm="12">
           <RecentFile/>

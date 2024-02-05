@@ -66,13 +66,6 @@ const DashboardSaas = props => {
           <BorderlessTable />
           <Reportingmanagers />
           </Row>
-          
-          
-          
-       
-          
-          
-        {/* </Container> */}
       </div>
     </React.Fragment>
   )
