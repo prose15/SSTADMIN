@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import withRouter from "components/Common/withRouter";
-import { isEmpty } from "lodash";
 import { db } from "firebase-config";
 import {
   Button,
@@ -10,7 +9,6 @@ import {
 } from "reactstrap";
 import { getDocs, collection,doc,getDoc,updateDoc,addDoc,query,where,orderBy,onSnapshot } from 'firebase/firestore'
 import EcommerceOrdersModal from "../../Ecommerce/EcommerceOrders/EcommerceOrdersModal";
-// import { TeamRequestsData } from "../../common/data/timesheetdashboard";
 import {
   EmployeeName,
   TimesheetName,
@@ -37,11 +35,10 @@ const TeamRequestsTable = () => {
   const team=Cookies.get('team');
   const level=Cookies.get('level');
   const levelStatus=level+"status"
-  console.log(level);
   useEffect(() => {
       const getData = async () => {
          if(name==='Krishna kumar'){
-          const filteredUsersQuery =query(collection(db,'timesheet'),where('L3status','==',''),orderBy('timestamp','asc'));
+          const filteredUsersQuery =query(collection(db,'timesheet'),where('L4status','==',''),orderBy('timestamp','asc'));
           onSnapshot(filteredUsersQuery,(data)=>{
             setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
           })
@@ -116,68 +113,68 @@ const TeamRequestsTable = () => {
     ,
     []
   );
-  if(name==='Krishna kumar'){
-   columns = [
-    {
-      Header: "Employee Name",
-      accessor: "name",
-      filterable: false,
-      disableFilters: true,
-      Cell: cellProps => {
-        return <EmployeeName {...cellProps} />;
-      },
-    },
+  // if(name==='Krishna kumar'){
+  //  columns = [
+  //   {
+  //     Header: "Employee Name",
+  //     accessor: "name",
+  //     filterable: false,
+  //     disableFilters: true,
+  //     Cell: cellProps => {
+  //       return <EmployeeName {...cellProps} />;
+  //     },
+  //   },
 
-    {
-      Header: "Timesheet Name",
-      accessor: "sheetName",
-      disableFilters: true,
-      filterable: false,
-      Cell: cellProps => {
-        return <TimesheetName {...cellProps} />;
-      },
-    },
+  //   {
+  //     Header: "Timesheet Name",
+  //     accessor: "sheetName",
+  //     disableFilters: true,
+  //     filterable: false,
+  //     Cell: cellProps => {
+  //       return <TimesheetName {...cellProps} />;
+  //     },
+  //   },
 
-    {
-      Header: "Worked Hours",
-      accessor: "workedHrs",
-      disableFilters: true,
-      filterable: false,
-      Cell: cellProps => {
-        return <WorkedHours {...cellProps} />;
-      },
-    },
+  //   {
+  //     Header: "Worked Hours",
+  //     accessor: "workedHrs",
+  //     disableFilters: true,
+  //     filterable: false,
+  //     Cell: cellProps => {
+  //       return <WorkedHours {...cellProps} />;
+  //     },
+  //   },
 
-    {
-      Header: "Date of Submission",
-      accessor: "date",
-      disableFilters: true,
-      filterable: false,
-      Cell: cellProps => {
-        return <DateOfSubmission {...cellProps} />;
-      },
-    },
-    {
-      Header: "Status",
-      accessor: "status",
-      disableFilters: true,
-      filterable: false,
-      Cell: cellProps => {
-        return <Status {...cellProps} />;
-      },
-    },
-    {
-      Header: "Actions",
-      accessor: "id",
-      disableFilters: true,
-      Cell: cellProps => {
-        return <Actions {...cellProps} />;
-      },
-    },
+  //   {
+  //     Header: "Date of Submission",
+  //     accessor: "date",
+  //     disableFilters: true,
+  //     filterable: false,
+  //     Cell: cellProps => {
+  //       return <DateOfSubmission {...cellProps} />;
+  //     },
+  //   },
+  //   {
+  //     Header: "Status",
+  //     accessor: "status",
+  //     disableFilters: true,
+  //     filterable: false,
+  //     Cell: cellProps => {
+  //       return <Status {...cellProps} />;
+  //     },
+  //   },
+  //   {
+  //     Header: "Actions",
+  //     accessor: "id",
+  //     disableFilters: true,
+  //     Cell: cellProps => {
+  //       return <Actions {...cellProps} />;
+  //     },
+  //   },
 
-  ]
+  // ]
   
-  }
+  // }
 
   return (
     <React.Fragment>

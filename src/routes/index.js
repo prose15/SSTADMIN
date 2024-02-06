@@ -32,6 +32,7 @@ import FestiveLeave from "pages/Forms/FestiveLeave";
 import TeamEfficiency from "pages/timesheet/Dashboard-saas/pages/TeamEfficiency";
 import ResetPassword from "pages/Authentication/ResetPassword";
 import WFHApplyAgain from "pages/WFH/ApplyAgain";
+import Viewtimesheet from "pages/timesheet/Dashboard-saas/pages/Viewtimesheet";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -52,6 +53,7 @@ const authProtectedRoutes = [
   //timesheet
   { path: "/timesheet/logtime", component: <Logtime /> },
   { path: "/timesheet/requests", component: <TimesheetTeamRequests/>},
+  { path: "/timesheet/requests/viewtimesheet/:id", component: <Viewtimesheet />},
   { path: "/timesheet/efficiency", component: <TeamEfficiency/>},
   { path: "/timesheet/mytimesheet/createtimesheet", component: <CreateTImeSheet /> },
   //ticket 

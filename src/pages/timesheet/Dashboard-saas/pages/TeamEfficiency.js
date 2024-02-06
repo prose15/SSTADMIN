@@ -65,7 +65,6 @@ useEffect(()=>{
 },[userId])
 
   const getReport = async()=>{ 
-        console.log(startdate,enddate)
         const firstDay=new Date(startdate)
         const lastDay=new Date(enddate)
         const firstDayOfWeek=Timestamp.fromDate(firstDay)
@@ -83,6 +82,7 @@ useEffect(()=>{
                         workedHours+=totHours(weeklyData[j].startTime,weeklyData[j].endTime)
                     }
                 }
+                console.log(workedHours)
                     arr.push(workedHours)
               }
               setPerformanceArray(arr)

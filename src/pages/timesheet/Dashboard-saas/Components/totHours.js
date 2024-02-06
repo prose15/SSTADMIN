@@ -28,5 +28,6 @@ export const totHours =  (startTime, endTime) => {
       minutes = totminutes;
     }
     let strminutes = minutes > 9 ? minutes.toString() : "0" + minutes.toString()
-    return hours
+    let time = hours+'.'+strminutes
+    return parseFloat(time)
   }

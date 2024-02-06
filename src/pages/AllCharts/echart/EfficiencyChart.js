@@ -13,7 +13,7 @@ const EfficiencyChart = ({dataColors}) => {
       totalHours=40
     }
     
-console.log(totalHours)
+
   const doughnutEChartColors = getChartColorsArray(dataColors);
   let chartData=[totalHours]
   

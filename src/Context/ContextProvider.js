@@ -119,7 +119,7 @@ export const ContextProvider=({children})=>{
     var startDate = new Date()
     startDate.setDate(today.getDate() - today.getDay());
     var endDate = new Date()
-    endDate.setDate(startDate.getDate() + 4)
+    endDate.setDate(startDate.getDate() + 6)
     const [startdate, setStartDate] = useState(startDate);
     const [enddate, setEndDate] = useState(endDate);    
     const [workedHours,setWorkedHours]=useState(0)

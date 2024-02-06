@@ -4,6 +4,7 @@ import * as moment from "moment";
 // import { Badge } from 'reactstrap';
 import { Reject } from './Reject';
 import { Accept } from './Accept';
+import { UncontrolledDropdown , DropdownMenu, DropdownToggle, Button } from 'reactstrap';
 
 const formateDate = (date, format) => {
     const dateFormat = format ? format : "DD MMM Y";
@@ -43,11 +44,30 @@ const Reason = (cell) => {
 };
 const Actions = (cell) => {
     return (
-        <span>
-        <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>Accept(cell.value)} />
+        <UncontrolledDropdown className="ms-auto">
+        <DropdownToggle
+          className="text-muted font-size-14"
+          tag="a"
+          color="white"
+        >
+          <i className="mdi mdi-dots-horizontal"></i>
+        </DropdownToggle>
+        <DropdownMenu className="dropdown-menu-end">
+            <Link to={`/timesheet/requests/viewtimesheet/${cell.value}`}>
+            <Button className='btn dropdown-item'>
+           <i className="font-size-18 text-primary bx bxs-detail me-2"></i> View Timesheet
+            </Button>
+            </Link>
+            <Button className='btn dropdown-item'>
+            <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-2" onClick={()=>Accept(cell.value)} />Accept
+            </Button>
+        <Button className='btn dropdown-item'>
         <i style={{cursor:"pointer"}} onClick={()=>Reject(cell.value)}
-            className="font-size-20 text-danger fas fa-times me-1"/>
-        </span>
+            className="font-size-20 text-danger fas fa-times me-2"/> Reject
+        </Button>
+         </DropdownMenu>
+         </UncontrolledDropdown>   
+       
     )
 };
 export {
