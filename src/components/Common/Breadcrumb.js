@@ -30,7 +30,7 @@ const [varyingModal, setVaryingModal] = useState(false);
         await getDocs(collRef).then((data)=>{
           setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }).catch((err)=>{
-          console.log(err)
+          
         })
       }
       getData()
@@ -110,7 +110,6 @@ const handleDownloadClick = (year,name,month) => {
       data.push(ele)
     }
   })
-  console.log(data)
 setYear(0)
   let leaverecords=[]
  

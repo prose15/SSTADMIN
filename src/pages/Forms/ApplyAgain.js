@@ -101,7 +101,6 @@ const ApplyAgain = props => {
     async function upload(file){
       const fileRef=ref(storage,'MedicalProof/'+`${date}/`+email);
        await uploadBytes(fileRef,file).then(()=>{
-        console.log('uploaded');
       }).catch((err)=>{
         console.log(err);
       })
@@ -146,7 +145,6 @@ const ApplyAgain = props => {
     }
   ];
   let leaveId;
-  console.log(leaveType);
   const[value,setValue] = useState(null)
   const handleSelectGroup=(selectedGroup)=> {
     setselectedGroup(selectedGroup);
@@ -156,11 +154,8 @@ const ApplyAgain = props => {
     leaveId === 1 ? (SetCasualType("Plannedleave")) :leaveId === 2 ? SetCasualType("Emergencyleave"):
     leaveId === 3 ? SetCasualType("Sickleave") : leaveId === 4 ? (SetCasualType("Flexileave")) : leaveId === 5 && Cookies.get('gender')==='Male'? SetCasualType("Paternityleave") :SetCasualType("Maternityleave")
   }
-  console.log(leaveId);
-  console.log(casualType);
  const handleSubmit=(leaveId)=>{ 
   if(leaveType=='' || reportingManager=='' || fromDate=='' || toDate=='' || subject=='' || reason==''){
-    console.log('Please complete the form!')
   }  
   else{ 
     const startDate = new Date(fromDate)
@@ -197,7 +192,6 @@ const ApplyAgain = props => {
                         break;
                     }
                 }
-                console.log(temp)
                 daysInSameMonth.push(count)
                 sum+=count
                 if(sum===datesWithoutHolidays.length){
@@ -205,7 +199,6 @@ const ApplyAgain = props => {
                 }    
                   }
                   let noOfDays=0;
-                  console.log('daysArr',daysInSameMonth)
                   for(let i=0;i<daysInSameMonth.length;i++){
                     let totalDays=daysInSameMonth[i]
                     const currentMonth=totalMonth[i]
@@ -238,14 +231,12 @@ const ApplyAgain = props => {
                     lopBooked=totalDays
                     setmodal_backdrop(true)
                   }
-                  console.log(cummulative,subLeave,noOfDays,earnedBooked,totalDays,lopBooked)
                   }
                 
                   const newDetails={name:name,email:email,team:team,reason:reason,subject:subject, leaveType:leaveType, subLeave:subLeave,earnedBooked:earnedBooked,lopBooked:lopBooked,reportManager: reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: fromDate, to: toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'re-apply',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:noOfDays,totalDays:datesWithoutHolidays.length,timestamp:Timestamp.now(),
                   fromYear:fromYear[0],
                   toYear:toYear[0],casualType}
                   setDataToModal(newDetails)
-                  console.log(newDetails);
                   if(subLeave.includes('lop') ){
                     setmodal_backdrop(true)
                   }
@@ -253,10 +244,8 @@ const ApplyAgain = props => {
                 addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
                   if(file){
                     upload(file)
-                    console.log("message added successfully");
                     setAlert('d-block')
                   }
-                    console.log("message added successfully");
                     setAlert('d-block')
                     let str1=''
                   let leavetype = newDetails.leaveType
@@ -265,8 +254,6 @@ const ApplyAgain = props => {
                       str1+=strArr[i]
                   }
                   str1=str1.toLocaleLowerCase()
-                  console.log(str1)
-                  console.log(newData[str1])
                             newData[str1]+=noOfDays;
                             if(subLeave!==''){
                             if(lopBooked>0){
@@ -276,7 +263,6 @@ const ApplyAgain = props => {
                             }
                           }
                          updateDoc(doc(db,'users',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
-                          console.log('profile updated')
                          }).catch((err)=>{
                           console.log(err)
                          })

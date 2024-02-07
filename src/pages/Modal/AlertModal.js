@@ -33,8 +33,6 @@ const nav=useNavigate()
                         str1+=strArr[i]
                     }
                     str1=str1.toLocaleLowerCase()
-                    console.log(str1)
-                    console.log(newData[str1])
                               newData[str1]+=data.noofdays;
                               if(subLeave!==''){
                               if(lopBooked>0){

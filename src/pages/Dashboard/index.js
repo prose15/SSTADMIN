@@ -31,6 +31,8 @@ import Cookies from 'js-cookie'
 import Calender from "components/Common/Calender";
 import TeamMates from "./TeamMates";
 import { Toast,ToastBody, ToastHeader } from 'reactstrap';
+import TeamMatesLeave from "./TeamMatesLeave";
+import { useStateContext } from "Context/ContextProvider";
 
 const Dashboard = props => {
   const [name,setName]=useState('')
@@ -81,7 +83,6 @@ const Dashboard = props => {
       
        },[]
      )
-     console.log(newTeam)
   const reports = [
     { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: "12" },
     { title: "Worked Hours", iconClass: "bx bxs-time", description: "128" },
@@ -152,7 +153,6 @@ for(let i=0;i<details.length;i++){
 
 
 const workedHours=(totHours(startTime,endTime))?(totHours(startTime,endTime)):0
-console.log("workedhours",workedHours)
 const findMin=(data)=>{
   const seconds    = data.timestamp?.seconds
   const nanoseconds = data.timestamp?.nanoseconds
@@ -176,7 +176,6 @@ const findMin=(data)=>{
             </Col>
             <Col xl="8">
               <Row>
-                {/* Reports Render */}
                 {reports.map((report, key) => (
                   <Col md="4" key={"_col_" + key}>
                     <Card className="mini-stats-wid">
@@ -209,8 +208,11 @@ const findMin=(data)=>{
             </Col>    
           </Row>
           <Row>
-          <Col sm="12">
-          <RecentFile/>
+          <Col sm="4">
+          <RecentFile/> 
+          </Col>
+          <Col sm="8">
+          <TeamMatesLeave/>
           </Col>
           </Row>
 

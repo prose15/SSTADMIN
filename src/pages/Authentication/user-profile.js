@@ -100,7 +100,6 @@ const validation = useFormik({
                       }}></i></Label>
                           <Input className="form-control d-none" type="file" id="formFile" accept="image/*" onChange={(e)=>{
                             if(e.target.files &&  e.target.files[0]){
-                              console.log(e.target.files[0])
                               setPhoto(e.target.files[0])
                               setImg(URL.createObjectURL(e.target.files[0]))
                             }

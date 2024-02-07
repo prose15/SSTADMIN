@@ -32,15 +32,13 @@ const firebaseConfig = {
   export const requestPermission= async()=>{
    const permission=await Notification.requestPermission()
       if(permission==='granted'){
-        console.log('permission granted')
         const token=await getToken(messaging,{
           vapidKey:"BLX_Cgc9zYvyOHjzZj6EikSyvdqkiwIMtas5NnN0kezZta6WxmIi-tM3Wj6NXgttiVfnhaqyZIIenSgPZHZdXM0" 
         }
         )
-        console.log(token)
       }
       else{
-        console.log('permission denied')
+        
       }
     
 

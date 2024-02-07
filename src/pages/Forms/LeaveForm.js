@@ -102,7 +102,6 @@ const LeaveForm = props => {
   async function upload(file){
     const fileRef=ref(storage,`'MedicalProof/'+${date}`/+email);
      await uploadBytes(fileRef,file).then(()=>{
-      console.log('uploaded');
     }).catch((err)=>{
       console.log(err);
     })
@@ -147,9 +146,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         dates.push(new Date(date));
       }
       const datesWithoutHolidays = dates.filter(date => (date.getDay()!=5 && date.getDay()!=6) )
-      console.log(datesWithoutHolidays.length)
-      console.log(leaveId)
-      console.log(casualType)
       function CorrectPath () {
         const fromYear=values.fromDate.split('-')
         const toYear=values.toDate.split('-')
@@ -173,7 +169,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
               break;
           }
       }
-      console.log(temp)
       daysInSameMonth.push(count)
       sum+=count
       if(sum===datesWithoutHolidays.length){
@@ -181,7 +176,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
       }    
         }
         let noOfDays=0;
-        console.log('daysArr',daysInSameMonth)
         for(let i=0;i<daysInSameMonth.length;i++){
           let totalDays=daysInSameMonth[i]
           const currentMonth=totalMonth[i]
@@ -216,7 +210,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           setmodal_backdrop(true)
         }
       }
-        console.log(cummulative,subLeave,noOfDays,earnedBooked,totalDays,lopBooked)
         }
         const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, subLeave:subLeave,earnedBooked:earnedBooked,lopBooked:lopBooked,reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:noOfDays,totalDays:datesWithoutHolidays.length,timestamp:Timestamp.now(),
         fromYear:fromYear[0],
@@ -229,10 +222,8 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
       addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
         if(file){
           upload(file)
-          console.log("message added successfully");
           setAlert('d-block')
         }
-          console.log("message added successfully");
           setAlert('d-block')
           let str1=''
         let leavetype = newDetails.leaveType
@@ -241,8 +232,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
             str1+=strArr[i]
         }
         str1=str1.toLocaleLowerCase()
-        console.log(str1)
-        console.log(newData[str1])
                   newData[str1]+=noOfDays;
                   if(subLeave!==''){
                   if(lopBooked>0){
@@ -252,7 +241,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                   }
                 }
                updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
-                console.log('profile updated')
                }).catch((err)=>{
                 console.log(err)
                })

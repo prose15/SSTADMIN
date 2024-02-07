@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 import { db } from "firebase-config";
 const StateContext=createContext();
 export const ContextProvider=({children})=>{
-
   //States
   const [url,setUrl]=useState('')
   const [user,setUser]=useState()
@@ -26,6 +25,7 @@ export const ContextProvider=({children})=>{
   const [usersArr,setUsersArr]=useState([])
   const [myRecords,setMyRecords]=useState([])
   const [profileModal,setProfileModal]=useState(false)
+  const[leaveDetail,setLeaveDetail]=useState([])
   //Cookies
   const level = Cookies.get('level')
   useEffect(()=>{
@@ -48,7 +48,7 @@ export const ContextProvider=({children})=>{
         const docSnap = await getDoc(docRef)
         if(docSnap.exists()){ 
         const filteredUsersQuery = query(collection(db, 'leave submssion'), where('reportManager', '==', docSnap.data().name), orderBy('timestamp','asc'));
-      onSnapshot(filteredUsersQuery,((data) => {
+        onSnapshot(filteredUsersQuery,((data) => {
           setRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }))
       
@@ -59,11 +59,19 @@ export const ContextProvider=({children})=>{
           }),(error)=>{
             console.log(error)
           })
+
+          const leaveDataQuery=query(collection(db,'leave submssion'),where('team','==',docSnap.data().team), where('status', 'in', ['approved', 'denied']),orderBy('timestamp','asc'));
+          onSnapshot(
+            leaveDataQuery,((data)=>{
+              setLeaveDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          }),(error)=>{
+            console.log(error)
+          })
         
-                const filteredRecordsQuery =query(collection(db,'leave submssion'),where('email','==',docSnap.data().email),orderBy('timestamp','asc'));
-              onSnapshot(filteredRecordsQuery,((data)=>{
-                  setMyRecords(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-                }))
+        const filteredRecordsQuery =query(collection(db,'leave submssion'),where('email','==',docSnap.data().email),orderBy('timestamp','asc'));
+        onSnapshot(filteredRecordsQuery,((data)=>{
+        setMyRecords(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        }))
                
               
           const todayTimeStamp=new Date()
@@ -162,9 +170,9 @@ for(let i=0;i<graphdetails.length;i++){
 }
 }
 
-var available=[1.5,0,0,0,0,0,0,0,0,0,0,0]
-let earnedLeave=0
 
+let available=[1.5,0,0,0,0,0,0,0,0,0,0,0]
+let earnedLeave=0
 for(let i=0;i<available.length;i++){
 const remaining=available[i]-leave[i]
 if(remaining>0){
@@ -180,7 +188,7 @@ available[i+1]+=1.5
 }
 }
 
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal,leaveDetail,setLeaveDetail}}>
         {children}
     </StateContext.Provider>)
 }

@@ -14,7 +14,6 @@ const Leavedata=()=>{
               console.log(err);
             })
             setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-            console.log(details);
         }
         getData()
       },[])

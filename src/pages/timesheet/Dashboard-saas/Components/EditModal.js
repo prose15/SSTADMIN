@@ -10,7 +10,6 @@ import {
   import { db } from 'firebase-config';
   import { doc,getDoc,updateDoc } from 'firebase/firestore';
 const EditModal = ({id}) => {
-  console.log(id);
   const [projectName,setProjectName]=useState('');
   const [serviceName,setServiceName]=useState('');
   const [costCenter,setCostCenter]=useState('');

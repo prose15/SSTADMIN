@@ -13,7 +13,6 @@ const BorderlessTable = () => {
   const [details, setDetails] = useState([])
   const {startdate,enddate,setWorkedHours}=useStateContext();
   const email=Cookies.get('email');
-  console.log(startdate,enddate);
   const name=Cookies.get('name')
   useEffect(() => {
     const getData = async () => {
@@ -31,7 +30,6 @@ const BorderlessTable = () => {
         newDetails = [...newDetails, detail]
       }
   })
-  console.log(newDetails);
   for (let i = 0; i < newDetails.length; i++) {
     for (let j = 0; j < newDetails.length - 1; j++) {
       let str1 = newDetails[j].timesheetDate

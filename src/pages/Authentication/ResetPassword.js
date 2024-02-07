@@ -38,7 +38,6 @@ const query=useQuery()
     }),
     onSubmit: (values) => {
       confirmPasswordReset(auth,query.get('oobCode'),values.password).then(()=>{
-        console.log('password reset done')
         setSuccessMsg(true)
         setTimeout(()=>nav('/'),5000)
       }).catch((err)=>{

@@ -21,7 +21,7 @@ const deleteData=async(id)=>{
         if(Cookies.get('level')==='L2'){
             obj.L2status='dislpay'
             await updateDoc(doc(db, "leave submssion", id),obj).then(()=>{
-                console.log('updated successfully');
+                ('updated successfully');
             }).catch((err)=>{
                 console.log(err);
             })
@@ -29,7 +29,6 @@ const deleteData=async(id)=>{
         else  if(Cookies.get('level')==='L3'){
             obj.L3status='display'
             await updateDoc(doc(db, "leave submssion", id),obj).then(()=>{
-                console.log('updated successfully');
             }).catch((err)=>{
                 console.log(err);
             })
@@ -37,7 +36,6 @@ const deleteData=async(id)=>{
         else  if(Cookies.get('level')==='k'){
             obj.kstatus='display'
             await updateDoc(doc(db, "leave submssion", id),obj).then(()=>{
-                console.log('updated successfully');
             }).catch((err)=>{
                 console.log(err);
             })

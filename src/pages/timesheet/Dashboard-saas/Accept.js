@@ -14,14 +14,12 @@ export const Accept=async(id)=>{
   if(Cookies.get('team')==='Delivery'){
   if(level=='L1'){
  await updateDoc(docRef,{L1status:'accept'}).then(()=>{
-      console.log('accepted');
   }).catch((err)=>{
       console.log(err);
   })
 }
   else if(level=='L3'){
     await  updateDoc(docRef,{L3status:'accept',status:'accept'}).then(()=>{
-          console.log('accepted');
       }).catch((err)=>{
           console.log(err);
       })

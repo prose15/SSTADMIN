@@ -4,7 +4,6 @@ import Cookies from "js-cookie"
 
 export const Reject=async(id)=>{
   const level=Cookies.get('level')
-  console.log(id)
   const docRef=doc(db,'timesheet',id)
   const docSnap=await getDoc(docRef)
   if(docSnap.exists){

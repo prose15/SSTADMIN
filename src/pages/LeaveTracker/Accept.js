@@ -13,7 +13,6 @@ export const Accept = async(id,users,admin) =>{
       status=[...status,'L1 approved','approved','approved']
       let forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
-      console.log('arr',forwardedRpm)
       let flag=0;
       let index1=0;
       if(Cookies.get('level')==='L3'){
@@ -40,7 +39,6 @@ export const Accept = async(id,users,admin) =>{
       status=[...status,'L1 approved','approved','approved']
       let forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
-      console.log('arr',forwardedRpm)
       let flag=0;
       let index1=0;
       if(Cookies.get('level')==='L3'){
@@ -68,7 +66,6 @@ export const Accept = async(id,users,admin) =>{
       status=[...status,'L1 approved','approved','approved']
       let forwardedRpm=rpm.filter((data,index)=>(index>0))
       forwardedRpm.push('')
-      console.log('arr',forwardedRpm)
       let flag=0;
       let index1=0;
       if(Cookies.get('level')==='L3'){
@@ -96,7 +93,6 @@ export const Accept = async(id,users,admin) =>{
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
           let str=detail.leaveType
           let subLeave=detail.subLeave
-          console.log(subLeave)
           let leave = str.substring(0,str.length-5).toLocaleLowerCase()
             user[leave+'Available']+=detail.noofdays 
             if(subLeave==='lop'){
@@ -105,7 +101,6 @@ export const Accept = async(id,users,admin) =>{
                user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
              } 
           updateDoc(doc(db,'users', user.id), user).then(() => {
-            console.log('profile update');
           }).catch((err) => {
             console.log(err);
           })
@@ -115,7 +110,6 @@ export const Accept = async(id,users,admin) =>{
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
           let str=detail.leaveType
           let subLeave=detail.subLeave
-          console.log(subLeave)
           let leave = str.substring(0,str.length-5).toLocaleLowerCase()
             user[leave+'Available']+=detail.noofdays 
             if(subLeave==='lop'){
@@ -124,14 +118,12 @@ export const Accept = async(id,users,admin) =>{
                user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
              } 
           updateDoc(doc(db,'admin', user.id), user).then(() => {
-            console.log('profile update');
 
           }).catch((err) => {
             console.log(err);
           })
         }
       })
-      console.log('added successfully');
     }).catch((err) => {
       console.log(err);
     })

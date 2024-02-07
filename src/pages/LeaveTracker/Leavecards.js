@@ -22,6 +22,7 @@ const [earnedAvailable,setEarnedAvail]=useState(0);
 const [paternityAvailable,setPaternityAvail]=useState(0);
 const [sickAvailable,setSickAvail]=useState(0);
 const [flexiAvailable, setFlexiAvail] = useState(0);
+const[revoke,setRevoke] = useState(0)
  useEffect(()=>{
 
      const handleGet=async()=>{
@@ -30,14 +31,15 @@ const [flexiAvailable, setFlexiAvail] = useState(0);
        
  const docSnap = await getDoc(docRef)
  if(docSnap.exists()){
- var data=Cookies.get('name')
  setCasual(docSnap.data().casual)
  setEarned(docSnap.data().earned)
  setPaternity(docSnap.data().paternity)
+ setRevoke(docSnap.data().earned)
  setLop(docSnap.data().lop)
  setSick(docSnap.data().sick)
  setFlexi(docSnap.data().flexi)
   setEmail(Cookies.get('email'))
+
   if(docSnap.data().casualAvailable<=0){
      setCasualAvail(0)
   }
@@ -89,7 +91,6 @@ else{
   handleGet()   
      },[]
    )
-
 const getBalance=()=>{
   let ans= available[today.getMonth()]-leave[today.getMonth()]
   if(ans<=0){

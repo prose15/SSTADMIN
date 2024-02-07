@@ -68,8 +68,6 @@ const ApplyAgain = props => {
     }
     getData()
   },[])
-  console.log(newData)
-
   const team = Cookies.get('team');
     const name = Cookies.get('name')
     const email=Cookies.get('email');
@@ -110,7 +108,6 @@ const ApplyAgain = props => {
   
  const handleSubmit=()=>{ 
   if( reportingManager=='' || fromDate=='' || toDate=='' || subject=='' || reason==''){
-    console.log('Please complete the form!')
   }  
  else{
     
@@ -127,7 +124,6 @@ const ApplyAgain = props => {
             fromYear:fromYear[0],
             toYear:toYear[0]}
           addDoc(collection(db,'WFH'),newDetails).then(()=>{
-              console.log("message added successfully");
               newData.WFH+=newDetails.noofdays
               updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
                 console.log('profile updated')

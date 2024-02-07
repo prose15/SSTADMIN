@@ -20,7 +20,6 @@ const LeaveTracker = () => {
 const today=new Date();
 if(today.getMonth()===11 ){
   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{earnedAvailable:earnedLeave}).then(()=>{
-   console.log('earned leave updated')
  }).catch((err)=>{
    console.log(err)
  })

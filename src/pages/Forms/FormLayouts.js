@@ -30,10 +30,7 @@ const FormLayouts = props => {
 
 const handlesubmit = (e) =>{isupportz.com
   e.preventDefault();
-  console.log(eventCategory)
-  console.log(reportingManager)
-  console.log(reason)
-  console.log(date)
+  (eventCategory)
 } 
   
   return (

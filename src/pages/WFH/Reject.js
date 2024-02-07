@@ -97,7 +97,6 @@ export const Reject = async (id,reason) => {
         detail.timestamp = Timestamp.now()
       }
     } 
-    console.log(detail,rpm[1])
   }
   
   updateDoc(docRef, detail).then(() => {

@@ -26,8 +26,6 @@ useEffect(()=>{
     }
     handleGet()
 },[])
-console.log(details);
-
     const columns = useMemo(
         () => [
             {

@@ -35,7 +35,6 @@ const LatestTranaction = props => {
   const [users, setUsers] = useState([])
   const name = Cookies.get('name');
   let level = Cookies.get('level') + 'status'
-  console.log(level)
   useEffect(() => {
     const getData = async () => {
         const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));

@@ -173,7 +173,7 @@ const TeamRequestsTable = () => {
       Cell: cellProps => {
         return <Actions {...cellProps} />;
       },
-    },
+    },A
 
   ]
   

@@ -109,7 +109,6 @@ const ImageCropper = ({ url ,setPhoto }) => {
                     )
                     const dataUrl = previewCanvasRef.current.toDataURL();
                    const croppedImg= dataURLtoFile(dataUrl,'profilePic')
-                //    console.log(croppedImg)
                     setPhoto(croppedImg)
                     setProfileModal(!profileModal);
                 }}>

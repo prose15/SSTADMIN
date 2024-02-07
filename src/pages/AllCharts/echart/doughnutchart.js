@@ -15,7 +15,6 @@ while(startDate<=endDate){
   }
   startDate.setDate(startDate.getDate()+1);
 }
-console.log(count)
 const tothrs=count*8;
 
   const doughnutEChartColors = getChartColorsArray(dataColors);

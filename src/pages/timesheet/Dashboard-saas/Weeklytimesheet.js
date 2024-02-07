@@ -12,7 +12,6 @@ const Weeklytimesheet = () => {
   const [details, setDetails] = useState([])
   const {startdate,enddate,setWorkedHours,workedHours}=useStateContext();
   const email=Cookies.get('email');
-  console.log(startdate,enddate);
   const name=Cookies.get('name')
   useEffect(() => {
     const getData = async () => {

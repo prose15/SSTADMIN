@@ -6,6 +6,7 @@ import { db } from "firebase-config"
 import { getDoc,doc, deleteDoc ,updateDoc } from "firebase/firestore"
 import Cookies from 'js-cookie';
 const Status = (cell) => {
+
     return (
         <Badge
           className={"font-size-11 badge-soft-" + 
@@ -39,38 +40,60 @@ let reportingManager=''
       reportingManager=details[details.length-1]
   }
 
-const deleteData=async(id)=>{
-    
+const deleteData=async(id)=>{   
     await deleteDoc(doc(db, "leave submssion", id)).then(()=>{
-        console.log('deleted successfully');
     }).catch((err)=>{
         console.log(err);
     })
     }
    async function revokeEmail(data) {
-    await updateDoc(doc(db, "leave submssion", data),{status:'revoke',reportManager:''}).then(()=>{
-      console.log('updated successfully');
-      let recipient
-     if(Cookies.get('team').includes('Delivery')||Cookies.get('team').includes('HR')){
-          recipient='ngobi@isupportz.com';
+    const docRef = doc(db, "leave submssion",data );
+    const docUser = doc(db,"admin", JSON.parse(sessionStorage.getItem('uid')))
+    const RevokeData = await getDoc(docRef)
+    const RevokeUserData = await getDoc(docUser)
+    const leaveData = RevokeData.data()
+    const userProfile= RevokeUserData.data()
+   if(RevokeData.exists() && RevokeUserData){
+    if(!leaveData.subLeave){
+      await updateDoc(doc(db,'leave submssion',data),{status:'revoke'}).catch((err)=>console.log(err))
      }
-     else if(Cookies.get('team').includes('Sales')){
-      recipient='krishnakumar@isupportz.com';
-     }
-      const subject = 'Revoke mail';
-      const body = 'Body of the email';
-  
-      // Construct the mailto URL
-      const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoUrl;
-  }).catch((err)=>{
-      console.log(err);
-  })
+     else{
+      if(leaveData.subLeave==='both'){
+        userProfile.earnedAvailable = userProfile.earnedAvailable- leaveData.
+        earnedBooked
+        userProfile.lopAvailable = userProfile.lopAvailable-leaveData.
+        lopBooked
+      }
+      else{
+       userProfile[subLeave+'Available']-=leaveData.subLeave+'Booked'
+      }
+    }
+    await updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid')),userProfile)).catch((err)=>console.log(err))
+    await updateDoc(doc(db,'leave submssion',data),{status:'revoke'}).catch((err)=>console.log(err))
+        let recipient
+       if(Cookies.get('team').includes('Delivery')||Cookies.get('team').includes('HR')){
+            recipient='ngobi@isupportz.com';
+       }
+       else if(Cookies.get('team').includes('Sales')){
+        recipient='krishnakumar@isupportz.com';
+       }
+        const subject = 'Revoke mail';
+        const body = 'Body of the email';
+    
+        // Construct the mailto URL
+        const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoUrl;
+   }else{
+    console.log("No data found");
+   }
+
+ 
       
     }
+   
    async function composeEmail(data) {
     await updateDoc(doc(db, "leave submssion", data),{status:'escalate',reportManager:reportingManager}).then(()=>{
-      console.log('updated successfully');
+
       let recipient
       if(Cookies.get('team').includes('Delivery')||Cookies.get('team').includes('HR')){
            recipient='ngobi@isupportz.com';

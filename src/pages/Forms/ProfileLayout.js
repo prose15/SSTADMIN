@@ -17,8 +17,6 @@ import Cookies from "js-cookie";
 import NoProfile from "pages/Authentication/NoProfile";
 import { Link } from "react-router-dom";
 const ProfileLayout = props => {
-// let user = Cookies.get('user')
-// console.log(user.name);
 
   return (
     <React.Fragment>

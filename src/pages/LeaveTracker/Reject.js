@@ -98,7 +98,6 @@ export const Reject = async (id,reason) => {
     console.log(detail,rpm[1])
   }
   updateDoc(docRef, detail).then(() => {
-    console.log('rejected successfully');
   }).catch((err) => {
     console.log(err);
   })

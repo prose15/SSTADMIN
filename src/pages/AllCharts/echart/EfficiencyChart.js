@@ -12,8 +12,6 @@ const EfficiencyChart = ({dataColors}) => {
     }else{
       totalHours=40
     }
-    
-console.log(totalHours)
   const doughnutEChartColors = getChartColorsArray(dataColors);
   let chartData=[totalHours]
   
