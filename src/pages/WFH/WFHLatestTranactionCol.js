@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button,Badge } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import * as moment from "moment";
@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 // import { Badge } from 'reactstrap';
 import { Reject } from './Reject';
 import { Accept } from './Accept';
+import { DropdownMenu,DropdownToggle,UncontrolledDropdown } from 'reactstrap';
 import { useStateContext } from 'Context/ContextProvider';
 import { getDoc, updateDoc,doc } from 'firebase/firestore';
 import { db } from 'firebase-config';
@@ -85,20 +86,68 @@ const Status = (cell) => {
     )
 };
 
+const ApprovedDates = (cell) => {
+    let dates=[]
+    const arr=cell.value
+    const timeStampToDate=(timestamp)=>{
+        const date= new Date(timestamp.seconds*1000)
+        return date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear()
+       }
+      if(arr){
+        arr.map((date)=>{
+            dates.push(timeStampToDate(date))  
+            })
+      }
+      
+       
+      
+  return (
+    <UncontrolledDropdown >
+    <DropdownToggle className="dropdown-item"
+tag="a"
+color="white">
+      View Dates
+    </DropdownToggle>
+    <DropdownMenu className="dropdown-menu-end">
+      {
+        
+          dates.map((date)=>(
+            <div className="dropdown-item"  key={date}>{date}</div>
+          ))
+      }
+    </DropdownMenu>
+  </UncontrolledDropdown>
+  )
+}
+
 const Reason = (cell) => {
     return cell.value?cell.value:'';
 };
 
 const Actions = ({cell,users,admin}) => {
 const {setSubscribemodal,setId,acceptModel,setAcceptModel}=useStateContext()
-
+const [hrLevel,setHrLevel]=useState('')
+useEffect(()=>{
+    const getData=async()=>{
+        const docRef = doc(db, 'WFH',cell.value)
+        const docSnap = await getDoc(docRef);
+        console.log(docSnap.data())
+        if(docSnap.exists()){
+          const team= docSnap.data().team
+          if(team==='HR'){
+            setHrLevel('L1')
+          }
+        }
+    }
+    getData()
+},[])
     return (
 
         <span>
            
                 <>
                 <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>{
-                   if(Cookies.get('level')==='L1'||Cookies.get('level')==='L3'){
+                   if(Cookies.get('level')==='L1' || hrLevel==='L1' ){
                     setId(cell.value)
                     setAcceptModel(true)
                    } 
@@ -120,6 +169,7 @@ export {
     CheckBox,
     EmployeeName,
     workType,
+    ApprovedDates,
     From,
     To,
     Reason,

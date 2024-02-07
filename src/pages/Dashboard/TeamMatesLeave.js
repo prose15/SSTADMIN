@@ -22,6 +22,7 @@ import Slider from "react-rangeslider"
 import { useStateContext } from "Context/ContextProvider"
 
 const TeamMatesLeave = () => {
+  const {leaveDetail}=useStateContext();
   const [activeTab, setactiveTab] = useState("1")
   const month = new Date().getMonth()+1
   const [custom_val, setcustom_val] = useState(month)
@@ -39,7 +40,7 @@ const TeamMatesLeave = () => {
     11: "Nov",
     12: "Dec",
   }
-  const {leaveDetail}=useStateContext();
+
   if(!leaveDetail)return;
   const filterLeave = leaveDetail.filter((data=>parseInt(data.from.substring(5,7)) === custom_val))
 

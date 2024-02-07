@@ -134,9 +134,10 @@ let checkBookedValues=0;
 const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
   initialValues:initialValues,
   validationSchema: schema,
-  onSubmit:(values) =>{       
-      const startDate = new Date(values.fromDate)
-      const endDate = new Date(values.toDate)
+  onSubmit:(values) =>{ 
+           
+    const startDate = new Date(values.fromDate)
+    const endDate = new Date(values.toDate)
       const fromTimeStamp=Timestamp.fromMillis(startDate.getTime())
       const toTimeStamp=Timestamp.fromMillis(endDate.getTime())
       let dates = [];
@@ -171,6 +172,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
       }
       daysInSameMonth.push(count)
       sum+=count
+      
       if(sum===datesWithoutHolidays.length){
           break
       }    
@@ -182,14 +184,23 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         const cummulative=available[currentMonth]-leave[currentMonth]
         if(values.leaveType!=='Flexileave'){
         if(cummulative>0 ){
-          const remaining=cummulative-totalDays
-          if(Math.abs(remaining) <=earnedLeave && remaining<0){
+          const remaining=totalDays-cummulative
+          if(remaining>0 && earnedLeave>0){
             subLeave='earned'
-            earnedBooked=Math.abs(remaining)
-            noOfDays+=totalDays-Math.abs(remaining)
+            const balance=remaining-earnedLeave
+            if(balance>0){
+              earnedBooked=remaining-balance
+              subLeave='both'
+              lopBooked=balance
+              noOfDays+=totalDays-remaining
+            }else{
+              earnedBooked=remaining
+              noOfDays+=totalDays-remaining
+            }
+            console.log('cummulative: ',cummulative,'subleave: ',subLeave,'balance from cummulative: ',noOfDays,'earned: ',earnedBooked,'total: ',totalDays,'lop: ',lopBooked)
             setmodal_backdrop(true)
           }
-          else if(remaining>=0){
+          else if(remaining<=0){
             noOfDays+=totalDays
           }
           else{
@@ -210,7 +221,9 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           setmodal_backdrop(true)
         }
       }
+      console.log('cummulative: ',cummulative,'subleave: ',subLeave,'balance from cummulative: ',noOfDays,'earned: ',earnedBooked,'total: ',totalDays,'lop: ',lopBooked)
         }
+      
         const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, leaveType:values.leaveType, subLeave:subLeave,earnedBooked:earnedBooked,lopBooked:lopBooked,reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',casualAvailable:12,earnedAvailable:earnedLeave,lopAvailable:0,paternityAvailable:0,sickAvailable:12,displayStatus:'',msgCount:'',noofdays:noOfDays,totalDays:datesWithoutHolidays.length,timestamp:Timestamp.now(),
         fromYear:fromYear[0],
         toYear:toYear[0],casualType}
@@ -218,7 +231,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         if(subLeave.includes('lop') ){
           setmodal_backdrop(true)
         }
-        if(!subLeave.includes('lop') && !subLeave.includes('earned')){
+        if(subLeave===''){
       addDoc(collection(db,'leave submssion'),newDetails).then(()=>{
         if(file){
           upload(file)
@@ -232,19 +245,22 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
             str1+=strArr[i]
         }
         str1=str1.toLocaleLowerCase()
-                  newData[str1]+=noOfDays;
-                  if(subLeave!==''){
-                  if(lopBooked>0){
-                    newData[subLeave]+=lopBooked
-                  }else{
-                    newData[subLeave]+=earnedBooked
-                  }
-                }
+        console.log(str1)
+        console.log(newData[str1])
+        console.log(newDetails.totalDays)
+        if(values.leaveType==='Flexileave'){
+          newData[str1]+=newDetails.totalDays;
+        }else{
+          newData[str1]+=noOfDays;
+          if(subLeave!=='') newData[subLeave]+=subLeave+'Booked'
+        
+        }    
                updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
+                
                }).catch((err)=>{
                 console.log(err)
                })
-               
+             
           setTimeout(()=>{nav('/leavetracker')},2000)
       })
   .catch((err) => {
@@ -252,23 +268,22 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
       })
     }
       }
-     if(checkBookedValues===1){
-      setAlertMsg("You already booked a holiday!")
-      document.getElementById('timeLimit')
-      setAlertErr('d-block')
-      setTimeout(()=>{
-        setAlertErr('d-none')},10000);
-        setCondition(false)
-     }
-      else if(casualType === 'Plannedleave' && datesWithoutHolidays.length<5){
-        setAlertMsg("You ought to reserve a maximum of 5 days, ensuring it is fewer than 5 days!")
-      document.getElementById('timeLimit')
-      setAlertErr('d-block')
-      setTimeout(()=>{
-        setAlertErr('d-none')},10000);
-        setCondition(false)
+      if(checkBookedValues===1){
+        setAlertMsg("You already booked a holiday!")
+        document.getElementById('timeLimit')
+        setAlertErr('d-block')
+        setTimeout(()=>{
+          setAlertErr('d-none')},10000);
+          setCondition(false)
        }
-       
+        else if(casualType === 'Plannedleave' && datesWithoutHolidays.length<5){
+          setAlertMsg("You ought to reserve a maximum of 5 days, ensuring it is fewer than 5 days!")
+        document.getElementById('timeLimit')
+        setAlertErr('d-block')
+        setTimeout(()=>{
+          setAlertErr('d-none')},10000);
+          setCondition(false)
+         }
        else{
         if(values.leaveType.includes('Flexileave') && !isFlexi(values.fromDate)){
           setAlertMsg("Sorry it's not a flexi day!")
@@ -297,11 +312,9 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
          
         else{
           CorrectPath()
-        }
-      
-      } 
-    }
-  })
+        }    
+      }           
+        }})
   myRecords.map((data)=>{
     if(data.from===values.fromDate || data.to===values.toDate){
       checkBookedValues=1

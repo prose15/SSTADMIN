@@ -12,6 +12,7 @@ export const ContextProvider=({children})=>{
   const [user,setUser]=useState()
   const [detail,setDetail]=useState([])
   const [WFHDetail,setWFHDetail] = useState([])
+  const [WFHRecords,setWFHRecords] = useState([])
   const [request,setRequest]=useState([])
   const [subscribemodal,setSubscribemodal]=useState(false);
   const [acceptModel,setAcceptModel]=useState(false)
@@ -94,6 +95,10 @@ export const ContextProvider=({children})=>{
         }))
         }
       
+        const filteredUserWFHQuery =query(collection(db,'WFH'),where('email','==',docSnap.data().email),orderBy('timestamp','asc'));
+        onSnapshot(filteredUserWFHQuery,(data)=>{
+          setWFHRecords(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        })
           const filteredWFHQuery = query(collection(db,'WFH'),where('reportManager','==',docSnap.data().name),orderBy('timestamp','asc'));
           
         onSnapshot(filteredWFHQuery,((data)=>{
@@ -127,7 +132,7 @@ export const ContextProvider=({children})=>{
     var startDate = new Date()
     startDate.setDate(today.getDate() - today.getDay());
     var endDate = new Date()
-    endDate.setDate(startDate.getDate() + 4)
+    endDate.setDate(startDate.getDate() + 6)
     const [startdate, setStartDate] = useState(startDate);
     const [enddate, setEndDate] = useState(endDate);    
     const [workedHours,setWorkedHours]=useState(0)
@@ -188,7 +193,7 @@ available[i+1]+=1.5
 }
 }
 
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal,leaveDetail,setLeaveDetail}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal,WFHRecords,leaveDetail,setLeaveDetail}}>
         {children}
     </StateContext.Provider>)
 }

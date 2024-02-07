@@ -5,8 +5,9 @@ import { Col,Row, Card,CardBody } from "reactstrap";
 import TableContainer from '../../components/Common/TableContainer';
 import { Status,Actions,ReverseDate } from '../WFH/WFHRecordsCol'
 import Cookies from "js-cookie";
-
+import { useStateContext } from "Context/ContextProvider";
 function WFHRecords() {
+  const {WFHRecords} = useStateContext()
 const [details,setDetails]=useState([])
 const [WFH,setWFH]=useState(0);
 const [WFHApproved,setWFHApproved]=useState(0);
@@ -30,14 +31,10 @@ if(docSnap.exists()){
     setWFHApproved(0)
  }else{
         setWFHApproved(docSnap.data().WFHApproved)
-
  }
  setWFH(docSnap.data().WFH)
 }
-        const filteredUsersQuery =query(collection(db,'WFH'),where('email','==',email),orderBy('timestamp','asc'));
-        onSnapshot(filteredUsersQuery,(data)=>{
-          setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
+       
     }
     handleGet()
 },[])
@@ -124,7 +121,7 @@ if(docSnap.exists()){
                     <Col>
                     <TableContainer
                         columns={columns}
-                        data={details}
+                        data={WFHRecords}
                         isGlobalFilter={true}
                         isAddOptions={false}
                         customPageSize={10}

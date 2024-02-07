@@ -19,7 +19,8 @@ import {
   To,
   Actions,
   Reason,
-  Status
+  Status,
+  ApprovedDates
 } from "./WFHLatestTranactionCol";
 import Breadcrumbs from '../../components/Common/Breadcrumb';
 import TableContainer from "../../components/Common/TableContainer";
@@ -28,7 +29,6 @@ import { useStateContext } from "Context/ContextProvider";
 import WFHAcceptModal from "./WFHAcceptModel";
 const WFHLatestTranaction = props => {
   const {WFHDetail} = useStateContext()
-  // console.log(WFHDetail)
   const [admin, setAdmin] = useState([]);
   const userRef = collection(db, 'users');
   const adminRef = collection(db, 'admin');
@@ -50,65 +50,138 @@ const WFHLatestTranaction = props => {
   const [modal1, setModal1] = useState(false);
   const toggleViewModal = () => setModal1(!modal1);
   const WFHcolumns = useMemo(
-    () => [
-      {
-        Header: "Employee Name",
-        accessor: "name",
-        filterable: false,
-        disableFilters: true,
-        Cell: cellProps => {
-          return <EmployeeName {...cellProps} />;
-        },
-      },
-
-      {
-        Header: "From",
-        accessor: "from",
-        disableFilters: true,
-        filterable: false,
-        Cell: cellProps => {
-          return <From {...cellProps} />;
-        },
-      },
-
-      {
-        Header: "To",
-        accessor: "to",
-        disableFilters: true,
-        filterable: false,
-        Cell: cellProps => {
-          return <To {...cellProps} />;
-        },
-      },
-
-      {
-        Header: "Reason",
-        accessor: "reason",
-        width:"300px",
-        disableFilters: true,
-        filterable: false,
-        Cell: cellProps => {
-          return <Reason {...cellProps} />;
-        },
-      },
-      {
-            Header: "Status",
-            accessor: "status",
+    () =>
+      (Cookies.get('level')==='L1')?(
+        [
+          {
+            Header: "Employee Name",
+            accessor: "name",
+            filterable: false,
+            disableFilters: true,
+            Cell: cellProps => {
+              return <EmployeeName {...cellProps} />;
+            },
+          },
+    
+          {
+            Header: "From",
+            accessor: "from",
             disableFilters: true,
             filterable: false,
             Cell: cellProps => {
-              return <Status {...cellProps} />;
+              return <From {...cellProps} />;
             },
           },
-      {
-        Header: "Actions",
-        accessor: "id",
-        disableFilters: true,
-        Cell: cellProps => {
-          return <Actions {...cellProps} id={setId} users={users} admin={admin} />;
-        },
-      }
-    ],
+    
+          {
+            Header: "To",
+            accessor: "to",
+            disableFilters: true,
+            filterable: false,
+            Cell: cellProps => {
+              return <To {...cellProps} />;
+            },
+          },
+    
+          {
+            Header: "Reason",
+            accessor: "reason",
+            width:"300px",
+            disableFilters: true,
+            filterable: false,
+            Cell: cellProps => {
+              return <Reason {...cellProps} />;
+            },
+          },
+          {
+                Header: "Status",
+                accessor: "status",
+                disableFilters: true,
+                filterable: false,
+                Cell: cellProps => {
+                  return <Status {...cellProps} />;
+                },
+              },
+          {
+            Header: "Actions",
+            accessor: "id",
+            disableFilters: true,
+            Cell: cellProps => {
+              return <Actions {...cellProps} id={setId} users={users} admin={admin} />;
+            },
+          }
+        ]
+      ):(
+        [
+          {
+            Header: "Employee Name",
+            accessor: "name",
+            filterable: false,
+            disableFilters: true,
+            Cell: cellProps => {
+              return <EmployeeName {...cellProps} />;
+            },
+          },
+    
+          {
+            Header: "From",
+            accessor: "from",
+            disableFilters: true,
+            filterable: false,
+            Cell: cellProps => {
+              return <From {...cellProps} />;
+            },
+          },
+    
+          {
+            Header: "To",
+            accessor: "to",
+            disableFilters: true,
+            filterable: false,
+            Cell: cellProps => {
+              return <To {...cellProps} />;
+            },
+          },
+          {
+            Header: "Approved Dates",
+            accessor: "approvedDates",
+            disableFilters: true,
+            filterable: false,
+            Cell: cellProps => {
+              return <ApprovedDates {...cellProps} />;
+            },
+          },
+          {
+            Header: "Reason",
+            accessor: "reason",
+            width:"300px",
+            disableFilters: true,
+            filterable: false,
+            Cell: cellProps => {
+              return <Reason {...cellProps} />;
+            },
+          },
+          {
+                Header: "Status",
+                accessor: "status",
+                disableFilters: true,
+                filterable: false,
+                Cell: cellProps => {
+                  return <Status {...cellProps} />;
+                },
+              },
+          {
+            Header: "Actions",
+            accessor: "id",
+            disableFilters: true,
+            Cell: cellProps => {
+              return <Actions {...cellProps} id={setId} users={users} admin={admin} />;
+            },
+          }
+        ]
+      )
+
+    ,
     [users, admin]
   );
 
