@@ -14,47 +14,49 @@ const nav=useNavigate()
           console.log(err);
         })
       }
-              const sendData=()=>{
-                addDoc(collection(db,'leave submssion'),data).then(()=>{
-                    if(file){
-                      upload(file)
-                      console.log("message added successfully");
-                    //   setAlert('d-block')
+      const sendData=()=>{
+        addDoc(collection(db,'leave submssion'),data).then(()=>{
+            if(file){
+              upload(file)
+              console.log("message added successfully");
+            //   setAlert('d-block')
+            }
+              console.log("message added successfully");
+            //   setAlert('d-block')
+            const subLeave=data.subLeave
+            const lopBooked=data.lopBooked
+            const earnedBooked=data.earnedBooked
+              let str1=''
+            let leavetype = data.leaveType
+            let strArr=leavetype.split('')
+            for(let i=0;i<strArr.length-5;i++){
+                str1+=strArr[i]
+            }
+            str1=str1.toLocaleLowerCase()
+            console.log(str1)
+            console.log(newData[str1])
+                      newData[str1]+=data.noofdays;
+                      if(subLeave==='both'){
+                        if(lopBooked>0 && earnedBooked>0){
+                          newData.lop+=lopBooked
+                          newData.earned+=earnedBooked
+                        } 
+                      }
+                      else {
+                        if(subLeave!=='') newData[subLeave]+=subLeave+'Booked'
                     }
-                      console.log("message added successfully");
-                    //   setAlert('d-block')
-                    const subLeave=data.subLeave
-                    const lopBooked=data.lopBooked
-                    const earnedBooked=data.earnedBooked
-                      let str1=''
-                    let leavetype = data.leaveType
-                    let strArr=leavetype.split('')
-                    for(let i=0;i<strArr.length-5;i++){
-                        str1+=strArr[i]
-                    }
-                    str1=str1.toLocaleLowerCase()
-                    console.log(str1)
-                    console.log(newData[str1])
-                              newData[str1]+=data.noofdays;
-                              if(subLeave!==''){
-                              if(lopBooked>0){
-                                newData[subLeave]+=lopBooked
-                              }else{
-                                newData[subLeave]+=earnedBooked
-                              }
-                            }
-                           updateDoc(doc(db,'users',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
-                            console.log('profile updated')
-                           }).catch((err)=>{
-                            console.log(err)
-                           })
-                           setmodal_backdrop(false)
-                      setTimeout(()=>{nav('/leavetracker')},2000)
-                  })
-              .catch((err) => {
-                  console.log(err.message);
-                  })
-              }
+                   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
+                    console.log('profile updated')
+                   }).catch((err)=>{
+                    console.log(err)
+                   })
+                   setmodal_backdrop(false)
+              setTimeout(()=>{nav('/leavetracker')},2000)
+          })
+      .catch((err) => {
+          console.log(err.message);
+          })
+      }
    const {modal_backdrop,setmodal_backdrop}=useStateContext()
     function tog_backdrop() {
         setmodal_backdrop(!modal_backdrop);

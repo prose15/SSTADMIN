@@ -107,8 +107,6 @@ export const Accept = async(id,users,admin,selectedDates,setAcceptModel) =>{
             console.log(err);
           console.log('user',user)
           })
-          
-          console.log(detail,users,admin)
         }
        
       })

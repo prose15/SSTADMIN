@@ -24,7 +24,7 @@ import { collection,addDoc, Timestamp, updateDoc,doc,getDoc} from "firebase/fire
 import Cookies from 'js-cookie'
 import { useStateContext } from 'Context/ContextProvider';
 const WFH = props => {
-  const {myRecords}=useStateContext()
+  const {myRecords, WFHRecords}=useStateContext()
   const team = Cookies.get('team');
     const name = Cookies.get('name')
     const email=Cookies.get('email');
@@ -93,12 +93,21 @@ const WFH = props => {
     return dates;
   }
   let checkBookedValues=0;
+  let checkBookedWFH=0;
   const {values,setFieldValue,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
     initialValues:initialValues,
     validationSchema: schema,
     onSubmit:(values) =>{ 
-      if(checkBookedValues===1){
-        setAlertMsg("You already booked a holiday!")
+      if(checkBookedValues===1 ){
+        setAlertMsg("You already submitted a leave request on this day!")
+        document.getElementById('timeLimit')
+        setAlertErr('d-block')
+        setTimeout(()=>{
+          setAlertErr('d-none')},10000);
+          setCondition(false)
+       }
+      else if(checkBookedWFH===1 ){
+        setAlertMsg("You already submitted a WFH request on this day!")
         document.getElementById('timeLimit')
         setAlertErr('d-block')
         setTimeout(()=>{
@@ -138,6 +147,11 @@ const WFH = props => {
                   myRecords.map((data)=>{
                     if(data.from===values.fromDate || data.to===values.toDate){
                       checkBookedValues=1
+                    }
+                  })
+                  WFHRecords.map((data)=>{
+                    if(data.from===values.fromDate || data.to===values.toDate){
+                      checkBookedWFH=1
                     }
                   })
                   const WeekEnds = current => {

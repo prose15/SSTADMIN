@@ -9,8 +9,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from 'firebase-config'
 const WFHAcceptModal = ({users,admin}) => {
     const {acceptModel,setAcceptModel,id,WFHDetail}= useStateContext()
-    const [reason,setReason]=useState('')
-    const [date,setDate] = useState('')
+    const [data,setData]=useState()
     const datePickerRef = useRef(null);
     const [dates,setDates]=useState([])
     const [from,setFrom]=useState('')
@@ -21,8 +20,9 @@ const WFHAcceptModal = ({users,admin}) => {
           const docRef=doc(db,'WFH',id)
           const docSnap=await getDoc(docRef)
           if(docSnap.exists()){
-            setFrom(docSnap.data().from)
-          setTo(docSnap.data().to)
+           setData(docSnap.data())
+           setFrom(docSnap.data().from)
+           setTo(docSnap.data().to)
           }
         }
       }
@@ -92,7 +92,6 @@ const WFHAcceptModal = ({users,admin}) => {
                           options={{
                             mode: "multiple",
                             dateFormat: "Y-m-d",
-                            defaultDate:from,
                             onChange: function(selectedDates, dateStr, instance) {
                               setDates(selectedDates)
                           }
@@ -104,7 +103,10 @@ const WFHAcceptModal = ({users,admin}) => {
          </div>
         </div>
         <div>
-        <Button className='btn-success' type="button" id="button-addon2" onClick={()=>Accept(id,users,admin,dates,setAcceptModel,)}>
+        <Button className='btn-success' type="button" id="button-addon2" onClick={()=>{
+          Accept(id,users,admin,dates,setAcceptModel,)
+          setDates([])
+          }}>
             Approve
           </Button>
         </div>
