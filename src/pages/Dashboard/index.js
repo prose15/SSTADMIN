@@ -91,7 +91,7 @@ const Dashboard = props => {
     {
       title: "Tickets  Worked",
       iconClass: "bx bxs-report",
-      description: "0",
+      description: "-",
     },
   ];
   const totHours =  (startTime, endTime) => {

@@ -142,7 +142,15 @@ const NotificationDropdown = props => {
           </div>)}
          
           </SimpleBar>
-
+         <div className="p-2 border-top d-grid">
+        <Link to="/approvals"
+        onClick={handleClick}
+       className="btn btn-sm btn-link font-size-14 text-center">
+       <i className="mdi mdi-arrow-right-circle me-1" 
+        ></i> <span
+       key="t-view-more">{props.t("View All..")}</span>
+       </Link>
+       </div>
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>
