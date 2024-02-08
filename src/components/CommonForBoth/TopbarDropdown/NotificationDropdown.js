@@ -77,7 +77,7 @@ const NotificationDropdown = props => {
             <div  className="d-flex">
                 <div className="avatar-xs me-3 ">
                 <span className="avatar-title bg-primary rounded-circle font-size-16  p-3">
-                    <i className="fas fa-gift "/>
+                    <i className="mdi mdi-party-popper "/>
                     </span>  
                 </div>
                 <div className="flex-grow-1">
@@ -158,7 +158,3 @@ const NotificationDropdown = props => {
 };
 
 export default withTranslation()(NotificationDropdown);
-
-// NotificationDropdown.propTypes = {
-//   t: PropTypes.any
-// };

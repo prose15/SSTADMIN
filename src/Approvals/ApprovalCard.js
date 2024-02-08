@@ -130,7 +130,8 @@ const ApprovalCard = (props) => {
                         </p>
                       </div>
                       <p className="text-muted mb-0">{
-                      !data.status?<p>Declared Holiday</p> :<p> status : {data.status}</p>}</p>
+                        data.status === 'revoke' ? <p>status : {data.status} </p> : <p>sent you a request</p>
+                      }</p>
                     </div>
                   </div>
                 </li>

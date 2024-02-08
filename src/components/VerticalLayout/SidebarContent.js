@@ -136,7 +136,7 @@ const SidebarContent = props => {
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
-        <div id="sidebar-menu">
+        <div id="sidebar-menu" className=" position-fixed">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
