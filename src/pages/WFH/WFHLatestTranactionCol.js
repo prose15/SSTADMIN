@@ -147,7 +147,7 @@ useEffect(()=>{
            
                 <>
                 <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>{
-                   if(Cookies.get('level')==='L1' || hrLevel==='L1' ){
+                   if(Cookies.get('level')==='L1' || hrLevel==='L1' || Cookies.get('level')==='L3' ){
                     setId(cell.value)
                     setAcceptModel(true)
                    } 

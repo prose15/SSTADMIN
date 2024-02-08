@@ -4,7 +4,11 @@ import { useStateContext } from 'Context/ContextProvider';
 import { db,storage} from "firebase-config";
 import { collection,addDoc, Timestamp, getDoc, doc,updateDoc } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
+import { ref, uploadBytes } from 'firebase/storage';
+import Cookies from 'js-cookie';
 const AlertModal = ({data,file,newData}) => {
+  const email=Cookies.get('email');
+  const date=new Date().getDate()+'-'+(new Date().getMonth()+1)+'-'+new Date().getFullYear()
 const nav=useNavigate()
     async function upload(file){
         const fileRef=ref(storage,'MedicalProof/'+`${date}/`+email);
@@ -41,8 +45,13 @@ const nav=useNavigate()
                         } 
                       }
                       else {
-                        if(subLeave!=='') newData[subLeave]+=subLeave+'Booked'
+                        if(subLeave==='lop') {
+                          newData.lop+=lopBooked
+                        }else if(subLeave==='earned'){
+                          newData.earned+=earnedBooked
+                        }
                     }
+                    console.log(newData)
                    updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
                     console.log('profile updated')
                    }).catch((err)=>{

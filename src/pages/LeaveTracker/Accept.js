@@ -91,6 +91,7 @@ export const Accept = async(id,users,admin) =>{
     updateDoc(userDoc, detail).then(() => {
       users.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
+          console.log(user)
           let str=detail.leaveType
           let subLeave=detail.subLeave
           let leave = str.substring(0,str.length-5).toLocaleLowerCase();
@@ -109,7 +110,7 @@ export const Accept = async(id,users,admin) =>{
                user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
              }
           }
-             
+          console.log(user)  
           updateDoc(doc(db,'users', user.id), user).then(() => {
           }).catch((err) => {
             console.log(err);
@@ -118,6 +119,7 @@ export const Accept = async(id,users,admin) =>{
       })
       admin.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
+          console.log(user)
           let str=detail.leaveType
           let subLeave=detail.subLeave
           let leave = str.substring(0,str.length-5).toLocaleLowerCase()
@@ -136,6 +138,7 @@ export const Accept = async(id,users,admin) =>{
                user.earnedAvailable=user.earnedAvailable-detail.earnedBooked
              } 
           }
+          console.log(user)
            
           updateDoc(doc(db,'admin', user.id), user).then(() => {
 

@@ -104,7 +104,7 @@ const TeamMatesLeave = () => {
 
                               <td>
                                 <div className="text-end">
-                                  <h5 className="font-size-14 text-muted mb-0">
+                                  <h5 className="font-size-14 mb-0">
                                     {item.to}
                                   </h5>
                                 </div>

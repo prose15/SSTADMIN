@@ -110,7 +110,7 @@ export const Accept = async(id,users,admin,selectedDates,setAcceptModel) =>{
     
       admin.map((user) => {
         if (user.name == detail.name && detail.email === user.email && detail.status === 'approved') {
-          user.WFHApproved+=detail.noofdays
+          user.WFHApproved+=detail.approvedDates.length
           updateDoc(doc(db,'admin',user.id),user).then(()=>{
           }).catch((err)=>{
             console.log(err);

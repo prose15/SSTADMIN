@@ -67,9 +67,8 @@ async function revokeEmail(data) {
     let str = leaveData.leaveType
     const leaveType = str.substring(0, str.length - 5).toLocaleLowerCase()
     const key = leaveType + "Available"
-    console.log(key);
     if (leaveType === "flexi") {
-      userProfile[key] =userProfile[key] - leaveData.totalDays
+      userProfile[key] =userProfile[key] + leaveData.totalDays
     } else {
       userProfile[key] =userProfile[key] - leaveData.noofdays
     }
@@ -79,19 +78,19 @@ async function revokeEmail(data) {
       }).catch(err => console.log(err))
     } else {
       if (leaveData.subLeave === "both") {
-        userProfile.earnedAvailable =
-          userProfile.earnedAvailable + leaveData.earnedBooked
-        userProfile.lopAvailable =
-          userProfile.lopAvailable - leaveData.lopBooked
+        userProfile.earnedAvailable = userProfile.earnedAvailable + leaveData.earnedBooked
+        userProfile.lopAvailable = userProfile.lopAvailable - leaveData.lopBooked
       } else {
-        const leave = subLeave + "Available"
-        userProfile[leave] -= leaveData.subLeave+"Booked"
+        if(leaveData.subLeave==='lop'){
+          userProfile.lopAvailable = userProfile.lopAvailable - leaveData.lopBooked
+        }
+        else{
+          userProfile.earnedAvailable = userProfile.earnedAvailable + leaveData.earnedBooked
+        }
       }
     }
     await updateDoc(
-      doc(db, "admin", JSON.parse(sessionStorage.getItem("uid"))),
-      userProfile
-    ).catch(err => console.log(err))
+      doc(db, "admin", JSON.parse(sessionStorage.getItem("uid"))),userProfile).catch(err => console.log(err))
     await updateDoc(doc(db, "leave submssion", data), {
       status: "revoke",
     }).catch(err => console.log(err))
@@ -137,7 +136,7 @@ async function composeEmail(data) {
       const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(
         subject
       )}&body=${encodeURIComponent(body)}`
-      window.location.href = mailtoUrl
+      // window.location.href = mailtoUrl
     })
     .catch(err => {
       console.log(err)

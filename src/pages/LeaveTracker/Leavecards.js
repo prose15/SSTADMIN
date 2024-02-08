@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody} from 'reactstrap';
 import './indexcss.css';
-import {doc,getDoc,getDocs,collection, updateDoc} from 'firebase/firestore'
-import {db,auth} from 'firebase-config'
+import {doc,getDoc} from 'firebase/firestore'
+import {db} from 'firebase-config'
 import Cookies from 'js-cookie'
 import { useStateContext } from 'Context/ContextProvider';
 const Leavecards = () => {
@@ -113,7 +113,7 @@ return (
             <p className="mb-0 flex-grow-1 text-success me-5">
                 Available {getBalance()}</p>
                 
-            <p className="mb-0 text-danger">Booked  {casual+sick+paternity+earned}</p>
+            <p className="mb-0 text-danger">Booked  {casual+sick+paternity+earned+lop+flexi}</p>
         </div>
     </CardBody>
 </Card>

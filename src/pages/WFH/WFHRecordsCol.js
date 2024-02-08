@@ -7,12 +7,22 @@ import { getDoc,doc, deleteDoc ,updateDoc } from "firebase/firestore"
 import Cookies from 'js-cookie';
 const Status = (cell) => {
     return (
-        <Badge
-          className={"font-size-11 badge-soft-" + 
-          ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('info'):((cell.value==='revoke'|| cell.value==='escalate')?('warning'):(cell.value==='re-apply')?('secondary'):('danger'))))}          
-        >
-          {cell.value}
-        </Badge>
+      <Badge
+      className={
+        "font-size-11 badge-soft-" +
+        (cell.value === "approved"
+          ? "success"
+          : cell.value === "L1 approved" || cell.value === "pending"
+          ? "warning"
+          : cell.value === "revoke" || cell.value === "escalate"
+          ? "info"
+          : cell.value === "re-apply"
+          ? "secondary"
+          : "danger")
+      }
+    >
+      {cell.value}
+    </Badge>
     )
 };
 const ReverseDate=(cell)=>{
@@ -48,6 +58,17 @@ const deleteData=async(id)=>{
     })
     }
    async function revokeEmail(data) {
+    const docRef= doc(db,'WFH',data)
+    const userRef = doc(db,'admin',JSON.parse(sessionStorage.getItem('uid')))
+    const userSnap = await getDoc(userRef)
+    const docSnap = await getDoc(docRef)
+    if(docSnap.exists() && userSnap.exists()){
+      const WFHData=docSnap.data()
+      const userData = userSnap.data()
+      userData.WFHApproved = userData.WFHApproved-WFHData.approvedDates.length
+      await updateDoc(userRef,userData).catch((err)=>{
+        console.log(err)
+      })
     await updateDoc(doc(db, "WFH", data),{status:'revoke',reportManager:''}).then(()=>{
       console.log('updated successfully');
       let recipient
@@ -66,7 +87,7 @@ const deleteData=async(id)=>{
   }).catch((err)=>{
       console.log(err);
   })
-      
+}  
     }
    async function composeEmail(data) {
     await updateDoc(doc(db, "WFH", data),{status:'escalate',reportManager:reportingManager}).then(()=>{

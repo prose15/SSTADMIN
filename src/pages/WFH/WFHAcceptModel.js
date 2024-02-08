@@ -12,8 +12,8 @@ const WFHAcceptModal = ({users,admin}) => {
     const [data,setData]=useState()
     const datePickerRef = useRef(null);
     const [dates,setDates]=useState([])
-    const [from,setFrom]=useState('')
-    const [to,setTo]=useState('')
+    const [from,setFrom]=useState(null)
+    const [to,setTo]=useState(null)
     useEffect(()=>{
       const getData=async()=>{
         if(id){
@@ -89,7 +89,14 @@ const WFHAcceptModal = ({users,admin}) => {
                           className="form-control d-block"
                           placeholder="dd M,yyyy"
                           id='flatpicker'
+                          
                           options={{
+                            enable: [
+                              {
+                                  from: from,
+                                  to: to
+                              },
+                            ],
                             mode: "multiple",
                             dateFormat: "Y-m-d",
                             onChange: function(selectedDates, dateStr, instance) {

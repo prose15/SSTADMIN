@@ -144,12 +144,14 @@ const WFH = props => {
                 })
                   }}
                 })
-                  myRecords.map((data)=>{
+                const leaveRecords=myRecords.filter(data=>data.status!=='revoke')
+                const myWFHRecords=WFHRecords.filter(data=>data.status!=='revoke')
+                  leaveRecords.map((data)=>{
                     if(data.from===values.fromDate || data.to===values.toDate){
                       checkBookedValues=1
                     }
                   })
-                  WFHRecords.map((data)=>{
+                  myWFHRecords.map((data)=>{
                     if(data.from===values.fromDate || data.to===values.toDate){
                       checkBookedWFH=1
                     }

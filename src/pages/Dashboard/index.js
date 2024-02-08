@@ -35,6 +35,7 @@ import TeamMatesLeave from "./TeamMatesLeave";
 import { useStateContext } from "Context/ContextProvider";
 
 const Dashboard = props => {
+  const {myRecords} = useStateContext()
   const [name,setName]=useState('')
   const [team,setTeam]=useState([])
   const [role,setRole]=useState('')
@@ -83,13 +84,14 @@ const Dashboard = props => {
       
        },[]
      )
+     const leaveCount = myRecords.filter(data => data.status==='approved')
   const reports = [
-    { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: "12" },
-    { title: "Worked Hours", iconClass: "bx bxs-time", description: "128" },
+    { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: leaveCount.length },
+    { title: "Team Mates", iconClass: "bx bxs-time", description: newTeam.length },
     {
       title: "Tickets  Worked",
       iconClass: "bx bxs-report",
-      description: "3",
+      description: "0",
     },
   ];
   const totHours =  (startTime, endTime) => {

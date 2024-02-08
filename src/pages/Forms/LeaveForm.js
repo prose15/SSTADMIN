@@ -100,7 +100,7 @@ const LeaveForm = props => {
   }
  
   async function upload(file){
-    const fileRef=ref(storage,`'MedicalProof/'+${date}`/+email);
+    const fileRef=ref(storage,`'MedicalProof/'+${date}/`+email);
      await uploadBytes(fileRef,file).then(()=>{
     }).catch((err)=>{
       console.log(err);
@@ -247,20 +247,24 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
         str1=str1.toLocaleLowerCase()
         console.log(str1)
         console.log(newData[str1])
-        console.log(newDetails.totalDays)
+        console.log('totalDays : ',newDetails.totalDays)
+        console.log('noofdays : ',newDetails.noofdays)
         if(values.leaveType==='Flexileave'){
           newData[str1]+=newDetails.totalDays;
         }else{
-          newData[str1]+=noOfDays;
-          if(subLeave!=='') newData[subLeave]+=subLeave+'Booked'
-        
+          newData[str1]+=newDetails.noofdays
+          if(subLeave==='lop') {
+            newData.lop+=lopBooked
+          }else if(subLeave==='earned'){
+            newData.earned+=earnedBooked
+          }
         }    
+        console.log(newData)
                updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
-                
+                console.log('profile updated')
                }).catch((err)=>{
                 console.log(err)
                })
-             
           setTimeout(()=>{nav('/leavetracker')},2000)
       })
   .catch((err) => {
@@ -309,19 +313,27 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           setAlertErr('d-none')},10000);
           setCondition(false)
         }
-         
+        else if(values.leaveType.includes('Sickleave') && !file &&  countDays(new Date(values.fromDate),new Date(values.toDate))>2){
+          setAlertMsg("Please attach the medical certificate!")
+        document.getElementById('timeLimit')
+        setAlertErr('d-block')
+        setTimeout(()=>{
+          setAlertErr('d-none')},10000);
+          setCondition(false)
+        } 
         else{
           CorrectPath()
         }    
       }           
         }})
-  myRecords.map((data)=>{
+        const records=myRecords.filter(data=>data.status!=='revoke')
+  records.map((data)=>{
     if(data.from===values.fromDate || data.to===values.toDate){
       checkBookedValues=1
     }
   })
   
-  const countDays=(fromDate,toDate)=>{
+  function countDays(fromDate,toDate){
     const dates = getDatesBetweenDates(fromDate,toDate)
     const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) ) 
     return dates.length-holidays.length  
@@ -561,8 +573,8 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                     <div 
                     className="mt-3"
                     name = "file">
-                    <Label htmlFor="formFile" className="form-label">Add File</Label>
-                    <Input className="form-control" type="file" id="formFile" onChange={(e)=>{
+                    <Label htmlFor="formFile" className="form-label">Add Medical Certificate</Label>
+                    <Input className="form-control" type="file" id="formFile" accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(e)=>{
                             if(e.target.files[0]){
                               setFile(e.target.files[0])
                              
@@ -574,26 +586,6 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                            </>
                   ):(<></>)
                   }
-                  {
-                    (values.leaveType==='Sickleave' &&   countDays(new Date(values.fromDate),new Date(values.toDate))>2)?(
-                      <>
-                    <div 
-                    className="mt-3"
-                    name = "file">
-                    <Label htmlFor="formFile" className="form-label">Add File</Label>
-                    <Input className="form-control" type="file" id="formFile" onChange={(e)=>{
-                            if(e.target.files[0]){
-                              setFile(e.target.files[0])
-                             
-                            }
-                          }}/>
-                 
-                  </div>
-                           </>
-                  ):(<></>)
-                  }
-                  
-                  
                   <div>
                       <button type="submit" className="btn btn-primary w-md mt-5" 
                       >Submit</button>
