@@ -101,7 +101,6 @@ const TeamMatesLeave = () => {
                                   <h5 className="font-size-14 mb-0">{item.from}</h5>
                                 </div>
                               </td>
-
                               <td>
                                 <div className="text-end">
                                   <h5 className="font-size-14 mb-0">
