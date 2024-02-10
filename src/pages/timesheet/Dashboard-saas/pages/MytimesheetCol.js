@@ -50,8 +50,18 @@ const Total = (cell) => {
 const Status = (cell) => {
     return (
         <Badge
-        className={"font-size-11 badge-soft-" + 
-        ((cell.value==='L1 approved' || cell.value==='approved')?('success'):(cell.value==='pending'?('muted'):(cell.value==='revoke'?('warning'):('danger'))))}          
+        className={
+          "font-size-11 badge-soft-" +
+          (cell.value === "approved"
+            ? "success"
+            : cell.value === "L1 approved" || cell.value === "pending"
+            ? "warning"
+            : cell.value === "revoke" || cell.value === "escalate"
+            ? "info"
+            : cell.value === "re-apply"
+            ? "secondary"
+            : "danger")
+        }
       >
         {cell.value}
       </Badge>

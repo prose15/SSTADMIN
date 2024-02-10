@@ -47,7 +47,10 @@ const CandidateSection = ({upcomingLeaves}) => {
 const swiper1=details.filter((detail)=>(detail.id)%2===1)
 const swiper2=details.filter((detail)=>(detail.id)%2===0)
 
-
+const reverseDate=(date)=>{
+    const newDate=date.split('-')
+    return newDate.reverse().join('-')
+}
     return (
         <React.Fragment>
             <Col lg={12}>
@@ -76,7 +79,7 @@ const swiper2=details.filter((detail)=>(detail.id)%2===0)
                                    <Alert color="success">
                                     <div className='d-flex flex-direction-row'>
                                         <i className="mdi mdi-check-all me-2"></i>                              
-                                        {`Your have upcoming ${data.leaveType} from ${data.from} to ${data.to}`}
+                                        {`Your have upcoming ${data.leaveType} from ${reverseDate(data.from)} to ${reverseDate(data.to)}`}
                                     </div>
                                     </Alert>
                                 {/* <p></p> */}

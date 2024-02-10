@@ -9,23 +9,30 @@ import { useStateContext } from "Context/ContextProvider";
 import { Timestamp } from "firebase/firestore";
 import { LeaveType } from "pages/LeaveTracker/LatestTranactionCol";
 import WFH from "pages/WFH";
+import Cookies from "js-cookie";
 
 const NotificationDropdown = props => {
   const [menu, setMenu] = useState(false);
-  const {request,WFHDetail,revokeDetail,holidays,myRecords,WFHRecords} = useStateContext();
-  const arr1= [...request]
-  const arr2= [...WFHDetail]
-  const arr3= [...revokeDetail]
-  const arr4= myRecords.filter((data)=>data.status==='approved' && new Date(data.fromDate)>=new Date())
-  const arr5= WFHRecords.filter((data)=>data.status==='approved' && new Date(data.fromDate)>=new Date())
-  const new_arr1 = arr1.reverse().filter((data,index)=>index<1)
-  const new_arr2 = arr2.reverse().filter((data,index)=>index<1) 
-  const new_arr3 = arr3.reverse().filter((data,index)=>index<1)
-  const new_arr4=holidays.filter((data,index)=>index<1)
-  const new_arr5=arr4.filter((data,index)=>index<1)
-  const new_arr6=arr5.filter((data,index)=>index<1)
-  const final_arr = [...new_arr1, ... new_arr2, ...new_arr3,...new_arr4,...new_arr5,...new_arr6]
+  const {detail,WFHDetail,holidays,request,revokeDetail,WFHRecords} = useStateContext()
+  const newDetail=detail.filter(data=>data.displayStatus==='')
+  const newWFHRecords=WFHRecords.filter(data=>data.displayStatus==='' && data.status==='approved' || data.status=='denied' && new Date(data.from)>=new Date())
+  const data = [...newDetail,...newWFHRecords,...holidays,...request,...revokeDetail,...WFHDetail]
+  const reverseArray = data.reduce((acc, curr) => {
+   const indexToInsert = acc.findIndex(item => item.timestamp > curr.timestamp);
+   if (indexToInsert === -1) {
+     acc.push(curr);
+   } else {
+     acc.splice(indexToInsert, 0, curr);
+   }
  
+   return acc;
+ }, []);
+ const sortedArray = reverseArray.reverse();
+  const newSortedArray = sortedArray.filter((data,index)=>index<3)
+  const reverseDate=(date)=>{
+    const newDate= date.split('-')
+    return newDate.reverse().join('-')
+  }
   const findMin=(data)=>{
     const seconds   = data.timestamp?.seconds
     const nanoseconds = data.timestamp?.nanoseconds
@@ -61,9 +68,9 @@ const NotificationDropdown = props => {
           tag="button"
           id="page-header-notifications-dropdown"
         >
-         {request.length+ WFHDetail.length + revokeDetail.length+new_arr4.length === 0 ?  (
+         {sortedArray.length === 0 ?  (
           <i id="bell" className="bx bx-bell" />) :  ( <i id="bell" className="bx bx-bell bx-tada" />) }
-          <span id="detail" className="badge bg-danger rounded-pill">{request.length+ WFHDetail.length + revokeDetail.length+new_arr4.length+arr5.length+arr4.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length+holidays.length+arr5.length+arr4.length) }</span>
+          <span id="detail" className="badge bg-danger rounded-pill">{sortedArray.length === 0 ? empty :  ( sortedArray.length) }</span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
           <div className="p-3">
@@ -75,7 +82,7 @@ const NotificationDropdown = props => {
           </div>
 
           <SimpleBar style={{ height: "230px" }}>
-          {new_arr4.map((data)=> 
+          {/* {new_arr4.map((data)=> 
           <div key={data.id} className="text-reset notification-item">
             <Link to= '/leave/requests' onClick={handleClick}>
             <div  className="d-flex">
@@ -103,46 +110,34 @@ const NotificationDropdown = props => {
                 </div>
             </div>
             </Link>
-          </div>)}
-          {final_arr.map((data)=> 
+          </div>)} */}
+           {newSortedArray.map((data)=> 
           <div key={data.id} className="text-reset notification-item">
-           <Link to= {data.WFH === 'Work From Home' ? '/WFH/requests' : '/leave/requests'} onClick={handleClick}>
             <div  className="d-flex">
-                <div className="avatar-xs me-3">
-                {data.WFH==='Work From Home' ? 
-                <span className="avatar-title bg-primary rounded-circle font-size-17">           
-                    <i className="mdi mdi-laptop-windows"/>
-                    </span>
-                    :
-                    data.status === 'revoke' ?  
-                     <span className="avatar-title bg-primary rounded-circle font-size-20"> 
-                    <i className="bx bx-transfer-alt"/>
-                    </span> :
-                    <span className="avatar-title bg-primary rounded-circle font-size-17"> 
-                    <i className="bx bx-calendar"/>
-                    </span>             
-                    }       
+                <div className="avatar-xs me-3 ">
+                 {
+                  data.name ===Cookies.get('name') && data.leaveType?(data.status==='approved' ?( <span className="avatar-title bg-success rounded-circle font-size-16  p-3"><i className="fa fa-check"/></span>):(data.status==='denied' &&  <span className="avatar-title bg-danger rounded-circle font-size-16  p-3"><i className="fa fa-times"/></span>)):(data.name ===Cookies.get('name') && data.WFH ? (data.status==='approved' ?( <span className="avatar-title bg-success rounded-circle font-size-16  p-3"><i className="fa fa-check"/></span>):(data.status==='denied' &&  <span className="avatar-title bg-danger rounded-circle font-size-16  p-3"> <i className="fa fa-times"/></span>)):(!data.name && data.leaveType?(data.leaveType==='Flexileave'?  <span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-party-popper"/></span>:data.leaveType==='WFH' &&  <span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-laptop-windows"/></span>):(data.name!==Cookies.get('name') && data.leaveType?(<span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="bx bx-calendar"/></span>):(data.name!==Cookies.get('name') && data.WFH &&(<span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-laptop-windows"/></span>)))))
+                 }
+                     
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
-                    {data.leaveType || data.WFH}
+                    {data.subject}
                   </h6>
                   <div className="font-size-12 text-muted">
-                    <p className="mb-1">                 
-                     {
-                      data.status === "revoke" ? 
-                      (`${data.name} has revoked`) : (`${data.name} sent you a request`) }
+                    <p className="mb-1">
+                    {data.name===Cookies.get('name')  && data.leaveType?(data.status==='approved' ?(`Your ${data.leaveType} request has been approved`):(data.status==='denied' &&  `Your ${data.leaveType} request has been denied`)):(data.name===Cookies.get('name') && data.WFH ? (data.status==='approved' ?( `Your WFH request has been approved`):(data.status==='denied' && `Your WFH request has been approved`)):(!data.name && data.leaveType?(data.leaveType==='Flexileave'?  `${reverseDate(data.fromDate)} is declared as holiday`:data.leaveType==='WFH' &&  `${reverseDate(data.fromDate)} is declared as WFH`):(data.name!==Cookies.get('name') && data.leaveType?(`${data.name} sent you a leave request`):(data.name!==Cookies.get('name') && data.WFH &&(`${data.name} sent you a WFH request`)))))}
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-clock-outline" />
-                      {(findMin(data)===0)?('Just now'):((findMin(data)<60)?
-                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.round(findMin(data)/60/24)+" days ago"):(Math.floor(findMin(data)/60)+" hrs ago")))
+                       {(findMin(data)===0)?('Just now'):((findMin(data)<60)?
+                        findMin(data)+" mins ago":(Math.floor(findMin(data)/60>24)?(Math.floor(findMin(data)/60/24)+" days ago"):(Math.floor(findMin(data)/60)+" hrs ago")))
                        }
+                    
                     </p>
                   </div>
                 </div>
             </div>
-            </Link>
           </div>)}
          
           </SimpleBar>

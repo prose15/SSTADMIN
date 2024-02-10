@@ -48,8 +48,7 @@ const ApprovalCard = (props) => {
     <Col xl="12">
       <Card>
         <CardBody>
-          <h4 className="card-title mb-4">Notifications</h4>
-          <h5>Own Records</h5>
+          <h4 className="card-title mb-4">My Notification</h4>
           <SimpleBar style={{ maxHeight: "500px", cursor: "pointer "}}>
             <ul className="list-group ">
               {data.map((data) => (
@@ -94,8 +93,7 @@ const ApprovalCard = (props) => {
       </Card>
       <Card>
         <CardBody>
-          <h4 className="card-title mb-4">Notifications</h4>
-          <h5>Team Records</h5>
+          <h4 className="card-title mb-4">Team Notification</h4>
           <SimpleBar style={{ maxHeight: "500px" }}>
             <ul className="list-group">
               {filterData.map((data) => (
