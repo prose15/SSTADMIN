@@ -136,7 +136,7 @@ const SidebarContent = props => {
   return (
     <React.Fragment>
       <SimpleBar className="h-100" ref={ref}>
-        <div id="sidebar-menu">
+        <div id="sidebar-menu" className=" position-fixed">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
@@ -216,12 +216,12 @@ const SidebarContent = props => {
                 }           
 
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="/ticket/dashboard" className="has-arrow">
                 <i className="mdi mdi-ticket-outline" />
 
                 <span>{props.t("Raise a Ticket")}</span>
               </Link>
-              <ul className="sub-menu">
+              {/* <ul className="sub-menu">
                 <li>
                   <Link to="/ticket/dashboard">{props.t("Dashboard")}</Link>
                 </li>
@@ -231,7 +231,7 @@ const SidebarContent = props => {
                 <li>
                   <Link to="/ticket/bookticket">{props.t("View Ticket")}</Link>
                 </li>
-              </ul>
+              </ul> */}
             </li>
             <li>
             

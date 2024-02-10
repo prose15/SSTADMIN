@@ -12,15 +12,19 @@ import WFH from "pages/WFH";
 
 const NotificationDropdown = props => {
   const [menu, setMenu] = useState(false);
-  const {request,WFHDetail,revokeDetail,holidays} = useStateContext();
+  const {request,WFHDetail,revokeDetail,holidays,myRecords,WFHRecords} = useStateContext();
   const arr1= [...request]
   const arr2= [...WFHDetail]
   const arr3= [...revokeDetail]
+  const arr4= myRecords.filter((data)=>data.status==='approved' && new Date(data.fromDate)>=new Date())
+  const arr5= WFHRecords.filter((data)=>data.status==='approved' && new Date(data.fromDate)>=new Date())
   const new_arr1 = arr1.reverse().filter((data,index)=>index<1)
   const new_arr2 = arr2.reverse().filter((data,index)=>index<1) 
   const new_arr3 = arr3.reverse().filter((data,index)=>index<1)
   const new_arr4=holidays.filter((data,index)=>index<1)
-  const final_arr = [...new_arr1, ... new_arr2, ...new_arr3]
+  const new_arr5=arr4.filter((data,index)=>index<1)
+  const new_arr6=arr5.filter((data,index)=>index<1)
+  const final_arr = [...new_arr1, ... new_arr2, ...new_arr3,...new_arr4,...new_arr5,...new_arr6]
  
   const findMin=(data)=>{
     const seconds   = data.timestamp?.seconds
@@ -59,7 +63,7 @@ const NotificationDropdown = props => {
         >
          {request.length+ WFHDetail.length + revokeDetail.length+new_arr4.length === 0 ?  (
           <i id="bell" className="bx bx-bell" />) :  ( <i id="bell" className="bx bx-bell bx-tada" />) }
-          <span id="detail" className="badge bg-danger rounded-pill">{request.length+ WFHDetail.length + revokeDetail.length+new_arr4.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length+holidays.length) }</span>
+          <span id="detail" className="badge bg-danger rounded-pill">{request.length+ WFHDetail.length + revokeDetail.length+new_arr4.length+arr5.length+arr4.length === 0 ? empty :  ( request.length + WFHDetail.length + revokeDetail.length+holidays.length+arr5.length+arr4.length) }</span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
           <div className="p-3">
@@ -77,7 +81,7 @@ const NotificationDropdown = props => {
             <div  className="d-flex">
                 <div className="avatar-xs me-3 ">
                 <span className="avatar-title bg-primary rounded-circle font-size-16  p-3">
-                    <i className="mdi mdi-party-popper"/>
+                    <i className="mdi mdi-party-popper "/>
                     </span>  
                 </div>
                 <div className="flex-grow-1">
@@ -142,7 +146,15 @@ const NotificationDropdown = props => {
           </div>)}
          
           </SimpleBar>
-
+         <div className="p-2 border-top d-grid">
+        <Link to="/approvals"
+        onClick={handleClick}
+       className="btn btn-sm btn-link font-size-14 text-center">
+       <i className="mdi mdi-arrow-right-circle me-1" 
+        ></i> <span
+       key="t-view-more">{props.t("View All..")}</span>
+       </Link>
+       </div>
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>
@@ -150,7 +162,3 @@ const NotificationDropdown = props => {
 };
 
 export default withTranslation()(NotificationDropdown);
-
-// NotificationDropdown.propTypes = {
-//   t: PropTypes.any
-// };

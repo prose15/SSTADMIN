@@ -127,12 +127,13 @@ const Reason = (cell) => {
 const Actions = ({cell,users,admin}) => {
 const {setSubscribemodal,setId,acceptModel,setAcceptModel}=useStateContext()
 const [hrLevel,setHrLevel]=useState('')
+const [data,setData]=useState()
 useEffect(()=>{
     const getData=async()=>{
         const docRef = doc(db, 'WFH',cell.value)
         const docSnap = await getDoc(docRef);
-        console.log(docSnap.data())
         if(docSnap.exists()){
+            setData(docSnap.data())
           const team= docSnap.data().team
           if(team==='HR'){
             setHrLevel('L1')
@@ -147,7 +148,7 @@ useEffect(()=>{
            
                 <>
                 <i style={{cursor:"pointer"}} className="font-size-18 text-success fas fa-check me-3" onClick={()=>{
-                   if(Cookies.get('level')==='L1' || hrLevel==='L1' || Cookies.get('level')==='L3' ){
+                   if(Cookies.get('level')==='L1' || (hrLevel==='L1' && Cookies.get('team')==='HR') || (Cookies.get('level')==='L3' && (data.level === 'L1' || data.level==='L2')) ){
                     setId(cell.value)
                     setAcceptModel(true)
                    } 

@@ -87,11 +87,11 @@ const Dashboard = props => {
      const leaveCount = myRecords.filter(data => data.status==='approved')
   const reports = [
     { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: leaveCount.length },
-    { title: "Team Mates", iconClass: "bx bxs-time", description: newTeam.length },
+    { title: "Team Mates", iconClass: "bx bxs-group", description: newTeam.length },
     {
       title: "Tickets  Worked",
       iconClass: "bx bxs-report",
-      description: "0",
+      description: "-",
     },
   ];
   const totHours =  (startTime, endTime) => {

@@ -123,7 +123,7 @@ const WFH = props => {
                   const toYear=values.toDate.split('-')
                   const dates = getDatesBetweenDates(startDate,endDate)
                   const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) )
-                  const newDetails={name:name,email:email,team:team,reason:values.reason,subject:values.subject, 
+                  const newDetails={name:name,level:level,email:email,team:team,reason:values.reason,subject:values.subject, 
                   WFH:values.WFH, reportManager: values.reportingManager,fromTimeStamp:fromTimeStamp,toTimeStamp:toTimeStamp,from: values.fromDate, to: values.toDate, requestDate: new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),status:'pending',L1status:'',L2status:'',L3status:'',noofdays:dates.length-holidays.length,timestamp:Timestamp.now(),
                   fromYear:fromYear[0],
                   toYear:toYear[0]}
