@@ -120,7 +120,7 @@ return (
 <Card className="leave-cards d-inline me-3 ps-4 pe-4" >
     <CardBody className="p-4">
         <div className="text-center mb-3 text-primary">
-       <i className="fas fa-hospital fa-2x"></i>
+       <i className="fas fa-calendar-check fa-2x"></i>
                 <h5 className="mt-4 mb-2 font-size-15"><b>Approved Leave</b></h5>
         </div>
         <div className="d-flex">

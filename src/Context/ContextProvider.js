@@ -76,9 +76,9 @@ export const ContextProvider=({children})=>{
                
               
           const todayTimeStamp=new Date()
-          todayTimeStamp.setHours(23)
-          todayTimeStamp.setMinutes(59)
-          todayTimeStamp.setSeconds(59)
+          todayTimeStamp.setHours(0)
+          todayTimeStamp.setMinutes(0)
+          todayTimeStamp.setSeconds(0)
           if(level === 'L2'){
           const filteredRevokeQuery = query(collection(db,'leave submssion'), where('status', '==','revoke'),where('fromTimeStamp','>',todayTimeStamp));
          onSnapshot(
@@ -105,7 +105,7 @@ export const ContextProvider=({children})=>{
           setWFHDetail(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }))
       
-          const filteredLeaveQuery =query(collection(db,'Holidays'),where('fromTimeStamp','>',todayTimeStamp));
+          const filteredLeaveQuery =query(collection(db,'Holidays'),where('fromTimeStamp','>=',todayTimeStamp));
     const data1=await getDocs(filteredLeaveQuery).catch((err)=>{
       console.log(err);
     })
@@ -152,7 +152,7 @@ let checkyear2=new Date()
 checkyear2.setDate(checkyear.getDate()-1)
 
 for(let i=0;i<graphdetails.length;i++){
-  if(graphdetails[i].status==="approved" && graphdetails[i].leaveType!=='WFH'){
+  if(graphdetails[i].status==="approved" && graphdetails[i].leaveType!=='WFH' && graphdetails[i].leaveType!=='Flexileave'){
   let sDate=new Date(graphdetails[i].from)
   let eDate=new Date(graphdetails[i].to)
   const today=new Date();

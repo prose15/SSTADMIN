@@ -43,6 +43,10 @@ const ApprovalCard = (props) => {
         const minsDiff = Math.floor(timeDiff/(1000 * 60))
         return minsDiff
     }
+    const reverseDate=(date)=>{
+      const newDate= date.split('-')
+      return newDate.reverse().join('-')
+    }
   return (
     <React.Fragment>
     <Col xl="12">
@@ -60,12 +64,14 @@ const ApprovalCard = (props) => {
                         {
                       data.leaveType==='Flexileave'?( <span className="avatar-title bg-primary rounded-circle font-size-20  p-3">
                       <i className="mdi mdi-party-popper"/>
-                      </span> ):(data.leaveType?(<span className="avatar-title bg-primary rounded-circle font-size-20  p-3">
+                      </span> ):(data.leaveType!=='WFH'?(<span className="avatar-title bg-primary rounded-circle font-size-20  p-3">
                       <i className="bx bx-calendar "/>
                       </span>):((data.WFH==='Work From Home') ? 
                     (<span className="avatar-title bg-primary rounded-circle font-size-17">           
                     <i className="mdi mdi-laptop-windows"/>
-                    </span>):(<></>)))
+                    </span>):(data.leaveType==='WFH' && <span className="avatar-title bg-primary rounded-circle font-size-17">           
+                    <i className="mdi mdi-laptop-windows"/>
+                    </span>)))
                     }
                         </span>
                       </div>
@@ -81,7 +87,7 @@ const ApprovalCard = (props) => {
                         </p>
                       </div>
                       <p className="text-muted mb-0">{
-                      !data.status?<p>Declared Holiday</p> :<p> status : {data.status}</p>}</p>
+                      !data.status?((data.leaveType==='WFH')?(<p>{reverseDate(data.fromDate)} is declared as Work From Home</p>):(<p>{reverseDate(data.fromDate)} is declared as holiday</p>)) :<p> status : {data.status}</p>}</p>
                     </div>
                   </div>
                 </li>

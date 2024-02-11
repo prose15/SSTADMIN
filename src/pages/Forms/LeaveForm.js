@@ -288,6 +288,14 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           setAlertErr('d-none')},10000);
           setCondition(false)
          }
+         else if(values.leaveType.includes('Flexileave') && newData.flexiAvailable<=0){
+          setAlertMsg("Sorry, you have consumed all your flexi holidays!")
+          document.getElementById('timeLimit')
+          setAlertErr('d-block')
+          setTimeout(()=>{
+            setAlertErr('d-none')},10000);
+            setCondition(false)
+        }
        else{
         if(values.leaveType.includes('Flexileave') && !isFlexi(values.fromDate)){
           setAlertMsg("Sorry it's not a flexi day!")
@@ -297,6 +305,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
           setAlertErr('d-none')},10000);
           setCondition(false)
         }
+        
         else if(casualType === 'Emergencyleave' && datesWithoutHolidays.length>5){
           setAlertMsg("Emergency leave must be less than 5 days!")
           document.getElementById('timeLimit')
@@ -344,7 +353,7 @@ const {values,handleBlur,handleChange,handleSubmit,errors,touched}= useFormik({
                 
                 const WeekEnds = current => {
                   const dayOfWeek = current.day();
-                  return dayOfWeek === 5 || dayOfWeek === 6;
+                  return dayOfWeek === 5 || dayOfWeek === 6 || flexidays.includes(current.format('YYYY-MM-DD'));
                 };
                   
                 const optionGroup = [
