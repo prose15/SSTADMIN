@@ -4,7 +4,9 @@ import { DatePicker } from 'antd'
 import { db } from 'firebase-config'
 import {getDocs, collection, addDoc, updateDoc,doc, Timestamp } from 'firebase/firestore'
 import { set } from 'lodash'
+import { useStateContext } from 'Context/ContextProvider'
 const FestiveLeave = () => {
+  const {holidays} = useStateContext()
   const [leaveType,setLeaveType]=useState('')
     const [fromDate,setFromDate]=useState('')
     const [subject,setSubject]=useState('')
@@ -13,6 +15,9 @@ const FestiveLeave = () => {
     const [admin,setAdmin]=useState([])
     const [filteredAdmins,setFilteredAdmin]=useState([])
     const [display,setDisplay]=useState('d-none')
+    const [display2,setDisplay2]=useState('d-none')
+    const [leave,setLeave]=useState('')
+    let declaredHolidays=0;
     useEffect(() => {
       const getData= async() => {
       const data = await getDocs(collection(db,'users')).then((data)=>{
@@ -36,7 +41,24 @@ const FestiveLeave = () => {
       const weekEnd=current=>{
         return current.day()==5 || current.day()==6
       }
+      holidays.map((data)=>{
+        if(data.fromDate===fromDate ){
+          declaredHolidays=1
+        }
+      })
+     
     const handleSubmit=async()=>{
+      if(leaveType==='Flexileave'){
+        setLeave('holiday')
+      }else if (leaveType==='WFH'){
+        setLeave('Work From Home')
+      }
+      if(declaredHolidays==1){
+        setDisplay2('d-block')
+        setTimeout(()=>setDisplay2('d-none'),3000)
+      }
+      else{
+       
         const startDate=new Date(fromDate)
         const fromTimeStamp=Timestamp.fromMillis(startDate.getTime())
 const data={leaveType,fromDate,subject,reason,fromTimeStamp,timestamp:Timestamp.now()}
@@ -52,6 +74,7 @@ updateDoc(doc(db,'admin',user.id),{earnedAvailable:1})
     
 setDisplay('d-block')
 setTimeout(()=>setDisplay('d-none'),3000)
+      }
 
     }
   return (
@@ -60,7 +83,8 @@ setTimeout(()=>setDisplay('d-none'),3000)
       <Container>
         <Row>
           <Col>
-          <Alert color='success'className={display}>{fromDate.split("-").reverse().join('-')+" is declared as holiday!"}</Alert>
+          <Alert color='success'className={display}>{`${fromDate.split("-").reverse().join('-')} is  declared as "${leave}!`}</Alert>
+          <Alert color='danger'className={display2}>{`${fromDate.split("-").reverse().join('-')} is already declared as ${leave}!`}</Alert>
             <Card className='mt-5 w-100  mx-auto'>
               <CardBody >
                 <CardTitle className="mb-4">Declare a Festive Leave!</CardTitle>
