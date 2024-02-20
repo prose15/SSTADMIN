@@ -45,8 +45,7 @@ const FestiveLeave = () => {
         if(data.fromDate===fromDate ){
           declaredHolidays=1
         }
-      })
-     
+      }) 
     const handleSubmit=async()=>{
       if(leaveType==='Flexileave'){
         setLeave('holiday')
@@ -65,17 +64,17 @@ const data={leaveType,fromDate,subject,reason,fromTimeStamp,timestamp:Timestamp.
 await addDoc(collection(db,'Holidays'),data)
 if(leaveType==='Flexileave'){
   users.map((user)=>{
-    updateDoc(doc(db,'users',user.id),{earnedAvailable:1})
+    user.flexiAvailable-=1
+    updateDoc(doc(db,'users',user.id),user)
 })
 filteredAdmins.map((user)=>{
-updateDoc(doc(db,'admin',user.id),{earnedAvailable:1})
+  user.flexiAvailable-=1
+updateDoc(doc(db,'admin',user.id),user)
 })
-}
-    
+}   
 setDisplay('d-block')
 setTimeout(()=>setDisplay('d-none'),3000)
       }
-
     }
   return (
     <React.Fragment>

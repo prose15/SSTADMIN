@@ -18,6 +18,10 @@ const LeaveTracker = () => {
   todayTimeStamp.setSeconds(59)
   console.log(detail)
   const upcomingLeaves=detail.filter((data)=>new Date(data.from)>=todayTimeStamp)
+//   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{leaveBalance:available,earnedAvailable:1,lopAvailable:0}).then(()=>{
+// }).catch((err)=>{
+//   console.log(err)
+// })
 const today=new Date();
 if(today.getMonth()===11 ){
   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{earnedAvailable:earnedLeave}).then(()=>{

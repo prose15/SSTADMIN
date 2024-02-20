@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody} from 'reactstrap';
 import './indexcss.css';
-import {doc,getDoc} from 'firebase/firestore'
+import {doc,getDoc, updateDoc} from 'firebase/firestore'
 import {db} from 'firebase-config'
 import Cookies from 'js-cookie'
 import { useStateContext } from 'Context/ContextProvider';
 const Leavecards = () => {
 const {available,leave}=useStateContext()
 const today=new Date()
+const [balance,setBalance]=useState(0)
 const [name,setName]=useState('')
 const [email,setEmail]=useState('')
 const [casual,setCasual]=useState(0);
@@ -23,6 +24,26 @@ const [paternityAvailable,setPaternityAvail]=useState(0);
 const [sickAvailable,setSickAvail]=useState(0);
 const [flexiAvailable, setFlexiAvail] = useState(0);
 const[revoke,setRevoke] = useState(0)
+const [leaveBalance,setLeaveBalance] = useState([])
+const getBalance=()=>{
+    let ans=available[today.getMonth()]-leave[today.getMonth()]
+    if(ans<=0){
+      ans=0
+    }
+    return ans
+  }
+  const ans=getBalance()
+let  updatedAvailable=[]
+for(var i=0;i<available.length;i++){
+    updatedAvailable[i]=available[i]-leave[i]
+}
+// // useEffect(()=>{
+//     const updateData=async()=>{
+//         const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
+//       await  updateDoc(docRef,{leaveBalance:updatedAvailable}).catch((err)=>console.log(err))
+//     }
+//     updateData()
+// // },[])
  useEffect(()=>{
 
      const handleGet=async()=>{
@@ -39,7 +60,7 @@ const[revoke,setRevoke] = useState(0)
  setSick(docSnap.data().sick)
  setFlexi(docSnap.data().flexi)
   setEmail(Cookies.get('email'))
-
+setLeaveBalance(docSnap.data().leaveBalance)
   if(docSnap.data().casualAvailable<=0){
      setCasualAvail(0)
   }
@@ -91,13 +112,7 @@ else{
   handleGet()   
      },[]
    )
-const getBalance=()=>{
-  let ans= available[today.getMonth()]-leave[today.getMonth()]
-  if(ans<=0){
-    ans=0
-  }
-  return ans
-}
+
 
 return (
     <div className="d-flex  cards-box">
@@ -111,7 +126,7 @@ return (
 
         <div className="d-flex">
             <p className="mb-0 flex-grow-1 text-success me-5">
-                Available {getBalance()}</p>
+                Available {leaveBalance[new Date().getMonth()]}</p>
                 
             <p className="mb-0 text-danger">Booked  {casual+sick+paternity+earned+lop+flexi}</p>
         </div>
