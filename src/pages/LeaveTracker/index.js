@@ -10,15 +10,14 @@ import Cookies from 'js-cookie';
 import { db } from "firebase-config";
 import { useStateContext } from 'Context/ContextProvider';
 const LeaveTracker = () => {
-  const {earnedLeave,available,leave,detail,}= useStateContext()
+  const {earnedLeave,available,leave,detail}= useStateContext()
   const email=Cookies.get('email')
   const todayTimeStamp=new Date()
   todayTimeStamp.setHours(23)
   todayTimeStamp.setMinutes(59)
   todayTimeStamp.setSeconds(59)
-  console.log(detail)
   const upcomingLeaves=detail.filter((data)=>new Date(data.from)>=todayTimeStamp)
-//   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{leaveBalance:available,earnedAvailable:1,lopAvailable:0}).then(()=>{
+//   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{leaveBalance:available}).then(()=>{
 // }).catch((err)=>{
 //   console.log(err)
 // })
@@ -29,7 +28,6 @@ if(today.getMonth()===11 ){
    console.log(err)
  })
  }
-
     return (
         <React.Fragment>
             <div className="page-content">

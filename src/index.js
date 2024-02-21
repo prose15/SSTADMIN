@@ -10,9 +10,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-    
-     
+root.render(  
       <React.Fragment>
         <BrowserRouter>
         <Provider store={store} >
@@ -22,8 +20,6 @@ root.render(
         </Provider>
         </BrowserRouter>
       </React.Fragment>
-      
-  
 );
 
 serviceWorker.unregister()

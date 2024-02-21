@@ -129,3 +129,24 @@ export const handleRevoke = async (userProfile, currentMonth, filterData, leaveD
 
 
 }
+export const countDays=(fromDate,toDate)=>{
+    const dates = getDatesBetweenDates(fromDate,toDate)
+    const holidays = dates.filter(date => (date.getDay()==5 || date.getDay()==6) ) 
+return dates.length-holidays.length  
+  }
+  export const flexidays =['2024-01-01','2024-01-15','2024-01-26','2024-04-09','2024-04-11','2024-04-14','2024-05-01','2024-06-17','2024-07-07','2024-07-17','2024-08-15','2024-09-15','2024-09-16','2024-10-02','2024-10-31','2024-12-25',] 
+  export const isFlexi=(date)=>{
+    let flag=0;
+    for(let i=0;i<flexidays.length;i++){
+      if(flexidays[i]===date){
+        flag=1;
+        break;
+      }
+    }
+    if(flag===1){
+      return true
+    }
+    else{
+      return false
+    }
+  }
