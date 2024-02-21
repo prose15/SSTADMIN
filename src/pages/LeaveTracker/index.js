@@ -33,7 +33,6 @@ useEffect(() => {
   todayTimeStamp.setHours(23)
   todayTimeStamp.setMinutes(59)
   todayTimeStamp.setSeconds(59)
-  console.log(detail)
   const upcomingLeaves=detail.filter((data)=>new Date(data.from)>=todayTimeStamp)
 //   users.map((user)=>{
 //   updateDoc(doc(db,'users',user.id),{leaveBalance:available,earnedAvailable:1,lopAvailable:0,lop:0,earned:0,casual:0,sick:0,flexi:0,casualAvailable:0}).then(()=>{
@@ -56,7 +55,6 @@ if(today.getMonth()===11 ){
    console.log(err)
  })
  }
-
     return (
         <React.Fragment>
             <div className="page-content">

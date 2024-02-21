@@ -156,20 +156,35 @@ for(let i=0;i<graphdetails.length;i++){
   let sDate=new Date(graphdetails[i].from)
   let eDate=new Date(graphdetails[i].to)
   const today=new Date();
+  console.log(graphdetails);
   while(sDate<=eDate){
-    if(sDate.getDay()==5 || sDate.getDay()==6){
-      sDate=sDate
+    if(graphdetails[i].session==='FullDay'){
+      if(sDate.getDay()==5 || sDate.getDay()==6){
+        sDate=sDate
+      }
+      else if(sDate.getMonth()!=eDate.getMonth() && sDate.getFullYear()==today.getFullYear()){
+        leave[sDate.getMonth()]++
+      }
+      else if(sDate.getFullYear()==today.getFullYear()){
+        leave[eDate.getMonth()]++
+      }
+      else if(sDate.getFullYear()!=today.getFullYear()){
+        nextyearleave[sDate.getMonth()]++
+      }
+    }else if(graphdetails[i].session!=='FullDay'){
+      if(sDate.getDay()==5 || sDate.getDay()==6){
+        sDate=sDate
+      }
+      else if(sDate.getMonth()!=eDate.getMonth() && sDate.getFullYear()==today.getFullYear()){
+        leave[sDate.getMonth()]+=0.5
+      }
+      else if(sDate.getFullYear()==today.getFullYear()){
+        leave[eDate.getMonth()]+=0.5
+      }
+      else if(sDate.getFullYear()!=today.getFullYear()){
+        nextyearleave[sDate.getMonth()]+=0.5
+      }
     }
-    else if(sDate.getMonth()!=eDate.getMonth() && sDate.getFullYear()==today.getFullYear()){
-      leave[sDate.getMonth()]++
-    }
-    else if(sDate.getFullYear()==today.getFullYear()){
-      leave[eDate.getMonth()]++
-    }
-    else if(sDate.getFullYear()!=today.getFullYear()){
-      nextyearleave[sDate.getMonth()]++
-    }
-
     sDate.setDate(sDate.getDate()+1)
   }
 }
