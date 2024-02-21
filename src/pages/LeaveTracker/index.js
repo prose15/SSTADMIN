@@ -11,6 +11,23 @@ import { db } from "firebase-config";
 import { useStateContext } from 'Context/ContextProvider';
 const LeaveTracker = () => {
   const {earnedLeave,available,leave,detail,}= useStateContext()
+  const [users,setUsers]=useState([])
+const [admin,setAdmin]=useState([])
+useEffect(() => {
+    const getData= async() => {
+    const data = await getDocs(collection(db,'users')).then((data)=>{
+      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }).catch((err)=>{
+      console.log(err)
+    })
+    const adminData = await getDocs(collection(db,'admin')).then((data)=>{
+      setAdmin(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }).catch((err)=>{
+      console.log(err)
+    })
+    }
+    getData()
+  }, [])
   const email=Cookies.get('email')
   const todayTimeStamp=new Date()
   todayTimeStamp.setHours(23)
@@ -18,10 +35,20 @@ const LeaveTracker = () => {
   todayTimeStamp.setSeconds(59)
   console.log(detail)
   const upcomingLeaves=detail.filter((data)=>new Date(data.from)>=todayTimeStamp)
-//   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{leaveBalance:available,earnedAvailable:1,lopAvailable:0}).then(()=>{
+//   users.map((user)=>{
+//   updateDoc(doc(db,'users',user.id),{leaveBalance:available,earnedAvailable:1,lopAvailable:0,lop:0,earned:0,casual:0,sick:0,flexi:0,casualAvailable:0}).then(()=>{
 // }).catch((err)=>{
 //   console.log(err)
 // })
+//   })
+//   admin.map((user)=>{
+//     updateDoc(doc(db,'admin',user.id),{leaveBalance:available,earnedAvailable:1,lopAvailable:0,lop:0,earned:0,casual:0,sick:0,flexi:0,casualAvailable:0}).then(()=>{
+//   }).catch((err)=>{
+//     console.log(err)
+//   })
+//     })
+
+
 const today=new Date();
 if(today.getMonth()===11 ){
   updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),{earnedAvailable:earnedLeave}).then(()=>{

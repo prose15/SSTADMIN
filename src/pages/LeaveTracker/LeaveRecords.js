@@ -113,7 +113,6 @@ const LeaveRecords = () => {
         Header: 'Subject',
         accessor: 'subject'
       },
-
       {
         Header: 'From',
         accessor: 'from',

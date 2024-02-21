@@ -72,6 +72,11 @@ const LatestTranaction = props => {
       },
 
       {
+        Header : 'Session',
+        accessor : 'session'
+      },
+      
+      {
         Header: "From",
         accessor: "from",
         disableFilters: true,

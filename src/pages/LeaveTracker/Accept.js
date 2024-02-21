@@ -111,8 +111,11 @@ export const Accept = async (id, users, admin) => {
           var count = 0;
           var month = datesWithoutHolidays[temp].getMonth()
           for (let j = temp; j < datesWithoutHolidays.length; j++) {
-            if (datesWithoutHolidays[j].getMonth() === month) {
+            if (datesWithoutHolidays[j].getMonth() === month && detail.session==='FullDay') {
               count++;
+            }
+            else if(datesWithoutHolidays[j].getMonth() === month && detail.session!=='FullDay'){
+              count+=0.5
             }
             else {
               totalMonth.push(datesWithoutHolidays[j].getMonth())
@@ -151,7 +154,7 @@ export const Accept = async (id, users, admin) => {
               detail.earnedLeaveBalance[currentMonth]=leaveBalance
             }
             else if (user.earnedAvailable > 0 && leaveBalance >= user.earnedAvailable) {
-              detail.subLeave = [...detail.subLeave,'both']
+              detail.subLeave =[...detail.subLeave,'both']
               const balanceLop = leaveBalance - user.earnedAvailable
               user.lopAvailable += balanceLop
               detail.lopBooked=balanceLop
@@ -164,13 +167,13 @@ export const Accept = async (id, users, admin) => {
             else {
               user.lopAvailable += leaveBalance
               detail.lopBooked+=leaveBalance
-              detail.subLeave=[...detail.subLeave,'lop']
+              detail.subLeave =[...detail.subLeave,'lop']
               detail.lopLeaveBalance[currentMonth]=leaveBalance
             }
           }
           else if (user.earnedAvailable >= totalDays) {
             detail.subLeave = [...detail.subLeave,'earned']
-            detail.earnedBooked += user.earnedAvailable-totalDays
+            detail.earnedBooked +=totalDays
             user.earnedAvailable -= totalDays
             detail.earnedLeaveBalance[currentMonth] = detail.earnedBooked
           }

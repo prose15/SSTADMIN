@@ -358,7 +358,7 @@ const LeaveForm = props => {
   const  bookedDays = getDatesBetweenDates(new Date(values.fromDate),new Date(values.toDate))
   for(let i=0;i<records.length;i++){
     for(let j=0;j<bookedDays.length;j++){
-      if(records[i].from===bookedDays[j].from || records[i].from===bookedDays[j].to || records[i].tp===bookedDays[j].from || records[i].to===bookedDays[j].to   ){
+      if(records[i].from===bookedDays[j].from || records[i].from===bookedDays[j].to || records[i].to===bookedDays[j].from || records[i].to===bookedDays[j].to   ){
         checkBookedValues=1
         break;
       }
