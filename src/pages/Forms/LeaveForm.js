@@ -354,17 +354,12 @@ const LeaveForm = props => {
       }
     }
   })
-  const records = myRecords.filter(data => data.status !== 'revoke' && new Date(data.from)>=new  Date(values.fromDate) && new Date(data.to)<=new  Date(values.toDate))
-  const  bookedDays = getDatesBetweenDates(new Date(values.fromDate),new Date(values.toDate))
-  for(let i=0;i<records.length;i++){
-    for(let j=0;j<bookedDays.length;j++){
-      if(records[i].from===bookedDays[j].from || records[i].from===bookedDays[j].to || records[i].to===bookedDays[j].from || records[i].to===bookedDays[j].to   ){
-        checkBookedValues=1
-        break;
-      }
+  const records = myRecords.filter(data => data.status !== 'revoke')
+  records.map((data) => {
+    if (data.from === values.fromDate || data.to === values.toDate) {
+      checkBookedValues = 1
     }
-  }
-
+  })
   function countDays(fromDate, toDate) {
     const dates = getDatesBetweenDates(fromDate, toDate)
     const holidays = dates.filter(date => (date.getDay() == 5 || date.getDay() == 6))

@@ -24,18 +24,19 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import BootstrapTheme from "@fullcalendar/bootstrap";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "../DeleteModal";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
-
+import { useStateContext } from "Context/ContextProvider"
+import { getDatesBetweenDates } from "Functions/leaveFormFunctions";
+import { Link } from "react-router-dom";
 const Calender = props => {
-
+  const {leaveDetail}=useStateContext();
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
-
-  const event = [
+  let event  = [
     {
         title: 'New Year\'s Day',
       start: '2024-01-01',
@@ -131,16 +132,48 @@ const Calender = props => {
       allDay: true, 
       className: 'holiday-event'
     },
-  ]
+  ];
+  
+ leaveDetail.map((data)=>{
+  if(data.status==='approved'){
+  const days =  getDatesBetweenDates(new Date(data.from),new Date(data.to))
+  for(let i=0;i<days.length;i++){
+    let month=0
+    if(days[i].getMonth()+1<=9){
+      month='0'+(days[i].getMonth()+1)
+    }else{
+      month=days[i].getMonth()+1
+    }
+    console.log(days[i].getMonth()+1)
+    const date = days[i].getFullYear()+"-"+month+"-"+days[i].getDate()
+    let dataSchema = {title:data.name+"'s "+data.leaveType,start:date,className:'hoiday-event',allDay:true}
+    event.push(dataSchema)
+  }
+  
+  }
+})
+  // const event = 
+ 
+  // if(!leaveDetail) return
+  // event=[...event,...teamLeave]
+  console.log('event',event)
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [modalcategory, setModalcategory] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(0);
+  const [selectedDay, setSelectedDay] = useState(null);
+  useEffect(() => {
+    if (!modalcategory && !isEmpty(event) && !!isEdit) {
+      setTimeout(() => {
+        setEvent({});
+        setIsEdit(false);
+      }, 500);
+    }
+  }, [modalcategory, event]);
   const toggle = () => {
     if (modalcategory) {
       setModalcategory(false);
-      setEvent(null);
-      setIsEdit(false);
+      // setEvent(null);
+      // setIsEdit(false);
     } else {
       setModalcategory(true);
     }
@@ -172,6 +205,46 @@ const Calender = props => {
     setSelectedDay(modifiedData);
     toggle();
   };
+  const categoryValidation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+
+    initialValues: {
+      title: (event && event.title) || '',
+      category: (event && event.category) || '',
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Please Enter Your Event Name"),
+      category: Yup.string().required("Please Enter Your Billing Name"),
+    }),
+    onSubmit: (values) => {
+      if (isEdit) {
+        const updateEvent = {
+          id: event.id,
+          title: values.title,
+          classNames: values.category + " text-white",
+          start: event.start,
+        };
+        // update event
+        dispatch(onUpdateEvent(updateEvent));
+        categoryValidation.resetForm();
+      } else {
+        const newEvent = {
+          id: Math.floor(Math.random() * 100),
+          title: values["title"],
+          start: selectedDay ? selectedDay.date : new Date(),
+          className: values['category']
+            ? values['category'] + " text-white"
+            : "bg-primary text-white"
+          ,
+        };
+        // save new event
+        dispatch(onAddNewEvent(newEvent));
+        categoryValidation.resetForm()
+      }
+      toggle();
+    },
+  });
 
   /**
    * Handling click on event on calendar
@@ -237,6 +310,10 @@ const Calender = props => {
       dispatch(onAddNewEvent(modifiedData));
     }
   };
+  let task
+  if(selectedDay){
+    task = event.filter(data=>data.start===selectedDay.dateStr)
+  }
 
   return (
     <React.Fragment>
@@ -272,12 +349,65 @@ const Calender = props => {
                         editable={true}
                         droppable={true}
                         selectable={true}
+                        dateClick={handleDateClick}
+                        eventClick={handleEventClick}
                         drop={onDrop}
                         height={420}
                       />
                     </CardBody>
                   </Card>
                 </Col>
+                <Modal
+                    isOpen={modalcategory}
+                    className={props.className}
+                    centered
+                  >
+                    <ModalHeader toggle={toggle} tag="h5">
+                      {'View Event'}
+                    </ModalHeader>
+                    <ModalBody className="p-4">
+                      <Form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          categoryValidation.handleSubmit();
+                          return false;
+                        }}
+                      >
+                        <Row>
+                          <Col className="col-12">
+                            <div className="mb-3">
+                              {(selectedDay) && (task.map((data)=>(
+                                <ul key={data} className="" style={{listStyle:'none'}}>
+                                  <li>{data.title}</li>
+                                </ul>
+                              )))}
+                            </div>
+                          </Col>
+                          
+                        </Row>
+
+                        <Row className="mt-2">
+                          <Col className="col-6">
+                            {isEdit &&
+                              <button type="button" className="btn btn-danger" id="btn-delete-event" onClick={() => { toggle(); setDeleteModal(true) }}>Delete</button>
+                            }
+                          </Col>
+
+                          <Col className="col-6 text-end">
+                            <Link to={'/addleave'}>
+                            <button
+                              type="button"
+                              className="btn btn-primary me-1"
+                              onClick={toggle}
+                            >
+                              +Add Leave
+                            </button>
+                            </Link>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </ModalBody>
+                  </Modal>
               </Row>
             </Col>
           </Row>

@@ -22,41 +22,9 @@ import TableContainer from "../../../components/Common/TableContainer";
 import Cookies from "js-cookie";
 import { Status } from "pages/LeaveTracker/LatestTranactionCol";
 
-const TeamRequestsTable = () => {
-
-  const [details, setDetails] = useState([])
-  const [admin,setAdmin]=useState([]);
-  let countData=[]
-  // const collectionRef = collection(db, 'leave submssion')
-  const userRef=collection(db,'users');
-  const adminRef=collection(db,'admin');
-  const [users,setUsers]=useState([])
-  const name = Cookies.get('name');
-  const team=Cookies.get('team');
-  const level=Cookies.get('level');
-  const levelStatus=level+"status"
-  useEffect(() => {
-      const getData = async () => {
-         if(name==='Krishna kumar'){
-          const filteredUsersQuery =query(collection(db,'timesheet'),where('L4status','==',''),orderBy('timestamp','asc'));
-          onSnapshot(filteredUsersQuery,(data)=>{
-            setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-          })
-         }
-         else{
-            const filteredUsersQuery =query(collection(db,'timesheet'),where('team','==',team),where(levelStatus,'==',''),orderBy('timestamp','asc'));
-        onSnapshot(filteredUsersQuery,(data)=>{
-          setDetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        })
-      }
-          console.log(details)
-      };
-      getData();
-  }, [])
+const TeamRequestsTable = ({data , request}) => {
   const [modal1, setModal1] = useState(false);
-
   const toggleViewModal = () => setModal1(!modal1);
-
   let columns = useMemo(
     () => [
 
@@ -89,6 +57,15 @@ const TeamRequestsTable = () => {
           return <WorkedHours {...cellProps} />;
         },
       },
+      {
+        Header: "Status",
+        accessor: "status",
+        disableFilters: true,
+        filterable: false,
+        Cell: cellProps => {
+          return <Status {...cellProps} />;
+        },
+      },
 
       {
         Header: "Date of Submission",
@@ -105,7 +82,7 @@ const TeamRequestsTable = () => {
         accessor: "id",
         disableFilters: true,
         Cell: cellProps => {
-          return <Actions {...cellProps} />;
+          return <Actions {...cellProps} request={request} />;
         },
       },
 
@@ -123,7 +100,7 @@ const TeamRequestsTable = () => {
           <div className="mb-4 h4 card-title m-3">Latest Team Requests</div>
           <TableContainer
             columns={columns}
-            data={details}
+            data={data}
             isGlobalFilter={false}
             isAddOptions={false}
             isPagination={true}

@@ -25,41 +25,49 @@ function useQuery(){
     return new URLSearchParams(location.search)
 }
 const nav = useNavigate()
+const [show, setShow] = useState(false);
+const [show2,setShow2]= useState(false)
+const [err,setErr]=useState('')
 const query=useQuery()
-  const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-
-    initialValues: {
-      password: '',
-    },
-    validationSchema: Yup.object({
-      password: Yup.string().required("Please Enter Your Password"),
-    }),
+const  initialValues= {
+  password: '',
+  confirmpassword:'',
+}
+const schema = Yup.object({
+  password: Yup.string().required("Please Enter Your Password"),
+  confirmpassword: Yup.string().required("Please Confirm Your Password"),
+})
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
+   initialValues: initialValues,
+   validationSchema: schema,
     onSubmit: (values) => {
-      confirmPasswordReset(auth,query.get('oobCode'),values.password).then(()=>{
-        setSuccessMsg(true)
-        setTimeout(()=>nav('/'),5000)
-      }).catch((err)=>{
-          console.log(err.code);
-      })
+      if(values.password===values.confirmpassword){
+        confirmPasswordReset(auth,query.get('oobCode'),values.password).then(()=>{
+          setSuccessMsg(true)
+          setTimeout(()=>nav('/'),5000)
+        }).catch((err)=>{
+            console.log(err.code);
+        })
+      }else{
+         setErr("Password doesn't match")
+      } 
     }
   });
 
 
-  const selectForgotPasswordState = (state) => state.ForgetPassword;
-    const ForgotPasswordProperties = createSelector(
-      selectForgotPasswordState,
-        (forgetPassword) => ({
-          forgetError: forgetPassword.forgetError,
-          forgetSuccessMsg: forgetPassword.forgetSuccessMsg,
-        })
-    );
+  // const selectForgotPasswordState = (state) => state.ForgetPassword;
+  //   const ForgotPasswordProperties = createSelector(
+  //     selectForgotPasswordState,
+  //       (forgetPassword) => ({
+  //         forgetError: forgetPassword.forgetError,
+  //         forgetSuccessMsg: forgetPassword.forgetSuccessMsg,
+  //       })
+  //   );
 
-    const {
-      forgetError,
-      forgetSuccessMsg
-  } = useSelector(ForgotPasswordProperties);   
+  //   const {
+  //     forgetError,
+  //     forgetSuccessMsg
+  // } = useSelector(ForgotPasswordProperties);   
   
  
     
@@ -107,11 +115,11 @@ const query=useQuery()
                     </Link>
                   </div>
                   <div className="p-2">
-                    {forgetError && forgetError ? (
+                    {/* {forgetError && forgetError ? (
                       <Alert color="danger" style={{ marginTop: "13px" }}>
                         {forgetError}
                       </Alert>
-                    ) : null}
+                    ) : null} */}
                     {successMsg ? (
                       <Alert color="success" style={{ marginTop: "13px" }}>
                         {"Your password has changed. Please login again!"}
@@ -121,29 +129,56 @@ const query=useQuery()
                       className="form-horizontal"
                       onSubmit={(e) => {
                         e.preventDefault();
-                        validation.handleSubmit();
+                        handleSubmit();
                         return false;
                       }}
                     >
                       <div className="mb-3">
-                        <Label className="form-label">Password</Label>
+                        <Label className="form-label">New Password</Label>
+                        <div className="input-group auth-pass-inputgroup ">
                         <Input
                           name="password"
                           className="form-control"
                           placeholder="Enter new password"
-                          type="password"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.password || ""}
-                          invalid={
-                            validation.touched.password && validation.errors.password ? true : false
-                          }
+                          type={show ? "text" : "password"}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password}
+                          // invalid={
+                          //   validation.touched.password && validation.errors.password ? true : false
+                          // }
                         />
-                        {validation.touched.password && validation.errors.password ? (
-                          <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
-                        ) : null}
+                        <button onClick={() => setShow(!show)} className="btn btn-light" type="button" id="password-addon">
+                            <i className="mdi mdi-eye-outline"></i></button>
+                            </div>
+                        {/* {touched.password && errors.password ? (
+                          <FormFeedback type="invalid">{errors.password}</FormFeedback>
+                        ) : null} */}
+                      </div>
+                      <div className="mb-3">
+                        <Label className="form-label">Confirm Password</Label>
+                        <div className="input-group auth-pass-inputgroup ">
+                        <Input
+                          name="confirmpassword"
+                          className="form-control"
+                          placeholder="Enter new password"
+                          type={show2 ? "text" : "password"}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.confirmpassword}
+                          // invalid={
+                          //   validation.touched.confirmpassword && validation.errors.confirmpassword ? true : false
+                          // }
+                        />
+                        <button onClick={() => setShow2(!show2)} className="btn btn-light" type="button" id="password-addon">
+                            <i className="mdi mdi-eye-outline"></i></button>
+                            </div>
+                        {/* {validation.touched.confirmpassword && validation.errors.confirmpassword ? (
+                          <FormFeedback type="invalid">{validation.errors.confirmpassword}</FormFeedback>
+                        ) : null} */}
                       </div>
                       <Row className="mb-3">
+                      <p className="text-danger text-center">{err}</p>
                         <Col className="text-end">
                           <button
                             className="btn btn-primary w-md "
@@ -152,6 +187,7 @@ const query=useQuery()
                             Confirm
                           </button>
                         </Col>
+                        
                       </Row>
                     </Form>
                   </div>

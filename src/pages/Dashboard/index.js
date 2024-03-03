@@ -28,7 +28,7 @@ import { collection, getDocs, where, query,doc,getDoc,onSnapshot } from 'firebas
 //i18n
 import { withTranslation } from "react-i18next";
 import Cookies from 'js-cookie'
-import Calender from "components/Common/Calender";
+import Calender from "components/Common/Calendar";
 import TeamMates from "./TeamMates";
 import { Toast,ToastBody, ToastHeader } from 'reactstrap';
 import TeamMatesLeave from "./TeamMatesLeave";
@@ -90,7 +90,7 @@ const Dashboard = props => {
     { title: "Team Mates", iconClass: "bx bxs-group", description: newTeam.length },
     {
       title: "Tickets  Worked",
-      iconClass: "bx bxs-report",
+      iconClass: "mdi mdi-ticket-confirmation",
       description: "-",
     },
   ];
@@ -191,11 +191,20 @@ const findMin=(data)=>{
                           </div>
                           <div className="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
                             <span className="avatar-title rounded-circle bg-primary">
-                              <i
+                              {
+                                report.iconClass==='mdi mdi-ticket-confirmation'?(<i
+                                  className={
+                                    "bx " + report.iconClass + " font-size-24"
+                                  }
+                                  style={{transform:'rotate(140deg)'}}
+                                ></i>):(
+                                  <i
                                 className={
                                   "bx " + report.iconClass + " font-size-24"
                                 }
                               ></i>
+                                )
+                              }
                             </span>
                           </div>
                         </div>
@@ -214,7 +223,7 @@ const findMin=(data)=>{
           <RecentFile/> 
           </Col>
           <Col sm="8">
-          <TeamMatesLeave/>
+          {/* <TeamMatesLeave/> */}
           </Col>
           </Row>
 

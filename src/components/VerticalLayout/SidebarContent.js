@@ -29,7 +29,7 @@ const SidebarContent = props => {
 
         if (parent3) {
           parent3.classList.add("mm-active");
-          parent3.childNodes[0].classList.add("mm-active"); 
+          parent3.childNodes[0].classList.add("mm-active");
           const parent4 = parent3.parentElement;
           if (parent4) {
             parent4.classList.add("mm-show");
@@ -151,69 +151,90 @@ const SidebarContent = props => {
 
             <li>
               <Link to="/#" className="has-arrow">
-              <i className="bx bx-cycling"></i>
+                <i className="bx bx-cycling"></i>
                 <span>Leave Tracker</span>
               </Link>
               <ul className="sub-menu">
                 {
-                  (Cookies.get('level')!='L3')?(
-                  <>   
-                  <li>
-                    <Link to="/leavetracker">Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link to="/leave/records">My Records</Link>
-                  </li>
-                  <li>
-                  <Link to="/leave/requests">Team Requests</Link>
-                </li>
-                  </>):( 
-                  <li>
-                  <Link to="/leave/requests">Team Requests</Link>
-                </li>)
+                  (Cookies.get('level') != 'L3') ? (
+                    <>
+                      <li>
+                        <Link to="/leavetracker">Dashboard</Link>
+                      </li>
+                      <li>
+                        <Link to="/leave/records">My Records</Link>
+                      </li>
+                      <li>
+                        <Link to="/leave/requests">Team Requests</Link>
+                      </li>
+                    </>) : (
+                    <li>
+                      <Link to="/leave/requests">Team Requests</Link>
+                    </li>)
                 }
                 {
-                  Cookies.get('level')==='L2' && <li>
-                  <Link to="/leave/festiveleave">Declare Holiday</Link>
-                </li>
+                  Cookies.get('level') === 'L2' && <li>
+                    <Link to="/leave/festiveleave">Declare Holiday</Link>
+                  </li>
                 }
-               
+
               </ul>
             </li>
             <li>
               <Link to="/#" className="has-arrow">
-              <i className='mdi mdi-laptop-windows'></i>
+                <i className='mdi mdi-laptop-windows'></i>
                 <span>Work From Home</span>
               </Link>
               <ul className="sub-menu">
-                <li>
-                  <Link to="/WFH">Apply WFH</Link>
-                </li>
-                <li>
-                  <Link to="/WFH/records">My Records</Link>
-                </li>
+                {
+                  Cookies.get('level') !== 'L3' &&
+                  (
+                    <>
+                      <li>
+                        <Link to="/WFH">Apply WFH</Link>
+                      </li>
+                      <li>
+                        <Link to="/WFH/records">My Records</Link>
+                      </li>
+                    </>
+                  )
+                }
+
                 <li>
                   <Link to="/WFH/requests">Team's Request</Link>
-                </li>   
+                </li>
               </ul>
             </li>
-            {(Cookies.get('team')!='Sales')}
-              {((Cookies.get('level')==='L2') &&(Cookies.get('name')==='Keerthana')) || (Cookies.get('name')==='Balaji') ?(
+            {
+              (Cookies.get('team')==='Delivery' || Cookies.get('role')==='Chief Executive Officer') && (
+              <li>
+                <Link to="/#" className="has-arrow" >
+                  <i className="bx bx-calendar"></i>
+                  <span>{props.t("Time Sheet")}</span>
+                </Link>
+                <ul className="sub-menu">
+                  <li>
+                    <Link to="/timesheet/requests">{props.t("Team Request")}</Link>
+                  </li>
+                  <li><Link to="/timesheet/efficiency">{props.t("Team Efficiency")}</Link></li>
+                </ul>
+              </li>
+              )
+            }{
+              (Cookies.get('role') === 'HR - Operational Executive') && (
                 <li>
-                </li>):(
-                <li>
-          <Link to="/#" className="has-arrow" >
-            <i className="bx bx-calendar"></i>
-            <span>{props.t("Time Sheet")}</span>
-          </Link>
-<ul className="sub-menu">
-<li>
-<Link to="/timesheet/requests">{props.t("Team Request")}</Link>
-</li>
-<li><Link to="/timesheet/efficiency">{props.t("Team Efficiency")}</Link></li>
-</ul>
-</li>)
-                }           
+                <Link to="/#" className="has-arrow" >
+                  <i className="bx bx-calendar"></i>
+                  <span>{props.t("Time Sheet")}</span>
+                </Link>
+                <ul className="sub-menu">
+                  <li>
+                    <Link to="/timesheet/approved-timesheet">{props.t("Approved Timesheet")}</Link>
+                  </li>
+                </ul>
+              </li>
+              )
+            }
 
             <li>
               <Link to="/ticket/dashboard" className="has-arrow">
@@ -234,9 +255,9 @@ const SidebarContent = props => {
               </ul> */}
             </li>
             <li>
-            
+
               <Link to="/profile" className="">
-              <i className="bx bx-user"></i>
+                <i className="bx bx-user"></i>
                 <span>{props.t("Profile")}</span>
               </Link>
             </li>

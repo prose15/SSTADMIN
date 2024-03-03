@@ -39,7 +39,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                                            <li>{event.startTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
-                                           <li>{event.startTime}</li>
+                                           <li>{event.endTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
                                            <li>{workedHrs(event.startTime, event.endTime)}</li>
@@ -86,7 +86,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                                            <li>{event.startTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
-                                           <li>{event.startTime}</li>
+                                           <li>{event.endTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
                                            <li>{workedHrs(event.startTime, event.endTime)}</li>
@@ -133,7 +133,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                                            <li>{event.startTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
-                                           <li>{event.startTime}</li>
+                                           <li>{event.endTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
                                            <li>{workedHrs(event.startTime, event.endTime)}</li>
@@ -180,7 +180,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                                            <li>{event.startTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
-                                           <li>{event.startTime}</li>
+                                           <li>{event.endTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
                                            <li>{workedHrs(event.startTime, event.endTime)}</li>
@@ -227,7 +227,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                                            <li>{event.startTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
-                                           <li>{event.startTime}</li>
+                                           <li>{event.endTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
                                            <li>{workedHrs(event.startTime, event.endTime)}</li>
@@ -247,7 +247,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                           ):(<></>)
                         }
                           {
-                          fri?(
+                          fri && fri.length>0?(
                             <>
                             <h4 className="card-title mt-4 mb-4">Friday</h4>
                             <ul className="verti-timeline list-unstyled ms-3">
@@ -274,7 +274,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                                            <li>{event.startTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
-                                           <li>{event.startTime}</li>
+                                           <li>{event.endTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
                                            <li>{workedHrs(event.startTime, event.endTime)}</li>
@@ -294,7 +294,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                           ):(<></>)
                         }
                           {
-                          sat?(
+                          sat && sat.length>0?(
                             <>
                             <h4 className="card-title mt-4 mb-4">Saturday</h4>
                             <ul className="verti-timeline list-unstyled ms-3">
@@ -321,7 +321,7 @@ const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
                                            <li>{event.startTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
-                                           <li>{event.startTime}</li>
+                                           <li>{event.endTime}</li>
                                            </Col>
                                            <Col className='col-lg-1'>
                                            <li>{workedHrs(event.startTime, event.endTime)}</li>

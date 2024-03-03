@@ -23,28 +23,21 @@ const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
   const {url}=useStateContext();
-  const [username, setusername] = useState(Cookies.get('name'));
-  const userName=()=>{
-  if(Cookies.get('name') && JSON.parse(sessionStorage.getItem('uid'))){
-    const name=Cookies.get('name')
+  const [username, setusername] = useState('');
+  const userName=(name)=>{
     const firstLetter=name.split('')
     return firstLetter[0]
-  }
 }
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        const obj = JSON.parse(localStorage.getItem("authUser"));
-        // setusername(obj.displayName);
-        setusername(Cookies.get('name'))
-      }  {
-        const obj = JSON.parse(localStorage.getItem("authUser"));
-        // setusername(obj.username);
-        setusername(Cookies.get('name'))
-      }
+    if (localStorage.getItem("authuser")) {
+        const obj = JSON.parse(localStorage.getItem("authuser"));
+        setusername(obj);
+      
+    }else{
+      setusername(Cookies.get('name'))
     }
-  }, [props.success]);
+  }, [localStorage.getItem("authuser")]);
 
   const nav=useNavigate()
   const handleSignOut=()=>{
@@ -53,7 +46,7 @@ const ProfileMenu = props => {
       nav('/login')
   }).catch((err)=> console.log(err.message))
   }
-const letter = userName()
+const letter = userName(username)
   return (
     <React.Fragment>
       <Dropdown

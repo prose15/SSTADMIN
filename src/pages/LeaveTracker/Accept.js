@@ -141,7 +141,8 @@ export const Accept = async (id, users, admin) => {
           if (user.leaveBalance[currentMonth] >= totalDays) {
             if (leave === 'flexi') {
               user[key] -= detail.totalDays
-            } else {
+            }
+             else {
               user[key] += totalDays
             }
           } else if (user.leaveBalance[currentMonth] > 0 && totalDays > user.leaveBalance[currentMonth]) {
@@ -206,6 +207,9 @@ export const Accept = async (id, users, admin) => {
             }
             user.leaveBalance[currentMonth] = 0
           }
+          if(remaining<0 && currentMonth>0 && user.leaveBalance[currentMonth] === 0){
+            user.leaveBalance[currentMonth-1]=0
+          } 
           console.log(user.leaveBalance, detail)
         }
         console.log(user)
@@ -261,6 +265,7 @@ export const Accept = async (id, users, admin) => {
           let totalDays = daysInSameMonth[i]
           const currentMonth = totalMonth[i]
           if (user.leaveBalance[currentMonth] >= totalDays) {
+           
             if (leave === 'flexi') {
               user[key] -= detail.totalDays
             } else {
@@ -317,6 +322,7 @@ export const Accept = async (id, users, admin) => {
           }
 
           const remaining = user.leaveBalance[currentMonth] - totalDays
+          
           if (remaining >= 0) {
             user.leaveBalance[currentMonth] = remaining
             for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
@@ -327,6 +333,9 @@ export const Accept = async (id, users, admin) => {
               user.leaveBalance[i + 1] -= user.leaveBalance[currentMonth]
             }
             user.leaveBalance[currentMonth] = 0
+          }
+          if(remaining<=0 && currentMonth>0 && user.leaveBalance[currentMonth] === 0){
+            user.leaveBalance[currentMonth-1]=0
           }
           console.log(user.leaveBalance, detail)
         }

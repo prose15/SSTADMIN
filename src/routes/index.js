@@ -37,6 +37,8 @@ import PagesComingsoon from "utilites/PagesComingSoon";
 import Pages404 from "utilites/Pages404";
 import ApprovalCard from "pages/LeaveTracker/ApprovalCard";
 import Approvals from "Approvals/Approvals";
+import ViewTeamTimesheet from "pages/timesheet/Dashboard-saas/pages/ViewTeamTimesheet";
+import ApprovedTimesheet from "pages/timesheet/Dashboard-saas/pages/ApprovedTimesheet";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -60,6 +62,8 @@ const authProtectedRoutes = [
   { path: "/timesheet/requests/viewtimesheet/:id", component: <Viewtimesheet />},
   { path: "/timesheet/efficiency", component: <TeamEfficiency/>},
   { path: "/timesheet/mytimesheet/createtimesheet", component: <CreateTImeSheet /> },
+  { path: "/timesheet/view-timesheet/:id", component: <ViewTeamTimesheet /> },
+  { path: "/timesheet/approved-timesheet", component: <ApprovedTimesheet /> },
   //ticket 
   { path: "/ticket/dashboard", component: <PagesComingsoon/> },
   // { path: "/ticket/myticket", component: <MyTicket />  },

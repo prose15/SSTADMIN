@@ -1,7 +1,10 @@
+import { useStateContext } from "Context/ContextProvider"
 export const totHours=()=>{
+  const {startdate,enddate} = useStateContext()
     const today=new Date()
-const startDate=new Date(today.getFullYear(),today.getMonth(),1,0,0,0,0)
-const endDate=new Date(today.getFullYear(),today.getMonth()+1,0,23,59,59,59)
+    console.log(startdate)
+const startDate=new Date(new Date(startdate).getFullYear(),new Date(startdate).getMonth(),1,0,0,0,0)
+const endDate=new Date(new Date(startdate).getFullYear(),new Date(startdate).getMonth()+1,0,23,59,59,59)
 let count=0;
 while(startDate<=endDate){
   const Day=startDate.getDay()

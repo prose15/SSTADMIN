@@ -150,3 +150,6 @@ return dates.length-holidays.length
       return false
     }
   }
+  export function isPromise(p){
+    return Boolean(p && typeof p.then === 'function')
+  }

@@ -1,8 +1,9 @@
-import {initializeApp} from "firebase/app";
-import {getAuth}from "firebase/auth"
-import {getFirestore} from 'firebase/firestore'
-import {getMessaging, getToken, onMessage} from 'firebase/messaging'
-import {getDownloadURL,getStorage,ref,uploadBytes} from 'firebase/storage'
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth"
+import { getFirestore } from 'firebase/firestore'
+import { getMessaging, getToken, onMessage } from 'firebase/messaging'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
+
 const firebaseConfig = {
 
   apiKey: "AIzaSyC3QJGdNdbzPRoi5usIcbGqGjA9jWl4AtY",
@@ -20,29 +21,18 @@ const firebaseConfig = {
   measurementId: "G-ZKMJGYD2K1"
 
 };
-
-
-
-  const app = initializeApp(firebaseConfig);
-  const db=getFirestore(app)
-  const auth = getAuth(app); 
-  const storage=getStorage()
-  const messaging = getMessaging(app)
-  export {auth,db ,storage ,messaging}
-  export const requestPermission= async()=>{
-   const permission=await Notification.requestPermission()
-      if(permission==='granted'){
-        const token=await getToken(messaging,{
-          vapidKey:"BLX_Cgc9zYvyOHjzZj6EikSyvdqkiwIMtas5NnN0kezZta6WxmIi-tM3Wj6NXgttiVfnhaqyZIIenSgPZHZdXM0" 
-        }
-        )
-      }
-      else{
-        
-      }
-    
-
-    
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app)
+const auth = getAuth(app);
+const storage = getStorage()
+const messaging = getMessaging(app)
+export { auth, db, storage, messaging }
+export const requestPermission = async () => {
+  const permission = await Notification.requestPermission()
+  if (permission === 'granted') {
+    const token = await getToken(messaging, {
+      vapidKey: "BLX_Cgc9zYvyOHjzZj6EikSyvdqkiwIMtas5NnN0kezZta6WxmIi-tM3Wj6NXgttiVfnhaqyZIIenSgPZHZdXM0"
+    }
+    )
   }
- 
-
+}

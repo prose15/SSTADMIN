@@ -18,6 +18,7 @@ export const Accept=async(id)=>{
     data[status]='accept'
     if(data.L1status === 'accept' && data.L3status==='accept'){
       data.L4status='accept'
+      data.status='approved'
     }
     await updateDoc(docRef,data).catch((err)=>{
       console.log(err)

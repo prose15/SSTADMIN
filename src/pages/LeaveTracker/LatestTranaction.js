@@ -99,7 +99,7 @@ const LatestTranaction = props => {
       {
         Header: "Reason",
         accessor: "reason",
-        width:"300px",
+        width:'300px',
         disableFilters: true,
         filterable: false,
         Cell: cellProps => {

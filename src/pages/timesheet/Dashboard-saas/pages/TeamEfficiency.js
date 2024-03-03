@@ -19,13 +19,15 @@ const TeamEfficiency = () => {
   const [varyingModal, setVaryingModal] = useState(false);
   const currentDate=new Date()
   const {setPerformanceArray,startdate,enddate,format,setFormat} = useStateContext()
+  const startDate=new Date(startdate)
+  const endDate=new Date(enddate)
 const [data,setData]=useState([])
 const [data2,setData2]=useState([])
 const [project,setProject]=useState([])
 const [userId,setUserId]=useState('')
-        const lastDate=new Date(currentDate.getFullYear(),currentDate.getMonth()+1,0)
+        const lastDate=new Date(startDate.getFullYear(),startDate.getMonth()+1,1)
         const lastDateTimestamp=Timestamp.fromDate(lastDate)
-        const firstDate= new Date(currentDate.getFullYear(),currentDate.getMonth(),1)
+        const firstDate= new Date(startDate.getFullYear(),startDate.getMonth(),1)
         const firstDateTimestamp=Timestamp.fromDate(firstDate)
     function tog_varyingModal() {
         setVaryingModal(!varyingModal);
@@ -33,11 +35,19 @@ const [userId,setUserId]=useState('')
     const [team,setTeam]=useState([])
  useEffect(() => {
   const getData=async()=>{
-    const filteredUsersQuery =query(collection(db,'users'),where('team','==',Cookies.get('team')));
+    if(Cookies.get('role')==='Chief Executive Officer'){
+      const filteredUsersQuery =query(collection(db,'users'),where('team','==','Delivery'));
     const data=await getDocs(filteredUsersQuery).catch((err)=>{
     
     })
     setTeam(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  
+    }else{
+    const filteredUsersQuery =query(collection(db,'users'),where('team','==',Cookies.get('team')));
+    const data=await getDocs(filteredUsersQuery).catch((err)=>{
+    })
+    setTeam(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  }
   }
 getData()
 
@@ -62,24 +72,27 @@ useEffect(()=>{
   })
   }
   getReport()
-},[userId])
-
+},[userId,startdate])
+console.log(data)
   const getReport = async()=>{ 
         const firstDay=new Date(startdate)
         const lastDay=new Date(enddate)
         const firstDayOfWeek=Timestamp.fromDate(firstDay)
-        const lastDayOfWeek=Timestamp.fromDate(lastDay)  
+        const lastDayOfWeek=Timestamp.fromDate(lastDay) 
+        console.log(firstDayOfWeek,lastDayOfWeek) 
         setPerformanceArray([])
           let arr=[]
           if(format==='weekly'){
-            const weeklyData=data.filter((data)=>data.dateTimestamp>=firstDayOfWeek && data.dateTimestamp<=lastDayOfWeek)
+            const weeklyData=data.filter((data)=>data.dateTimestamp.seconds>=firstDayOfWeek.seconds && data.dateTimestamp.seconds<=lastDayOfWeek.seconds)
+            console.log(project)
+            console.log(weeklyData)
             if(project.length>0 && weeklyData.length>0){
               for(let i=0;i<project.length;i++){
                 let workedHours=0;
                 const projectName=project[i].service;
-                for(let j=0;j<data.length;j++){
+                for(let j=0;j<weeklyData.length;j++){
                     if(projectName===weeklyData[j].projectName){
-                        workedHours+=totHours(weeklyData[j].startTime,weeklyData[j].endTime)
+                        workedHours +=totHours(weeklyData[j].startTime,weeklyData[j].endTime)
                     }
                 }
                 console.log(workedHours)

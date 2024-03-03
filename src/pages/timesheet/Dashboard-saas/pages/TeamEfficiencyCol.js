@@ -46,7 +46,11 @@ setUserId(cell.value)
       <Button className='btn dropdown-item' onClick={()=>handleClick()}> 
       {'View reports'}<i className='ms-2 fas fa-chart-line'/>
       </Button>
-      
+      <Link to={`/timesheet/view-timesheet/${cell.value}`}>
+      <Button className='btn dropdown-item' > 
+      {'View Timesheet'}<i className="bx bxs-detail ms-2" />
+      </Button>
+      </Link>
       </DropdownMenu>
       </UncontrolledDropdown>
     )

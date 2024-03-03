@@ -91,35 +91,35 @@ async function composeEmail(data) {
 const Actions = cell => {
   const { myRecords } = useStateContext()
   const [data, setData] = useState(null)
-  const [userProfile,setUserProfile]=useState(null)
+  const [userProfile, setUserProfile] = useState(null)
   let userData
   useEffect(() => {
     const getData = async () => {
       const docRef = doc(db, "leave submssion", cell.value)
       const userRef = doc(db, "admin", JSON.parse(sessionStorage.getItem("uid")))
-    const RevokeUserData = await getDoc(userRef)
+      const RevokeUserData = await getDoc(userRef)
       const docSnap = await getDoc(docRef)
       if (docSnap.exists()) {
         setData(docSnap.data())
       }
-      if(RevokeUserData.exists()){
+      if (RevokeUserData.exists()) {
         setUserProfile(RevokeUserData.data())
-        
+
       }
-      
+
     }
     getData()
   }, [])
-  userData=userProfile
+  userData = userProfile
   console.log(userData)
   async function revokeEmail(data) {
     const docRef = doc(db, "leave submssion", data)
-    const RevokeData =await getDoc(docRef)
+    const RevokeData = await getDoc(docRef)
     const leaveData = RevokeData.data()
-    leaveData.status='revoke'
+    leaveData.status = 'revoke'
     if (RevokeData.exists() && userData) {
-     
-      console.log('lop', userData.lopAvailable,'earned',userData.earnedAvailable)
+
+      console.log('lop', userData.lopAvailable, 'earned', userData.earnedAvailable)
       console.log('initial leaveBalance', userData.leaveBalance)
       const fromMonth = SplitMonth(leaveData.from)
       const toMonth = SplitMonth(leaveData.to)
@@ -164,44 +164,43 @@ const Actions = cell => {
           }
           console.log('before revoke', userProfile.leaveBalance)
           // const availableLeave=userProfile.leaveBalance[currentMonth]
-          if (userData.leaveBalance[currentMonth]>0) {
+          if (userData.leaveBalance[currentMonth] > 0) {
             const filterData = myRecords.filter(data => new Date(data.from).getMonth() + 1 == parseInt(fromMonth) && new Date(data.to).getMonth() + 1 >= parseInt(toMonth) && data.status === 'approved' && data.subLeave.length > 0 && data.from !== leaveData.from && data.to !== leaveData.to)
             console.log(filterData)
-            userData=handleRevoke(userData,currentMonth,filterData,leaveData)
+            userData = handleRevoke(userData, currentMonth, filterData, leaveData)
           }
         }
         else if (subLeave === 'earned') {
           let str = leaveData.leaveType
-            const leaveType = str.substring(0, str.length - 5).toLocaleLowerCase()
-            const key = leaveType + "Available"
-            const getAvailDays = days - leaveData.earnedLeaveBalance[currentMonth]
-            console.log('avail days',getAvailDays,leaveData.earnedLeaveBalance[currentMonth])
-            let flag = 0
-          if(subLeave==='earned' && leaveData.earnedLeaveBalance[currentMonth]==0){
-            userData[key] = userData[key] - days
+          const leaveType = str.substring(0, str.length - 5).toLocaleLowerCase()
+          const key = leaveType + "Available"
+          const getAvailDays = days - leaveData.earnedLeaveBalance[currentMonth]
+          console.log('avail days', getAvailDays, leaveData.earnedLeaveBalance[currentMonth])
+          let flag = 0
+          if (subLeave === 'earned' && leaveData.earnedLeaveBalance[currentMonth] == 0) {
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += days
             }
             flag = 1;
           }
-          if (getAvailDays > 0 && leaveData.earnedLeaveBalance[currentMonth]>0) {
+          if (getAvailDays > 0 && leaveData.earnedLeaveBalance[currentMonth] > 0) {
             userData[key] = userData[key] - getAvailDays
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += getAvailDays
             }
             userData.earnedAvailable += leaveData.earnedLeaveBalance[currentMonth]
-            leaveData.earnedLeaveBalance[currentMonth]=0
+            leaveData.earnedLeaveBalance[currentMonth] = 0
             flag = 1;
-          }else if(getAvailDays===0 && leaveData.earnedLeaveBalance[currentMonth]>0){
+          } else if (getAvailDays === 0 && leaveData.earnedLeaveBalance[currentMonth] > 0) {
             userData.earnedAvailable += leaveData.earnedLeaveBalance[currentMonth]
             flag = 1;
-          } 
-          if (userData.leaveBalance[currentMonth]>0) {
+          }
+          if (userData.leaveBalance[currentMonth] > 0) {
             const filterData = myRecords.filter(data => new Date(data.from).getMonth() + 1 == parseInt(fromMonth) && new Date(data.to).getMonth() + 1 >= parseInt(toMonth) && data.status === 'approved' && data.subLeave.length > 0 && data.from !== leaveData.from && data.to !== leaveData.to)
             console.log(filterData)
             // if(userProfile.lopAvailable>0){
-              userData=handleRevoke(userData,currentMonth,filterData,leaveData)
-                        // }
+            userData = handleRevoke(userData, currentMonth, filterData, leaveData)
+            // }
           }
         }
         else if (subLeave === 'lop') {
@@ -209,25 +208,24 @@ const Actions = cell => {
           const leaveType = str.substring(0, str.length - 5).toLocaleLowerCase()
           const key = leaveType + "Available"
           const getAvailDays = days - leaveData.lopLeaveBalance[currentMonth]
-          console.log('avail days',getAvailDays,leaveData.lopLeaveBalance[currentMonth])
+          console.log('avail days', getAvailDays, leaveData.lopLeaveBalance[currentMonth])
           let flag = 0
-          if(subLeave==='lop' && leaveData.lopLeaveBalance[currentMonth]==0){
-            userData[key] = userData[key] - days
+          if (subLeave === 'lop' && leaveData.lopLeaveBalance[currentMonth] == 0) {
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += days
             }
             flag = 1;
           }
-          if (getAvailDays > 0 &&  leaveData.lopLeaveBalance[currentMonth]>0) {
-          
+          if (getAvailDays > 0 && leaveData.lopLeaveBalance[currentMonth] > 0) {
+
             userData[key] = userData[key] - getAvailDays
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userProfile.leaveBalance[i] += getAvailDays
             }
             userProfile.lopAvailable -= leaveData.lopLeaveBalance[currentMonth]
             flag = 1;
-          } else if(getAvailDays===0 && leaveData.lopLeaveBalance[currentMonth]>0){
-            if(userData.lopAvailable>0){
+          } else if (getAvailDays === 0 && leaveData.lopLeaveBalance[currentMonth] > 0) {
+            if (userData.lopAvailable > 0) {
               userData.lopAvailable -= leaveData.lopLeaveBalance[currentMonth]
             }
             // else{
@@ -235,13 +233,13 @@ const Actions = cell => {
             //     userProfile.leaveBalance[i] += leaveData.lopLeaveBalance[currentMonth]
             //   }
             // }
-            
+
             flag = 1
           }
-          if (userData.leaveBalance[currentMonth]>0) {
+          if (userData.leaveBalance[currentMonth] > 0) {
             const filterData = myRecords.filter(data => new Date(data.from).getMonth() + 1 == parseInt(fromMonth) && new Date(data.to).getMonth() + 1 >= parseInt(toMonth) && data.status === 'approved' && data.subLeave.length > 0 && data.from !== leaveData.from && data.to !== leaveData.to)
             console.log(filterData)
-              userData=handleRevoke(userData,currentMonth,filterData,leaveData)
+            userData = handleRevoke(userData, currentMonth, filterData, leaveData)
           }
         }
         else if (subLeave === 'both') {
@@ -250,14 +248,13 @@ const Actions = cell => {
           let str = leaveData.leaveType
           const leaveType = str.substring(0, str.length - 5).toLocaleLowerCase()
           const key = leaveType + "Available"
-          if(subLeave==='both' && leaveData.lopLeaveBalance[currentMonth]==0 && leaveData.earnedLeaveBalance[currentMonth]===0){
-            userData[key] = userData[key] - days
+          if (subLeave === 'both' && leaveData.lopLeaveBalance[currentMonth] == 0 && leaveData.earnedLeaveBalance[currentMonth] === 0) {
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += days
             }
             flag = 1;
           }
-          if (getAvailDays > 0 && leaveData.lopLeaveBalance[currentMonth]>0 && leaveData.earnedLeaveBalance[currentMonth]>0) {
+          if (getAvailDays > 0 && leaveData.lopLeaveBalance[currentMonth] > 0 && leaveData.earnedLeaveBalance[currentMonth] > 0) {
             userData[key] = userData[key] - getAvailDays
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += getAvailDays
@@ -266,23 +263,29 @@ const Actions = cell => {
             userData.earnedAvailable += leaveData.earnedLeaveBalance[currentMonth]
             flag = 1;
           }
-          else if(getAvailDays==0 && leaveData.lopLeaveBalance[currentMonth]>0 && leaveData.earnedLeaveBalance[currentMonth]>0){
-            if(userData.lopAvailable>0){
+          else if (getAvailDays == 0 && leaveData.lopLeaveBalance[currentMonth] > 0 && leaveData.earnedLeaveBalance[currentMonth] > 0) {
+            if (userData.lopAvailable > 0) {
               userData.lopAvailable -= leaveData.lopLeaveBalance[currentMonth]
             }
             userData.earnedAvailable += leaveData.earnedLeaveBalance[currentMonth]
             flag = 1;
           }
-         
-          if (userData.leaveBalance[currentMonth]>0) {
+
+          if (userData.leaveBalance[currentMonth] > 0) {
             const filterData = myRecords.filter(data => new Date(data.from).getMonth() + 1 == parseInt(fromMonth) && new Date(data.to).getMonth() + 1 >= parseInt(toMonth) && data.status === 'approved' && data.subLeave.length > 0 && data.from !== leaveData.from && data.to !== leaveData.to)
             console.log(filterData)
-            userData=handleRevoke(userData,currentMonth,filterData,leaveData)
+            userData = handleRevoke(userData, currentMonth, filterData, leaveData)
           }
         }
-          userData.then(async(value)=>await updateDoc(doc(db, "admin", JSON.parse(sessionStorage.getItem("uid"))),value).catch(err => console.log(err)))
+        const flag = isPromise(userData)
+        console.log(flag)
+        if (flag === true) {
+          userData.then(async (value) => await updateDoc(doc(db, "users", JSON.parse(sessionStorage.getItem("uid"))), value).catch(err => console.log(err)))
+        } else {
+          updateDoc(doc(db, "users", JSON.parse(sessionStorage.getItem("uid"))), userData).catch(err => console.log(err))
+        }
       }
-      
+
       let recipient
       if (
         Cookies.get("team").includes("Delivery") ||
@@ -299,11 +302,11 @@ const Actions = cell => {
       )}&body=${encodeURIComponent(body)}`
       // window.location.href = mailtoUrl
       // updateDoc(doc(db, "admin", JSON.parse(sessionStorage.getItem("uid"))),userData).catch(err => console.log(err))
-       updateDoc(doc(db, "leave submssion", data),leaveData).catch(err => console.log(err))
+      updateDoc(doc(db, "leave submssion", data), leaveData).catch(err => console.log(err))
     } else {
       console.log("No data found")
     }
-    
+
   }
 
   const today = new Date()
@@ -314,18 +317,11 @@ const Actions = cell => {
         <i className="mdi mdi-dots-horizontal"></i>
       </DropdownToggle>
       <DropdownMenu className="dropdown-menu-end">
-        {data && data.status.includes("denied") ? (
-          <Tooltip
-            className="dropdown-item"
-            title={data.reasonOfReject}
-            placement="top"
-            arrow
-          >
-            Reason of Reject
-          </Tooltip>
-        ) : (
-          <></>
-        )}
+        {(data && data.status.includes('denied') || data && data.status.includes('applied again'))?(
+                        <Tooltip className="dropdown-item" title={data.reasonOfReject} placement='top' arrow>
+                        Reason of Reject
+                    </Tooltip>
+                    ):(<></>)}
         {data &&
           data.status.includes("denied") &&
           data &&
@@ -334,9 +330,9 @@ const Actions = cell => {
             <Button
               className="btn dropdown-item"
               onClick={() => {
+                updateDoc(doc(db, 'leave submssion', cell.value), { status: 'applied again' }).catch(err => console.log(err))
                 nav(`/addleave/${cell.value}`)
-              }}
-            >
+              }}>
               Apply Again
               <i className="ms-2 far fa-hand-pointer font-size-17" />
             </Button>
@@ -359,10 +355,10 @@ const Actions = cell => {
 
         {data &&
           data.status.includes("approved") && new Date(data.from) >= new Date() ? (
-            
+
           <Button
             className="btn dropdown-item"
-            onClick={() => revokeEmail(cell.value) }
+            onClick={() => revokeEmail(cell.value)}
           >
             <span className="me-2">Revoke</span>
             <i className="ms-4 far fa-envelope font-size-17" />

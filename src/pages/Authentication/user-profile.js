@@ -34,6 +34,8 @@ const [photo,setPhoto]=useState(null)
 const [img,setImg]=useState(null)
 const [success,setSuccess]=useState(null)
 const [alertBox,setAlertBox]=useState('d-none')
+const [username,setusername]=useState('')
+
   async function upload(file,user){
     const fileRef=ref(storage,'users/'+user+'.jpg');
      await uploadBytes(fileRef,file).then(()=>{
@@ -66,14 +68,17 @@ const validation = useFormik({
     enableReinitialize: true,
 
     initialValues: {
-      username: name || '',
-      idx: idx || '',
+      username: '',
+      idx:  '',
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Please Enter Your UserName"),
     }),
     onSubmit: (values) => {
-      dispatch(editProfile(values));
+      localStorage.setItem('authuser',JSON.stringify(values.username))
+      setSuccess('Please click again to view updated username')
+      setAlertBox('d-block')
+      setTimeout(()=>setAlertBox('d-none'),4000)
     }
   });
 
@@ -92,7 +97,7 @@ const validation = useFormik({
                   <div className="d-flex">
 
                     <div className="ms-3">
-                      {url?(<img className="rounded-circle " src={url}  height={100} width={100} />):(<NoProfile />)}
+                      {url?(<img className="rounded-circle " src={url}  height={100} width={100} />):(<NoProfile name={username} />)}
                     </div>
                     <Label htmlFor="formFile" for="file" className="form-label" ><i className="bx bx-pencil" onClick={()=>{
                       setProfileModal(true)
@@ -173,8 +178,7 @@ const validation = useFormik({
                   {validation.touched.username && validation.errors.username ? (
                     <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
                   ) : null}
-                  <Input na
-                  me="idx" value={idx} type="hidden" />
+                  <Input name="idx" value={idx} type="hidden" />
                 </div>
                 <div className="text-center mt-4">
                   <Button type="submit" color="primary">
