@@ -24,10 +24,13 @@ const ProfileMenu = props => {
   const [menu, setMenu] = useState(false);
   const {url}=useStateContext();
   const [username, setusername] = useState(Cookies.get('name'));
-  const userName=(name)=>{
-    const firstLetter=name.split('')
-    return firstLetter[0]
-}
+  const userName=()=>{
+    if(Cookies.get('name') && JSON.parse(sessionStorage.getItem('uid'))){
+      const name=Cookies.get('name')
+      const firstLetter=name.split('')
+      return firstLetter[0]
+    }
+  }
 
   useEffect(() => {
     if (localStorage.getItem("authuser")) {
@@ -46,7 +49,7 @@ const ProfileMenu = props => {
       nav('/login')
   }).catch((err)=> console.log(err.message))
   }
-const letter = userName(username)
+const letter = userName()
   return (
     <React.Fragment>
       <Dropdown
