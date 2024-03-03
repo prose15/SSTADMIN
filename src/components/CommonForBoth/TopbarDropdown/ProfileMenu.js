@@ -23,7 +23,7 @@ const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
   const {url}=useStateContext();
-  const [username, setusername] = useState('');
+  const [username, setusername] = useState(Cookies.get('name'));
   const userName=(name)=>{
     const firstLetter=name.split('')
     return firstLetter[0]
