@@ -253,7 +253,7 @@ const ApplyAgain = props => {
         }
 
         const newDetails = {
-          name: name, email: email, team: team, reason: reason, subject: subject, leaveType: leaveType, subLeave: subLeave, earnedBooked: earnedBooked, lopBooked: lopBooked, reportManager: reportingManager, fromTimeStamp: fromTimeStamp, toTimeStamp: toTimeStamp, from: fromDate, to: toDate, requestDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(), status: 'pending', casualAvailable: 12, earnedAvailable: earnedLeave, lopAvailable: 0, paternityAvailable: 0, sickAvailable: 12, displayStatus: '', msgCount: '', noofdays: daysInSession, totalDays: daysInSession, timestamp: Timestamp.now(),
+          name: name, email: email, team: team, reason: reason, subject: subject, leaveType: leaveType, subLeave: subLeave, earnedBooked: earnedBooked, lopBooked: lopBooked, reportManager: reportingManager, fromTimeStamp: fromTimeStamp, toTimeStamp: toTimeStamp, from: fromDate, to: toDate, requestDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getDate(), status: 're-apply', casualAvailable: 12, earnedAvailable: earnedLeave, lopAvailable: 0, paternityAvailable: 0, sickAvailable: 12, displayStatus: '', msgCount: '', noofdays: daysInSession, totalDays: daysInSession, timestamp: Timestamp.now(),
           fromYear: fromYear[0],
           toYear: toYear[0], casualType,
           session,

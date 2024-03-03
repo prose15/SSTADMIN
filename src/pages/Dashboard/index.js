@@ -33,7 +33,7 @@ import TeamMates from "./TeamMates";
 import { Toast,ToastBody, ToastHeader } from 'reactstrap';
 import TeamMatesLeave from "./TeamMatesLeave";
 import { useStateContext } from "Context/ContextProvider";
-
+import { getDatesBetweenDates } from "Functions/leaveFormFunctions";
 const Dashboard = props => {
   const {myRecords} = useStateContext()
   const [name,setName]=useState('')
@@ -84,9 +84,20 @@ const Dashboard = props => {
       
        },[]
      )
-     const leaveCount = myRecords.filter(data => data.status==='approved')
+    //  const leaveCount = myRecords.filter(data => data.status==='approved')
+    const filterData = myRecords.filter(data=>data.status==="approved")
+    let leaveTaken=0
+    filterData.map((data)=>{
+      if(data.session!=='FullDay'){
+        leaveTaken+=0.5
+      }else{
+        const days=getDatesBetweenDates(new Date(data.from),new Date(data.to) )
+        leaveTaken+=days.length
+      }
+    })
+     
   const reports = [
-    { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: leaveCount.length },
+    { title: "Leave Taken", iconClass: "bx bxs-calendar-check", description: leaveTaken },
     { title: "Team Mates", iconClass: "bx bxs-group", description: newTeam.length },
     {
       title: "Tickets  Worked",
@@ -218,14 +229,14 @@ const findMin=(data)=>{
             </Row>
             </Col>    
           </Row>
-          <Row>
+          {/* <Row>
           <Col sm="4">
           <RecentFile/> 
           </Col>
           <Col sm="8">
-          {/* <TeamMatesLeave/> */}
+          <TeamMatesLeave/>
           </Col>
-          </Row>
+          </Row> */}
 
         </Container>
       </div>
