@@ -98,8 +98,7 @@ setLeaveBalance(docSnap.data().leaveBalance)
      }
      else{
          setSickAvail(docSnap.data().sickAvailable)
-     }
-     
+     }   
  }
  if(docSnap.data().flexiAvailable<=0){
     setFlexiAvail(0)
@@ -112,7 +111,11 @@ else{
   handleGet()   
      },[]
    )
-
+if(sickAvailable>6){
+    const sickBalance=sickAvailable-6
+ setBalance(sickBalance)
+ setSickAvail(6)
+}
 
 return (
     <div className="d-flex  cards-box">
@@ -139,7 +142,7 @@ return (
                 <h5 className="mt-4 mb-2 font-size-15"><b>Approved Leave</b></h5>
         </div>
         <div className="d-flex">
-            <p className="mb-0 flex-grow-1 text-success me-5">Casual  {casualAvail}</p>
+            <p className="mb-0 flex-grow-1 text-success me-5">Casual  {casualAvail+balance}</p>
             <p className="mb-0 text-danger">Sick  {sickAvailable}</p>
         </div>
     </CardBody>

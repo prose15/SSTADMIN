@@ -135,83 +135,89 @@ export const Accept = async (id, users, admin) => {
         let subLeave = detail.subLeave
         let leave = str.substring(0, str.length - 5).toLocaleLowerCase()
         const key = leave + 'Available';
-        for (let i = 0; i < daysInSameMonth.length; i++) {
-          let totalDays = daysInSameMonth[i]
-          const currentMonth = totalMonth[i]
-          if (user.leaveBalance[currentMonth] >= totalDays) {
-            if (leave === 'flexi') {
-              user[key] -= detail.totalDays
-            }
-             else {
-              user[key] += totalDays
-            }
-          } else if (user.leaveBalance[currentMonth] > 0 && totalDays > user.leaveBalance[currentMonth]) {
-            const leaveBalance = totalDays - user.leaveBalance[currentMonth]
-            user[key] += totalDays - leaveBalance
-            if (user.earnedAvailable >= leaveBalance) {
-              user.earnedAvailable = user.earnedAvailable - leaveBalance
-              detail.subLeave = [...detail.subLeave,'earned']
-              detail.earnedBooked += leaveBalance
-              detail.earnedLeaveBalance[currentMonth]=leaveBalance
-            }
-            else if (user.earnedAvailable > 0 && leaveBalance >= user.earnedAvailable) {
-              detail.subLeave =[...detail.subLeave,'both']
-              const balanceLop = leaveBalance - user.earnedAvailable
-              user.lopAvailable += balanceLop
-              detail.lopBooked=balanceLop
-              detail.lopLeaveBalance[currentMonth]=balanceLop
-              const earnedLeaveBalance = leaveBalance - balanceLop
-              user.earnedAvailable -= earnedLeaveBalance
-              detail.earnedBooked+=earnedLeaveBalance
-              detail.earnedLeaveBalance[currentMonth]=earnedLeaveBalance
-            }
-            else {
-              user.lopAvailable += leaveBalance
-              detail.lopBooked+=leaveBalance
-              detail.subLeave =[...detail.subLeave,'lop']
-              detail.lopLeaveBalance[currentMonth]=leaveBalance
-            }
-          }
-          else if (user.earnedAvailable >= totalDays) {
-            detail.subLeave = [...detail.subLeave,'earned']
-            detail.earnedBooked +=totalDays
-            user.earnedAvailable -= totalDays
-            detail.earnedLeaveBalance[currentMonth] = detail.earnedBooked
-          }
-          else if (user.earnedAvailable > 0 && totalDays >= user.earnedAvailable) {
-            detail.subLeave =[...detail.subLeave,'both']
-            const balance = totalDays - user.earnedAvailable
-            detail.lopBooked += balance
-            detail.lopLeaveBalance[currentMonth]=balance
-            user.lopAvailable += balance
-            const earnedLeave = totalDays - balance
-            detail.earnedLeaveBalance[currentMonth]=earnedLeave
-            detail.earnedBooked += earnedLeave
-            user.earnedAvailable -= earnedLeave
-          } else {
-            user.lopAvailable += totalDays
-            detail.subLeave = [...detail.subLeave,'lop']
-            detail.lopBooked += totalDays
-            detail.lopLeaveBalance[currentMonth]=totalDays
-          }
-
-          const remaining = user.leaveBalance[currentMonth] - totalDays
-          if (remaining >= 0) {
-            user.leaveBalance[currentMonth] = remaining
-            for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
-              user.leaveBalance[i + 1] -= totalDays
-            }
-          } else {
-            for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
-              user.leaveBalance[i + 1] -= user.leaveBalance[currentMonth]
-            }
-            user.leaveBalance[currentMonth] = 0
-          }
-          if(remaining<0 && currentMonth>0 && user.leaveBalance[currentMonth] === 0){
-            user.leaveBalance[currentMonth-1]=0
-          } 
-          console.log(user.leaveBalance, detail)
+        if(leave==='flexi'){
+          user[key] -= detail.totalDays
         }
+        else{
+          for (let i = 0; i < daysInSameMonth.length; i++) {
+            let totalDays = daysInSameMonth[i]
+            const currentMonth = totalMonth[i]
+            if (user.leaveBalance[currentMonth] >= totalDays) {
+              if (leave === 'flexi') {
+                user[key] -= detail.totalDays
+              }
+               else {
+                user[key] += totalDays
+              }
+            } else if (user.leaveBalance[currentMonth] > 0 && totalDays > user.leaveBalance[currentMonth]) {
+              const leaveBalance = totalDays - user.leaveBalance[currentMonth]
+              user[key] += totalDays - leaveBalance
+              if (user.earnedAvailable >= leaveBalance) {
+                user.earnedAvailable = user.earnedAvailable - leaveBalance
+                detail.subLeave = [...detail.subLeave,'earned']
+                detail.earnedBooked += leaveBalance
+                detail.earnedLeaveBalance[currentMonth]=leaveBalance
+              }
+              else if (user.earnedAvailable > 0 && leaveBalance >= user.earnedAvailable) {
+                detail.subLeave =[...detail.subLeave,'both']
+                const balanceLop = leaveBalance - user.earnedAvailable
+                user.lopAvailable += balanceLop
+                detail.lopBooked=balanceLop
+                detail.lopLeaveBalance[currentMonth]=balanceLop
+                const earnedLeaveBalance = leaveBalance - balanceLop
+                user.earnedAvailable -= earnedLeaveBalance
+                detail.earnedBooked+=earnedLeaveBalance
+                detail.earnedLeaveBalance[currentMonth]=earnedLeaveBalance
+              }
+              else {
+                user.lopAvailable += leaveBalance
+                detail.lopBooked+=leaveBalance
+                detail.subLeave =[...detail.subLeave,'lop']
+                detail.lopLeaveBalance[currentMonth]=leaveBalance
+              }
+            }
+            else if (user.earnedAvailable >= totalDays) {
+              detail.subLeave = [...detail.subLeave,'earned']
+              detail.earnedBooked +=totalDays
+              user.earnedAvailable -= totalDays
+              detail.earnedLeaveBalance[currentMonth] = detail.earnedBooked
+            }
+            else if (user.earnedAvailable > 0 && totalDays >= user.earnedAvailable) {
+              detail.subLeave =[...detail.subLeave,'both']
+              const balance = totalDays - user.earnedAvailable
+              detail.lopBooked += balance
+              detail.lopLeaveBalance[currentMonth]=balance
+              user.lopAvailable += balance
+              const earnedLeave = totalDays - balance
+              detail.earnedLeaveBalance[currentMonth]=earnedLeave
+              detail.earnedBooked += earnedLeave
+              user.earnedAvailable -= earnedLeave
+            } else {
+              user.lopAvailable += totalDays
+              detail.subLeave = [...detail.subLeave,'lop']
+              detail.lopBooked += totalDays
+              detail.lopLeaveBalance[currentMonth]=totalDays
+            }
+  
+            const remaining = user.leaveBalance[currentMonth] - totalDays
+            if (remaining >= 0) {
+              user.leaveBalance[currentMonth] = remaining
+              for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
+                user.leaveBalance[i + 1] -= totalDays
+              }
+            } else {
+              for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
+                user.leaveBalance[i + 1] -= user.leaveBalance[currentMonth]
+              }
+              user.leaveBalance[currentMonth] = 0
+            }
+            if(remaining<0 && currentMonth>0 && user.leaveBalance[currentMonth] === 0){
+              user.leaveBalance[currentMonth-1]=0
+            } 
+            console.log(user.leaveBalance, detail)
+          }
+        }
+       
         console.log(user)
         updateDoc(doc(db,'users', user.id), user).catch((err) => {
           console.log(err);
@@ -261,84 +267,91 @@ export const Accept = async (id, users, admin) => {
         let subLeave = detail.subLeave
         let leave = str.substring(0, str.length - 5).toLocaleLowerCase()
         const key = leave + 'Available';
-        for (let i = 0; i < daysInSameMonth.length; i++) {
-          let totalDays = daysInSameMonth[i]
-          const currentMonth = totalMonth[i]
-          if (user.leaveBalance[currentMonth] >= totalDays) {
-           
-            if (leave === 'flexi') {
-              user[key] -= detail.totalDays
-            } else {
-              user[key] += totalDays
-            }
-          } else if (user.leaveBalance[currentMonth] > 0 && totalDays > user.leaveBalance[currentMonth]) {
-            const leaveBalance = totalDays - user.leaveBalance[currentMonth]
-            user[key] += totalDays - leaveBalance
-            if (user.earnedAvailable >= leaveBalance) {
-              user.earnedAvailable = user.earnedAvailable - leaveBalance
-              detail.subLeave = [...detail.subLeave,'earned']
-              detail.earnedBooked += leaveBalance
-              detail.earnedLeaveBalance[currentMonth]=leaveBalance
-            }
-            else if (user.earnedAvailable > 0 && leaveBalance >= user.earnedAvailable) {
-              detail.subLeave =[...detail.subLeave,'both']
-              const balanceLop = leaveBalance - user.earnedAvailable
-              user.lopAvailable += balanceLop
-              detail.lopBooked=balanceLop
-              detail.lopLeaveBalance[currentMonth]=balanceLop
-              const earnedLeaveBalance = leaveBalance - balanceLop
-              user.earnedAvailable -= earnedLeaveBalance
-              detail.earnedBooked+=earnedLeaveBalance
-              detail.earnedLeaveBalance[currentMonth]=earnedLeaveBalance
-            }
-            else {
-              user.lopAvailable += leaveBalance
-              detail.lopBooked+=leaveBalance
-              detail.subLeave =[...detail.subLeave,'lop']
-              detail.lopLeaveBalance[currentMonth]=leaveBalance
-            }
-          }
-          else if (user.earnedAvailable >= totalDays) {
-            detail.subLeave = [...detail.subLeave,'earned']
-            detail.earnedBooked +=totalDays
-            user.earnedAvailable -= totalDays
-            detail.earnedLeaveBalance[currentMonth] = detail.earnedBooked
-          }
-          else if (user.earnedAvailable > 0 && totalDays >= user.earnedAvailable) {
-            detail.subLeave =[...detail.subLeave,'both']
-            const balance = totalDays - user.earnedAvailable
-            detail.lopBooked += balance
-            detail.lopLeaveBalance[currentMonth]=balance
-            user.lopAvailable += balance
-            const earnedLeave = totalDays - balance
-            detail.earnedLeaveBalance[currentMonth]=earnedLeave
-            detail.earnedBooked += earnedLeave
-            user.earnedAvailable -= earnedLeave
-          } else {
-            user.lopAvailable += totalDays
-            detail.subLeave = [...detail.subLeave,'lop']
-            detail.lopBooked += totalDays
-            detail.lopLeaveBalance[currentMonth]=totalDays
-          }
-
-          const remaining = user.leaveBalance[currentMonth] - totalDays
-          
-          if (remaining >= 0) {
-            user.leaveBalance[currentMonth] = remaining
-            for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
-              user.leaveBalance[i + 1] -= totalDays
-            }
-          } else {
-            for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
-              user.leaveBalance[i + 1] -= user.leaveBalance[currentMonth]
-            }
-            user.leaveBalance[currentMonth] = 0
-          }
-          if(remaining<=0 && currentMonth>0 && user.leaveBalance[currentMonth] === 0){
-            user.leaveBalance[currentMonth-1]=0
-          }
-          console.log(user.leaveBalance, detail)
+        console.log('leave',leave)
+        if(leave==='flexi'){
+          user[key] -= detail.totalDays
         }
+        else{
+          for (let i = 0; i < daysInSameMonth.length; i++) {
+            let totalDays = daysInSameMonth[i]
+            const currentMonth = totalMonth[i]
+            if (user.leaveBalance[currentMonth] >= totalDays) {
+             
+              if (leave === 'flexi') {
+                user[key] -= detail.totalDays
+              } else {
+                user[key] += totalDays
+              }
+            } else if (user.leaveBalance[currentMonth] > 0 && totalDays > user.leaveBalance[currentMonth]) {
+              const leaveBalance = totalDays - user.leaveBalance[currentMonth]
+              user[key] += totalDays - leaveBalance
+              if (user.earnedAvailable >= leaveBalance) {
+                user.earnedAvailable = user.earnedAvailable - leaveBalance
+                detail.subLeave = [...detail.subLeave,'earned']
+                detail.earnedBooked += leaveBalance
+                detail.earnedLeaveBalance[currentMonth]=leaveBalance
+              }
+              else if (user.earnedAvailable > 0 && leaveBalance >= user.earnedAvailable) {
+                detail.subLeave =[...detail.subLeave,'both']
+                const balanceLop = leaveBalance - user.earnedAvailable
+                user.lopAvailable += balanceLop
+                detail.lopBooked=balanceLop
+                detail.lopLeaveBalance[currentMonth]=balanceLop
+                const earnedLeaveBalance = leaveBalance - balanceLop
+                user.earnedAvailable -= earnedLeaveBalance
+                detail.earnedBooked+=earnedLeaveBalance
+                detail.earnedLeaveBalance[currentMonth]=earnedLeaveBalance
+              }
+              else {
+                user.lopAvailable += leaveBalance
+                detail.lopBooked+=leaveBalance
+                detail.subLeave =[...detail.subLeave,'lop']
+                detail.lopLeaveBalance[currentMonth]=leaveBalance
+              }
+            }
+            else if (user.earnedAvailable >= totalDays) {
+              detail.subLeave = [...detail.subLeave,'earned']
+              detail.earnedBooked +=totalDays
+              user.earnedAvailable -= totalDays
+              detail.earnedLeaveBalance[currentMonth] = detail.earnedBooked
+            }
+            else if (user.earnedAvailable > 0 && totalDays >= user.earnedAvailable) {
+              detail.subLeave =[...detail.subLeave,'both']
+              const balance = totalDays - user.earnedAvailable
+              detail.lopBooked += balance
+              detail.lopLeaveBalance[currentMonth]=balance
+              user.lopAvailable += balance
+              const earnedLeave = totalDays - balance
+              detail.earnedLeaveBalance[currentMonth]=earnedLeave
+              detail.earnedBooked += earnedLeave
+              user.earnedAvailable -= earnedLeave
+            } else {
+              user.lopAvailable += totalDays
+              detail.subLeave = [...detail.subLeave,'lop']
+              detail.lopBooked += totalDays
+              detail.lopLeaveBalance[currentMonth]=totalDays
+            }
+  
+            const remaining = user.leaveBalance[currentMonth] - totalDays
+            
+            if (remaining >= 0) {
+              user.leaveBalance[currentMonth] = remaining
+              for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
+                user.leaveBalance[i + 1] -= totalDays
+              }
+            } else {
+              for (let i = currentMonth; i < user.leaveBalance.length - 1; i++) {
+                user.leaveBalance[i + 1] -= user.leaveBalance[currentMonth]
+              }
+              user.leaveBalance[currentMonth] = 0
+            }
+            if(remaining<=0 && currentMonth>0 && user.leaveBalance[currentMonth] === 0){
+              user.leaveBalance[currentMonth-1]=0
+            }
+            console.log(user.leaveBalance, detail)
+          }
+        }
+        
         console.log(user)
         updateDoc(doc(db,'admin', user.id), user).catch((err) => {
           console.log(err);

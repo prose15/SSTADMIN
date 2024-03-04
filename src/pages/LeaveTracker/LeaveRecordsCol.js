@@ -160,11 +160,15 @@ const Actions = cell => {
           let str = leaveData.leaveType
           const leaveType = str.substring(0, str.length - 5).toLocaleLowerCase()
           const key = leaveType + "Available"
-          userData[key] = userData[key] - days
-          for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
-            userData.leaveBalance[i] += days
+          if(leaveType==='flexi'){
+            userData[key] = userData[key] + days
           }
-          console.log('before revoke', userProfile.leaveBalance)
+          else{
+            userData[key] = userData[key] - days
+            for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
+              userData.leaveBalance[i] += days
+            }
+          }
           // const availableLeave=userProfile.leaveBalance[currentMonth]
           if (userData.leaveBalance[currentMonth]>0) {
             const filterData = myRecords.filter(data => new Date(data.from).getMonth() + 1 == parseInt(fromMonth) && new Date(data.to).getMonth() + 1 >= parseInt(toMonth) && data.status === 'approved' && data.subLeave.length > 0 && data.from !== leaveData.from && data.to !== leaveData.to)
