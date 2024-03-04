@@ -180,7 +180,8 @@ const Actions = cell => {
             console.log('avail days',getAvailDays,leaveData.earnedLeaveBalance[currentMonth])
             let flag = 0
           if(subLeave==='earned' && leaveData.earnedLeaveBalance[currentMonth]==0){
-            // userData[key] = userData[key] - days
+            const availDays=days-leaveData.earnedBooked
+            userData[key] = userData[key] - availDays
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += days
             }
@@ -214,7 +215,8 @@ const Actions = cell => {
           console.log('avail days',getAvailDays,leaveData.lopLeaveBalance[currentMonth])
           let flag = 0
           if(subLeave==='lop' && leaveData.lopLeaveBalance[currentMonth]==0){
-            // userData[key] = userData[key] - days
+            const availDays=days-leaveData.lopBooked
+            userData[key] = userData[key] - availDays
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += days
             }
@@ -253,7 +255,8 @@ const Actions = cell => {
           const leaveType = str.substring(0, str.length - 5).toLocaleLowerCase()
           const key = leaveType + "Available"
           if(subLeave==='both' && leaveData.lopLeaveBalance[currentMonth]==0 && leaveData.earnedLeaveBalance[currentMonth]===0){
-            // userData[key] = userData[key] - days
+            const availDays=days-(leaveData.earnedBooked+leaveData.lopBooked)
+            userData[key] = userData[key] - availDays
             for (let i = currentMonth; i < userData.leaveBalance.length; i++) {
               userData.leaveBalance[i] += days
             }
