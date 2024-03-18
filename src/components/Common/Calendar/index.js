@@ -144,7 +144,7 @@ const Calender = props => {
     }else{
       month=days[i].getMonth()+1
     }
-    console.log(days[i].getMonth()+1)
+ 
     const date = days[i].getFullYear()+"-"+month+"-"+days[i].getDate()
     let dataSchema = {title:data.name+"'s "+data.leaveType,start:date,className:'hoiday-event',allDay:true}
     event.push(dataSchema)

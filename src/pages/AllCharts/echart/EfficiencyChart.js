@@ -16,13 +16,18 @@ const EfficiencyChart = ({dataColors}) => {
 
   const doughnutEChartColors = getChartColorsArray(dataColors);
   let chartData=[totalHours]
-  
+  const noDataLabel=[]
   for(var i=0;i<performanceArray.length;i++){
-    chartData.push(performanceArray[i])
+    if(performanceArray[i]===0){
+noDataLabel.push(i)
+    }else{
+      chartData.push(performanceArray[i])
+    }
   }
  
 let projectName=['TOTAL']
-    project.map((data)=>{
+    project.map((data,index)=>{
+      if(!noDataLabel.includes(index))
         projectName.push(data.service)
     })
     
@@ -40,11 +45,11 @@ let projectName=['TOTAL']
   }
 
   return(
-    <Card >
-        <div className="m-3"
-        ><h4 className="font-size-16 mb-3">Monthly Performance</h4></div>
+    <Card className="h-5">
+        <div className="m-3">
+          <h4 className="font-size-16 mb-3">Monthly Performance</h4></div>
         <CardBody>
-<Doughnut width={734} height={269} className="chartjs-chart" data={data} />
+          <Doughnut width={734} height={500} className="chartjs-chart" data={data} />
         </CardBody>
     </Card>
     

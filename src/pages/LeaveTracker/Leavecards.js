@@ -37,19 +37,10 @@ let  updatedAvailable=[]
 for(var i=0;i<available.length;i++){
     updatedAvailable[i]=available[i]-leave[i]
 }
-// // useEffect(()=>{
-//     const updateData=async()=>{
-//         const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
-//       await  updateDoc(docRef,{leaveBalance:updatedAvailable}).catch((err)=>console.log(err))
-//     }
-//     updateData()
-// // },[])
  useEffect(()=>{
-
      const handleGet=async()=>{
          const docRef = doc(db, "admin", JSON.parse(sessionStorage.getItem('uid')));
          setName(()=>Cookies.get('name'))
-       
  const docSnap = await getDoc(docRef)
  if(docSnap.exists()){
  setCasual(docSnap.data().casual)

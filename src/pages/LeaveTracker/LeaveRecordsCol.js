@@ -290,15 +290,12 @@ const Actions = cell => {
           }
         }
       const flag = isPromise(userData)
-      console.log(flag)
       if(flag===true){
         userData.then(async(value)=>await updateDoc(doc(db, "admin", JSON.parse(sessionStorage.getItem("uid"))),value).catch(err => console.log(err)))
       }else{
         updateDoc(doc(db, "admin", JSON.parse(sessionStorage.getItem("uid"))),userData).catch(err => console.log(err))
+      }    
       }
-          
-      }
-
       let recipient
       if (
         Cookies.get("team").includes("Delivery") ||

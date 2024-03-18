@@ -35,13 +35,13 @@ useEffect(() => {
   todayTimeStamp.setSeconds(59)
   const upcomingLeaves=detail.filter((data)=>new Date(data.from)>=todayTimeStamp)
 //   users.map((user)=>{
-//   updateDoc(doc(db,'users',user.id),{leaveBalance:available,earnedAvailable:1,lopAvailable:0,lop:0,earned:0,casual:0,sick:0,flexi:0,casualAvailable:0,WFH:0,WFHApproved:0,sickAvailable:0,flexiAvailable:12}).then(()=>{
+//   updateDoc(doc(db,'users',user.id),{leaveBalance:available,earnedAvailable:0,lopAvailable:0,lop:0,earned:0,casual:0,sick:0,flexi:0,casualAvailable:0,WFH:0,WFHApproved:0,sickAvailable:0,flexiAvailable:12}).then(()=>{
 // }).catch((err)=>{
 //   console.log(err)
 // })
 //   })
 //   admin.map((user)=>{
-//     updateDoc(doc(db,'admin',user.id),{leaveBalance:available,earnedAvailable:1,lopAvailable:0,lop:0,earned:0,casual:0,sick:0,flexi:0,casualAvailable:0,WFH:0,WFHApproved:0,sickAvailable:0,flexiAvailable:12}).then(()=>{
+//     updateDoc(doc(db,'admin',user.id),{leaveBalance:available,earnedAvailable:0,lopAvailable:0,lop:0,earned:0,casual:0,sick:0,flexi:0,casualAvailable:0,WFH:0,WFHApproved:0,sickAvailable:0,flexiAvailable:12}).then(()=>{
 //   }).catch((err)=>{
 //     console.log(err)
 //   })
@@ -56,6 +56,7 @@ if(today.getMonth()===11 ){
  }
     return (
         <React.Fragment>
+
             <div className="page-content">
                 <Container fluid>
                      <Section btn={'Add Leave'} link={'/addleave'}/>

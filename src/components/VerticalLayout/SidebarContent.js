@@ -216,7 +216,18 @@ const SidebarContent = props => {
                   <li>
                     <Link to="/timesheet/requests">{props.t("Team Request")}</Link>
                   </li>
-                  <li><Link to="/timesheet/efficiency">{props.t("Team Efficiency")}</Link></li>
+                  <li>
+                    {
+                      Cookies.get('role')==='Chief Executive Officer' && (
+                      <Link to="/timesheet/efficiency">{props.t("Team Efficiency")}</Link>
+                      )
+                    }
+                    </li>
+                  {
+                    Cookies.get('role')==='Chief Executive Officer' && (
+                      <li><Link to="/timesheet/cost-center">{props.t("Cost Center")}</Link></li>
+                    )
+                  }
                 </ul>
               </li>
               )

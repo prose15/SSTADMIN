@@ -8,6 +8,8 @@ import { db } from "firebase-config";
 const StateContext=createContext();
 export const ContextProvider=({children})=>{
   //States
+  const [ccMembers,setCCMembers] = useState([])
+  const [ccData,setCCData]=useState([])
   const [url,setUrl]=useState('')
   const [user,setUser]=useState()
   const [detail,setDetail]=useState([])
@@ -208,7 +210,7 @@ available[i+1]+=1.5
 }
 }
 
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal,WFHRecords,leaveDetail,setLeaveDetail}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal,WFHRecords,leaveDetail,setLeaveDetail,ccMembers,setCCMembers,ccData,setCCData}}>
         {children}
     </StateContext.Provider>)
 }
