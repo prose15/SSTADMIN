@@ -3,7 +3,6 @@ import { Col, Card, CardBody, } from 'reactstrap'
 import SimpleBar from "simplebar-react";
 import workedHrs from './workedHrs';
 const TimesheetCard = ({sun,mon,tue,wed,thu,fri,sat}) => {
-    console.log(fri,sat)
   return (
     <React.Fragment>
         <Col className='page-content'>

@@ -152,11 +152,6 @@ const Calender = props => {
   
   }
 })
-  // const event = 
- 
-  // if(!leaveDetail) return
-  // event=[...event,...teamLeave]
-  console.log('event',event)
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [modalcategory, setModalcategory] = useState(false);

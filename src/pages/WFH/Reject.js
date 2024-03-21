@@ -100,7 +100,6 @@ export const Reject = async (id,reason) => {
   }
   
   updateDoc(docRef, detail).then(() => {
-    console.log('rejected successfully');
   }).catch((err) => {
     console.log(err);
   })

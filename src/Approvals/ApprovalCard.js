@@ -10,9 +10,7 @@ const ApprovalCard = (props) => {
   const name = Cookies.get('name')
     const data = props.data
     const userData= props.userData
-    //  const nav=useNavigate()
     const newMsgs=data.filter((data)=>data.displayStatus==='')
-    // useEffect(()=>{
       const updateDislpay=(data)=>{
        if(data.leaveType){
         updateDoc(doc(db,'leave submssion',data.id),{displayStatus:'true'}).then(()=>{
@@ -20,18 +18,14 @@ const ApprovalCard = (props) => {
         }).catch((err)=>{
           console.log(err)
         })
-          // nav("/leave/records")
        }else if(data.WFH){
         updateDoc(doc(db,'WFH',data.id),{displayStatus:'true'}).then(()=>{
           console.log('updated')
         }).catch((err)=>{
           console.log(err)
         })
-        // nav("/WFH/records")
        }
       }
-    //   updateDislpay()
-    // },[])
   const filterData = userData.filter(data=>data.name!==name)
     const findMin=(data)=>{
       const seconds = data.timestamp?.seconds
@@ -117,7 +111,9 @@ const ApprovalCard = (props) => {
                       </span>):((data.WFH==='Work From Home') ? 
                     (<span className="avatar-title bg-primary rounded-circle font-size-17">           
                     <i className="mdi mdi-laptop-windows"/>
-                    </span>):(<></>)))
+                    </span>):(data.sheetName ?(<span className="avatar-title bg-primary rounded-circle font-size-20  p-3">
+                      <i className="bx bxs-calendar"/>
+                      </span>):(<></>))))
                     }
                         </span>
                       </div>
@@ -125,7 +121,7 @@ const ApprovalCard = (props) => {
                     <div className="flex-grow-1">
                       <h5 className="font-size-14">{data.name===name?('You'):(data.name)}</h5>
                       <p className="text-muted">{data.leaveType 
-                      || data.WFH}</p>
+                      || data.WFH }</p>
 
                       <div className="float-end">
                         <p className="text-muted mb-0">
@@ -134,7 +130,7 @@ const ApprovalCard = (props) => {
                         </p>
                       </div>
                       <p className="text-muted mb-0">{
-                        data.status === 'revoke' ? <p>status : {data.status} </p> : <p>sent you a request</p>
+                        data.status === 'revoke' ? (<p>status : {data.status} </p>) : (data.sheetName ? <p>sent you a timesheet</p>:(<p>sent you a request</p>)) 
                       }</p>
                     </div>
                   </div>

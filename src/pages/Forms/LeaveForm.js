@@ -207,7 +207,6 @@ const LeaveForm = props => {
                   earnedBooked = remaining
                   noOfDays += totalDays - remaining
                 }
-                console.log('cummulative: ', cummulative, 'subleave: ', subLeave, 'balance from cummulative: ', noOfDays, 'earned: ', earnedBooked, 'total: ', totalDays, 'lop: ', lopBooked)
                 setmodal_backdrop(true)
               }
               else if (remaining <= 0) {
@@ -231,7 +230,6 @@ const LeaveForm = props => {
               setmodal_backdrop(true)
             }
           }
-          console.log('cummulative: ', cummulative, 'subleave: ', subLeave, 'balance from cummulative: ', noOfDays, 'earned: ', earnedBooked, 'total: ', totalDays, 'lop: ', lopBooked)
         }
 
         const newDetails = {
@@ -257,10 +255,6 @@ const LeaveForm = props => {
               str1 += strArr[i]
             }
             str1 = str1.toLocaleLowerCase()
-            console.log(str1)
-            console.log(newData[str1])
-            console.log('totalDays : ', newDetails.totalDays)
-            console.log('noofdays : ', newDetails.noofdays)
             if (values.leaveType === 'Flexileave') {
               newData[str1] += newDetails.totalDays;
             } else {
@@ -271,9 +265,7 @@ const LeaveForm = props => {
                 newData.earned += earnedBooked
               }
             }
-            updateDoc(doc(db, 'admin', JSON.parse(sessionStorage.getItem('uid'))), newData).then(() => {
-              console.log('profile updated')
-            }).catch((err) => {
+            updateDoc(doc(db, 'admin', JSON.parse(sessionStorage.getItem('uid'))), newData).catch((err) => {
               console.log(err)
             })
             setTimeout(() => { nav('/leavetracker') }, 2000)

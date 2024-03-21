@@ -101,9 +101,7 @@ const ApplyAgain = props => {
   const date = new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear()
   async function upload(file) {
     const fileRef = ref(storage, `MedicalProof/ + ${date}/ + email`);
-    await uploadBytes(fileRef, file).then(() => {
-      console.log('uploaded');
-    }).catch((err) => {
+    await uploadBytes(fileRef, file).catch((err) => {
       console.log(err);
     })
   }
@@ -130,7 +128,6 @@ const ApplyAgain = props => {
     }
   ];
   let leaveId;
-  console.log(leaveType);
   const [value, setValue] = useState(null)
   const handleSelectGroup = (selectedGroup) => {
     setselectedGroup(selectedGroup);
@@ -140,8 +137,6 @@ const ApplyAgain = props => {
     leaveId === 1 ? (SetCasualType("Plannedleave")) : leaveId === 2 ? SetCasualType("Emergencyleave") :
       leaveId === 3 ? SetCasualType("Sickleave") : leaveId === 4 ? (SetCasualType("Flexileave")) : leaveId === 5 && Cookies.get('gender') === 'Male' ? SetCasualType("Paternityleave") : SetCasualType("Maternityleave")
   }
-  console.log(leaveId);
-  console.log(casualType);
   const records = myRecords.filter(data => data.status !== 'revoke' && new Date(data.from)>=new  Date(fromDate) && new Date(data.to)<=new  Date(toDate))
           const  bookedDays = getDatesBetweenDates(new Date(fromDate),new Date(toDate))
           for(let i=0;i<records.length;i++){
@@ -163,7 +158,11 @@ const ApplyAgain = props => {
      }
      
      else if (leaveType == '' || reportingManager == '' || fromDate == '' || toDate == '' || subject == '' || reason == '') {
-      console.log('Please complete the form!')
+      setAlertMsg("Please complete the form!")
+      setAlertErr('d-block')
+      setTimeout(()=>{
+        setAlertErr('d-none')},10000);
+        setCondition(false)
     }
     
     else {
@@ -208,7 +207,6 @@ const ApplyAgain = props => {
                 break;
               }
             }
-          console.log(temp)
           daysInSameMonth.push(count)
           sum += count
           if (sum === daysWithoutHolidays.length) {
@@ -216,7 +214,6 @@ const ApplyAgain = props => {
           }
         }
         let noOfDays = 0;
-        console.log('daysArr', daysInSameMonth)
         for (let i = 0; i < daysInSameMonth.length; i++) {
           let totalDays = daysInSameMonth[i]
           const currentMonth = totalMonth[i]
@@ -249,7 +246,6 @@ const ApplyAgain = props => {
             lopBooked = totalDays
             setmodal_backdrop(true)
           }
-          console.log(cummulative, subLeave, noOfDays, earnedBooked, totalDays, lopBooked)
         }
 
         const newDetails = {
@@ -259,7 +255,6 @@ const ApplyAgain = props => {
           session,
         }
         setDataToModal(newDetails)
-        console.log(newDetails);
         if (subLeave.includes('lop')) {
           setmodal_backdrop(true)
         }
@@ -267,10 +262,8 @@ const ApplyAgain = props => {
           addDoc(collection(db, 'leave submssion'), newDetails).then(() => {
             if (file) {
               upload(file)
-              console.log("message added successfully");
               setAlert('d-block')
             }
-            console.log("message added successfully");
             setAlert('d-block')
             let str1 = ''
             let leavetype = newDetails.leaveType
@@ -279,8 +272,6 @@ const ApplyAgain = props => {
               str1 += strArr[i]
             }
             str1 = str1.toLocaleLowerCase()
-            console.log(str1)
-            console.log(newData[str1])
             newData[str1] += noOfDays;
             if (subLeave !== '') {
               if (lopBooked > 0) {
@@ -289,9 +280,7 @@ const ApplyAgain = props => {
                 newData[subLeave] += earnedBooked
               }
             }
-            updateDoc(doc(db, 'users', JSON.parse(sessionStorage.getItem('uid'))), newData).then(() => {
-              console.log('profile updated')
-            }).catch((err) => {
+            updateDoc(doc(db, 'users', JSON.parse(sessionStorage.getItem('uid'))), newData).catch((err) => {
               console.log(err)
             })
 

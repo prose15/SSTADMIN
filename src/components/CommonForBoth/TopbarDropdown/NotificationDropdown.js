@@ -13,10 +13,10 @@ import Cookies from "js-cookie";
 
 const NotificationDropdown = props => {
   const [menu, setMenu] = useState(false);
-  const {detail,WFHDetail,holidays,request,revokeDetail,WFHRecords} = useStateContext()
+  const {detail,WFHDetail,holidays,request,revokeDetail,WFHRecords,timesheetRequest} = useStateContext()
   const newDetail=detail.filter(data=>data.displayStatus==='')
   const newWFHRecords=WFHRecords.filter(data=>data.displayStatus==='' && data.status==='approved' || data.status=='denied' && new Date(data.from)>=new Date())
-  const data = [...newDetail,...newWFHRecords,...holidays,...request,...revokeDetail,...WFHDetail]
+  const data = [...newDetail,...newWFHRecords,...holidays,...request,...revokeDetail,...WFHDetail,...timesheetRequest]
   const reverseArray = data.reduce((acc, curr) => {
    const indexToInsert = acc.findIndex(item => item.timestamp > curr.timestamp);
    if (indexToInsert === -1) {
@@ -116,17 +116,17 @@ const NotificationDropdown = props => {
             <div  className="d-flex">
                 <div className="avatar-xs me-3 ">
                  {
-                  data.name ===Cookies.get('name') && data.leaveType?(data.status==='approved' ?( <span className="avatar-title bg-success rounded-circle font-size-16  p-3"><i className="fa fa-check"/></span>):(data.status==='denied' &&  <span className="avatar-title bg-danger rounded-circle font-size-16  p-3"><i className="fa fa-times"/></span>)):(data.name ===Cookies.get('name') && data.WFH ? (data.status==='approved' ?( <span className="avatar-title bg-success rounded-circle font-size-16  p-3"><i className="fa fa-check"/></span>):(data.status==='denied' &&  <span className="avatar-title bg-danger rounded-circle font-size-16  p-3"> <i className="fa fa-times"/></span>)):(!data.name && data.leaveType?(data.leaveType==='Flexileave'?  <span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-party-popper"/></span>:data.leaveType==='WFH' &&  <span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-laptop-windows"/></span>):(data.name!==Cookies.get('name') && data.leaveType?(<span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="bx bx-calendar"/></span>):(data.name!==Cookies.get('name') && data.WFH &&(<span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-laptop-windows"/></span>)))))
+                  data.name ===Cookies.get('name') && data.leaveType?(data.status==='approved' ?( <span className="avatar-title bg-success rounded-circle font-size-16  p-3"><i className="fa fa-check"/></span>):(data.status==='denied' &&  <span className="avatar-title bg-danger rounded-circle font-size-16  p-3"><i className="fa fa-times"/></span>)):(data.name ===Cookies.get('name') && data.WFH ? (data.status==='approved' ?( <span className="avatar-title bg-success rounded-circle font-size-16  p-3"><i className="fa fa-check"/></span>):(data.status==='denied' &&  <span className="avatar-title bg-danger rounded-circle font-size-16  p-3"> <i className="fa fa-times"/></span>)):(!data.name && data.leaveType?(data.leaveType==='Flexileave'?  <span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-party-popper"/></span>:data.leaveType==='WFH' &&  <span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-laptop-windows"/></span>):(data.name!==Cookies.get('name') && data.leaveType|| data.name!==Cookies.get('name') && data.sheetName ?(<span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="bx bx-calendar"/></span>):(data.name!==Cookies.get('name') && data.WFH &&(<span className="avatar-title bg-primary rounded-circle font-size-16  p-3"><i className="mdi mdi-laptop-windows"/></span>)))))
                  }
                      
                 </div>
                 <div className="flex-grow-1">
                   <h6 className="mt-0 mb-1">
-                    {data.subject}
+                    {data.subject || data.sheetName}
                   </h6>
                   <div className="font-size-12 text-muted">
                     <p className="mb-1">
-                    {data.name===Cookies.get('name')  && data.leaveType?(data.status==='approved' ?(`Your ${data.leaveType} request has been approved`):(data.status==='denied' &&  `Your ${data.leaveType} request has been denied`)):(data.name===Cookies.get('name') && data.WFH ? (data.status==='approved' ?( `Your WFH request has been approved`):(data.status==='denied' && `Your WFH request has been approved`)):(!data.name && data.leaveType?(data.leaveType==='Flexileave'?  `${reverseDate(data.fromDate)} is declared as holiday`:data.leaveType==='WFH' &&  `${reverseDate(data.fromDate)} is declared as WFH`):(data.name!==Cookies.get('name') && data.leaveType?(`${data.name} sent you a leave request`):(data.name!==Cookies.get('name') && data.WFH &&(`${data.name} sent you a WFH request`)))))}
+                    {data.name===Cookies.get('name')  && data.leaveType?(data.status==='approved' ?(`Your ${data.leaveType} request has been approved`):(data.status==='denied' &&  `Your ${data.leaveType} request has been denied`)):(data.name===Cookies.get('name') && data.WFH ? (data.status==='approved' ?( `Your WFH request has been approved`):(data.status==='denied' && `Your WFH request has been approved`)):(!data.name && data.leaveType?(data.leaveType==='Flexileave'?  `${reverseDate(data.fromDate)} is declared as holiday`:data.leaveType==='WFH' &&  `${reverseDate(data.fromDate)} is declared as WFH`):(data.name!==Cookies.get('name') && data.leaveType?(`${data.name} sent you a leave request`):(data.name!==Cookies.get('name') && data.WFH ?(`${data.name} sent you a WFH request`):(data.name!==Cookies.get('name') && data.sheetName ?(`${data.name} sent you a timesheet`):(<></>))))))}
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-clock-outline" />

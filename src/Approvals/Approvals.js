@@ -3,11 +3,11 @@ import ApprovalCard from "./ApprovalCard";
 import { Row } from "reactstrap";
 import { useStateContext } from "Context/ContextProvider";
 function Approvals() {
-   const {detail,WFHDetail,holidays,request,revokeDetail,WFHRecords} = useStateContext()
+   const {detail,WFHDetail,holidays,request,revokeDetail,WFHRecords,timesheetRequest} = useStateContext()
    const newDetail=detail.filter(data=>data.displayStatus==='')
    const newWFHRecords=WFHRecords.filter(data=>data.displayStatus==='' && data.status==='approved' || data.status=='denied' && new Date(data.from)>=new Date())
-   const data = [...newDetail,...newWFHRecords,...holidays]
-   const userData = [...request,...revokeDetail,...WFHDetail]
+   const data = [...newDetail,...newWFHRecords,...holidays,]
+   const userData = [...request,...revokeDetail,...WFHDetail,...timesheetRequest]
    const reverseArray = data.reduce((acc, curr) => {
     const indexToInsert = acc.findIndex(item => item.timestamp > curr.timestamp);
     if (indexToInsert === -1) {

@@ -3,7 +3,6 @@ import { getDoc,doc, updateDoc } from "firebase/firestore"
 import Cookies from "js-cookie"
 
 export const Accept=async(id)=>{
-  console.log(id)
   const level=Cookies.get('level')
   const docRef=doc(db,'timesheet',id)
   const docSnap=await getDoc(docRef)

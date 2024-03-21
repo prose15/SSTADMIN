@@ -125,9 +125,7 @@ const ApplyAgain = props => {
             toYear:toYear[0]}
           addDoc(collection(db,'WFH'),newDetails).then(()=>{
               newData.WFH+=newDetails.noofdays
-              updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).then(()=>{
-                console.log('profile updated')
-              }).catch((err)=>{
+              updateDoc(doc(db,'admin',JSON.parse(sessionStorage.getItem('uid'))),newData).catch((err)=>{
                 console.log(err);
               })
               setAlert('d-block')

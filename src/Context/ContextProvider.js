@@ -29,6 +29,7 @@ export const ContextProvider=({children})=>{
   const [myRecords,setMyRecords]=useState([])
   const [profileModal,setProfileModal]=useState(false)
   const[leaveDetail,setLeaveDetail]=useState([])
+  const [timesheetRequest,setTimesheetRequest] = useState([])
   //Cookies
   const level = Cookies.get('level')
   useEffect(()=>{
@@ -118,6 +119,19 @@ export const ContextProvider=({children})=>{
         }).catch((err)=>{
           console.log(err)
         })
+        const levelStatus=docSnap.data().level+"status"
+        if(Cookies.get('role')==='Chief Execuetive Officer'){
+          const filteredUsersQuery =query(collection(db,'timesheet'),where('L4status','==',''),orderBy('timestamp','asc'));
+          onSnapshot(filteredUsersQuery,(data)=>{
+            setTimesheetRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+          })
+         }
+         else{
+            const filteredUsersQuery =query(collection(db,'timesheet'),where('team','==',docSnap.data().team),where(levelStatus,'==',''),where('status','==','pending'),orderBy('timestamp','asc'));
+        onSnapshot(filteredUsersQuery,(data)=>{
+          setTimesheetRequest(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        })
+      }
         const fileRef=ref(storage,'users/'+user+'.jpg');
         await getDownloadURL(fileRef).then((url) => {
           setUrl(url)
@@ -210,7 +224,7 @@ available[i+1]+=1.5
 }
 }
 
-    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal,WFHRecords,leaveDetail,setLeaveDetail,ccMembers,setCCMembers,ccData,setCCData}}>
+    return (<StateContext.Provider value={{startdate,enddate,setStartDate,setEndDate,workedHours,setWorkedHours,url,detail,setDetail,subscribemodal,setSubscribemodal,id,setId,request,earnedLeave,available,leave,modal_backdrop,setmodal_backdrop,WFHDetail,request,revokeDetail,holidays,project,performanceArray,setPerformanceArray,format,setFormat,acceptModel,setAcceptModel,myRecords,usersArr,profileModal,setProfileModal,WFHRecords,leaveDetail,setLeaveDetail,ccMembers,setCCMembers,ccData,setCCData,timesheetRequest,setTimesheetRequest}}>
         {children}
     </StateContext.Provider>)
 }
